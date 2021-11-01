@@ -1,11 +1,16 @@
 // Create connection to database
-const config = {
-  user: "bradyk4",
-  password: "Pa$$w0rd",
-  server: "divvi.database.windows.net",
-  database: "divvi",
+var config = {
+  server: 'divvi.database.windows.net',
+  database: 'divvi',
+  authentication: {
+      type: 'default',
+      options: {
+          userName: '', // update me
+          password: '' // update me
+      }
+  },
   options: {
-    encrypt: true,
+      database: 'divvi'
   }
 }
 
