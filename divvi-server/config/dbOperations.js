@@ -13,6 +13,25 @@ async function getUsers() {
   }
 }
 
+async function addUser(user) {
+
+  try {
+      let pool = await sql.connect(config);
+      let insertUser = await pool.request()
+          .input('ID', sql.Int, user.ID)
+          .input('Name', sql.NVarChar, user.Name)
+          .input('Balance', sql.Money, user.Balance)
+          .input('GroupId', sql.Int, user.GroupId)
+          .execute('InsertUsers');
+      return insertUser.recordsets;
+  }
+  catch (err) {
+      console.log(err);
+  }
+
+}
+
 module.exports = {
-  getUsers : getUsers
+  getUsers : getUsers,
+  addUser : addUser,
 }

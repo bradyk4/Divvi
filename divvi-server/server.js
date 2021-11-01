@@ -26,6 +26,16 @@ router.route('/users').get((request, response)=>{
 
 });
 
+router.route('/users').post((request, response)=>{
+
+  let user = {...request.body}
+
+  DB.addUser(user).then(result => {
+    response.status(201).json(result);
+  });
+
+});
+
 var port = process.env.PORT || 8090;
 app.listen(port);
 console.log('API is runnning at ' + port);
