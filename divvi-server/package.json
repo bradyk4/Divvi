@@ -15,8 +15,13 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mariadb": "^2.5.5",
     "mssql": "^7.2.1",
+    "mysql2": "^2.3.2",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.9.0",
+    "sqlite3": "^5.0.2",
     "tedious": "^14.0.0"
   },
   "devDependencies": {

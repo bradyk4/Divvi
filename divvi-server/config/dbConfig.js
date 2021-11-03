@@ -1,17 +1,18 @@
-// Create connection to database
-var config = {
-  server: 'divvi.database.windows.net',
+// parameters for database connection
+module.exports = {
+  host: 'divvi.database.windows.net',
+  user: 'bradyk4',
+  password: 'Pa$$w0rd',
   database: 'divvi',
-  authentication: {
-      type: 'default',
-      options: {
-          userName: 'bradyk4', // update me
-          password: 'Pa$$w0rd' // update me
-      }
+  dialect: 'mssql',
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
   },
-  options: {
-      database: 'divvi'
-  }
-}
-
-module.exports = config;
+  driver: 'tedious',
+  dialectOptions: {
+      encrypt: true,
+      database: 'divvi',
+  },
+};
