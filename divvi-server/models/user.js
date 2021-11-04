@@ -4,23 +4,29 @@ const sequelize = new Sequelize('sqlite::memory:');
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define('User', {
     // Model attributes are defined here
-    ID: {
+    id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true,
     },
-    Name: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    Balance: {
+    balance: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
-    GroupId: {
+    groupId: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
-  });
+  },{
+    timestamps: false,
+    updatedAt: false,
+    createdAt: false,
+    }
+  );
 
   return User;
 }

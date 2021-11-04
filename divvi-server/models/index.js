@@ -1,4 +1,4 @@
-const dbConfig = require('../divvi-server/config/dbConfig');
+const dbConfig = require("../config/dbConfig");
 
 // initialize sequelize instance
 const Sequelize = require("sequelize");
@@ -8,17 +8,16 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passw
   password: dbConfig.password,
   database: dbConfig.database,
   dialect: dbConfig.dialect,
+  driver: dbConfig.driver,
+  dialectOptions: {
+    encrypt: dbConfig.encrypt,
+  },
   pool: {
     max: dbConfig.pool.max,
     min: dbConfig.pool.min,
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
   },
-  driver: dbConfig.driver,
-  dialectOptions: {
-    encrypt: dbConfig.encrypt,
-    database: dbConfig.database,
-},
 });
 
 const db = {};
@@ -26,6 +25,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.users = require('../models/user')(sequelize, Sequelize);
+db.user = require('../models/user')(sequelize, Sequelize);
 
 module.exports = db;
