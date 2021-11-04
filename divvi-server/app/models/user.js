@@ -14,6 +14,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
       isInt: {
         msg: "Must be an integer between (1 & 1000)"
       }

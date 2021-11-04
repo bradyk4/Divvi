@@ -4,7 +4,7 @@ const Op = require("sequelize");
 // Create and Save a new user
 exports.create = async(req, res) => {
   try{
-    const user = await db.User.create(req.body);
+    const user = await User.create(req.body);
     return res.status(201).json({
       user,
     });
