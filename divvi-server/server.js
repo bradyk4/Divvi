@@ -1,31 +1,33 @@
-const dbOperations = require('./config/dbOperations');
-var DB = require('./config/dbOperations');
-var User = require('./models/user')
+const express = require("express");
+const cors = require("cors");
+const db = require('./app/models')
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var cors = require('cors');
-var app = express();
-var router = express.Router();
+const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cors());
-app.use('/api', router);
+var corsOptions = {
+  origin: "http://localhost:8090"
+};
 
-router.use((request,response,next)=>{
-  console.log('middleware');
-  next();
+app.use(cors(corsOptions));
+// parse json content
+app.use(express.json());
+//app.use(bodyParser.json);
+// parse requests of content-type
+app.use(express.urlencoded({ extended: true }));
+
+// sync models with database
+db.sequelize.sync();
+
+// simple route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Divvi application." });
 });
 
-router.route('/users').get((request, response)=>{
+// include routes
+require("./app/routes/user.routes")(app);
 
-  DB.getUsers().then(result => {
-    response.json(result);
-  });
-
+// set port, listen for requests
+const PORT = process.env.PORT || 8090;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });
-
-var port = process.env.PORT || 8090;
-app.listen(port);
-console.log('API is runnning at ' + port);
