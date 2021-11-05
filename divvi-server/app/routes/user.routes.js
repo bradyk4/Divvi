@@ -11,7 +11,7 @@ module.exports = app => {
   router.get("/", controller.findAll);
 
   // Retrieve a single user with id
-  router.get("/:id", controller.findOne);
+  router.get("/:id", controller.findByPk);
 
   // Update a user with id
   router.put("/:id", controller.update);

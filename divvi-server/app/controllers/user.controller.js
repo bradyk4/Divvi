@@ -33,22 +33,22 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single user with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id;
+exports.findByPk = (req, res) => {
+  const ID = req.params.id;
 
-  User.findByPk(id)
+  User.findByPk(ID)
     .then((data) => {
       if (data) {
-        res.send(data);
+        res.json(data);
       } else {
         res.status(404).send({
-          message: "Error retrieving user with id=" + id,
+          message: "Error retrieving user with id=" + ID,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving user with id=" + id,
+        message: "Error retrieving user with id=" + ID,
       });
     });
 };
