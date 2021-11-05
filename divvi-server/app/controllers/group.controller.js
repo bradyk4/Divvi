@@ -54,6 +54,7 @@ exports.findByPk = (req, res) => {
     });
 };
 
+// find group by id and display users in group
 exports.findUsersByGroup = (req, res) => {
   const ID = req.params.id;
 
