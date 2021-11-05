@@ -13,6 +13,9 @@ module.exports = app => {
   // Retrieve a single group with id
   router.get("/:id", controller.findByPk);
 
+  // Retrieve users from group by id
+  router.get("/users/:id", controller.findUsersByGroup);
+
   // Update a group with id
   router.put("/:id", controller.update);
 
