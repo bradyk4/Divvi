@@ -1,3 +1,4 @@
+
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
@@ -352,8 +353,55 @@
 
   <!-- Resources -->
   <h2>Resources</h2>
-  <p>Here are some links to help you get started:</p>
+<div class = "calculations" href="/styles.css">
+  <body>
+  <h2 style="text-align:center;">User's Groups:</h2>
+  <table class="table table-responsive table-striped" border="2" width="400px">
+    <tr>
+      <th width="250px">User</th>
+      <th>Amount Owed</th>
+    </tr>
+    <tr *ngFor="let user of group">
+      <td style="font-size: large;">{{user.username}}</td>
+      <td style="font-size: large;">{{Splitpayment}}</td>
+    </tr>
+  </table>
+  <br>
 
+  <hr />
+ <p style="text-align: left;">Please enter the username of the member you want to add to the group: <input type="text" [(ngModel)]="username" placeholder="Username" /></p>
+  <br>
+  <button (click)="createTable()">Click to add member to group</button>
+  <br>
+  <br>
+  <p>Enter the expense amount: <input id="Expense" placeholder = "Expense" type="number" name="Expense" [(ngModel)] = "payment"> </p>
+  <br>
+  <b>Select how you want to split your payments:</b>
+  <br>
+  <br>
+    <button  mat-raised-button (click)="toggleEvenShow()">Evenly</button>
+    <button  mat-raised-button (click)="toggleFixedShow()">Fixed Amount</button>
+    <button  mat-raised-button (click)="togglePercentShow()">Percentage</button>
+
+    <div *ngIf="evenIsShown" class="row container-fluid"  id="evenshow" >
+      <p>Press Split Payment to confirm</p>
+      <button  mat-raised-button (click)="Evenly()">Split Payment</button>
+    </div>
+    <div *ngIf="fixedIsShown" class="row container-fluid"  id="fixedshow" >
+      <ng-container *ngFor="let user of group">Enter Fixed Amount for {{user.username}}: <input placeholder = "Fixed Amount" type="number" name="Fixedamount" [(ngModel)] = "fixedamt"> <br> </ng-container>
+      <p >Enter Fixed Amount: <input placeholder = "Fixed Amount" id = "fixedamt" type="number" name="Fixedamount" [(ngModel)] = "fixedamt"></p>
+      <button  mat-raised-button (click)="Fixedamount()">Split Payment</button>
+  </div>
+  <div *ngIf="percentIsShown" class="row container-fluid"  id="percentshow" >
+      <ng-container *ngFor="let user of group">Enter Percentage for {{user.username}}: <input placeholder = "Percentage" type="number" name="Percentage" [(ngModel)] = "percent"> <br> </ng-container>
+      <p >Enter Percentage: <input placeholder = "Percentage" type="number" name="Percentage" [(ngModel)] = "percent"></p>
+      <button  mat-raised-button (click)="Percentage()">Split Payment</button>
+  </div>
+
+  <button  mat-raised-button (click)="clearGroup()">Clear Group</button>
+  <button  mat-raised-button (click)="clearAmountOwed()">Clear Amount Owed</button>
+</body>
+  </div>
   <div class="card-container">
     <a class="card" target="_blank" rel="noopener" href="https://angular.io/tutorial">
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
