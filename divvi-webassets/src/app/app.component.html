@@ -361,9 +361,11 @@
       <th width="250px">User</th>
       <th>Amount Owed</th>
     </tr>
-    <tr *ngFor="let user of group">
-      <td style="font-size: large;">{{user.username}}</td>
-      <td style="font-size: large;">{{Splitpayment}}</td>
+    <tr *ngFor="let user of users">
+      <td style="font-size: large;">{{user.name}}</td>
+      <td style="font-size: large;">{{user.balance}}</td>
+      <td style="font-size: large;">{{user.groupId}}</td>
+      <td style="font-size: large;">{{user.id}}</td>
     </tr>
   </table>
   <br>

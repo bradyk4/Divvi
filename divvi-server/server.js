@@ -18,6 +18,16 @@ app.use(express.urlencoded({ extended: true }));
 // sync models with database
 db.sequelize.sync();
 
+// Add Access Control Allow Origin headers
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Divvi application." });

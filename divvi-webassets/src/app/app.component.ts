@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UserCreationComponent } from './user-creation/user-creation.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
+import {HttpClient} from '@angular/common/http';
 
 
 @Component({
@@ -13,15 +13,15 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent{
+export class AppComponent implements OnInit{
+  constructor(private http : HttpClient) {}
 
   title = 'Divvi';
-  users = [
-    { firstName: 'Jerermy', lastName: 'Mazurowski', amountOwed: 0},
-    { firstName: 'TJ', lastName: 'Brown', amountOwed: 0},
-    { firstName: 'Kyle', lastName: 'Brady', amountOwed: 0},
-    { firstName: 'Kenny', lastName: 'Williams', amountOwed: 0}
-];
+  users: any = [];
+
+  ngOnInit(): void {
+    this.getUsers();
+  }
 
 public group: Array<{username: string, amountOwed: number}> = [];
   public username!: string;
@@ -94,5 +94,14 @@ createTable(){
 
   clearGroup(){
     this.group.length = 0;
+  }
+
+  // API response handling
+  getUsers(){
+    this.http.get('http://localhost:8090/api/users')
+      .subscribe(data => {
+        console.log(data);
+        this.users = data;
+      });
   }
 }
