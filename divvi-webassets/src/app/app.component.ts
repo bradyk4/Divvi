@@ -18,6 +18,7 @@ export class AppComponent implements OnInit{
 
   title = 'Divvi';
   users: any = [];
+  groups: any = [];
 
   ngOnInit(): void {
     this.getUsers();
@@ -103,5 +104,13 @@ createTable(){
         console.log(data);
         this.users = data;
       });
+  }
+
+  getGroupUsers(id: number){
+    this.http.get('http://localhost:8090/api/groups/users/'+id)
+      .subscribe(data => {
+        console.log(data);
+        this.groups = data;
+      })
   }
 }
