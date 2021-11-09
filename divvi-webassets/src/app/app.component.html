@@ -350,24 +350,38 @@
     </svg>
 
   </div>
+  <br>
 
   <!-- Resources -->
   <h2>Resources</h2>
 <div class = "calculations" href="/styles.css">
   <body>
-  <h2 style="text-align:center;">User's Groups:</h2>
+  <h2 style="text-align:center;">Groups:</h2>
   <table class="table table-responsive table-striped" border="2" width="400px">
     <tr>
-      <th width="250px">User</th>
-      <th>Amount Owed</th>
+      <th>Group Name</th>
+      <th>Number</th>
+      <th>ID</th>
+      <th>Users:</th>
     </tr>
-    <tr *ngFor="let user of users">
-      <td style="font-size: large;">{{user.name}}</td>
-      <td style="font-size: large;">{{user.balance}}</td>
-      <td style="font-size: large;">{{user.groupId}}</td>
-      <td style="font-size: large;">{{user.id}}</td>
+    <tr *ngIf="groupUsers">
+      <td>{{groupUsers.name}}</td>
+      <td>{{groupUsers.number}}</td>
+      <td>{{groupUsers.id}}</td>
     </tr>
-  </table>
+    <tr>
+      <th>User</th>
+      <th>Balance</th>
+      <th>Group ID</th>
+      <th>ID</th>
+    </tr>
+    <tr *ngFor="let user of groupUsers.Users">
+      <td>{{user.name}}</td>
+      <td>{{user.balance}}</td>
+      <td>{{user.groupId}}</td>
+      <td>{{user.id}}</td>
+    </tr>
+    </table>
   <br>
 
   <hr />
