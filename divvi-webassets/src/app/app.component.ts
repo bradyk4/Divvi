@@ -17,13 +17,15 @@ import { GroupService } from './services/group.service';
 
 export class AppComponent implements OnInit{
   constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService) {}
-
   title = 'Divvi';
   user: any;
   users: any;
   selectedGroup: any;
   groups: any;
   groupUsers: any;
+  name: any;
+  groupID: any;
+  id: any;
 
   ngOnInit(): void {
     this.users = this.getUsers();
@@ -35,14 +37,62 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public username!: string;
   public amountOwed!: number;
   public payment!: number;
+  public expense!: number;
   public Splitpayment!: number;
-  public groupSize!: number;
+  public groupSize: number = 0;
   public fixedamt!: number;
   public percent!: number;
+  addUser: boolean = false;
+  alert: boolean = false;
+  showPayments: boolean = false;
+  newExpense: boolean = false;
   evenIsShown: boolean = false ;
   fixedIsShown: boolean = false ;
   percentIsShown: boolean = false ;
   public iterate!: number;
+  public expenseName!: string;
+  public expenseDesc!: string;
+  public pendingTransactions: Array<{groupUsers: string, expenseName: string, expenseDesc: string; payment: number}> =[]
+
+
+  showUserAddInput(){
+    this.addUser = ! this.addUser;
+  }
+
+  showPaymentOptions(){
+    this.expenseName;
+    this.expenseDesc;
+    this.payment;
+    if(this.expenseDesc == '' || this.expenseName == '' || this.payment == 0 || this.payment == null){
+      this.alert = ! this.alert;
+      this.expenseName = "";
+      this.expenseDesc = "";
+      this.payment = 0;
+    }
+    else{
+      this.showPayments = ! this.showPayments;
+      
+    }
+  }
+
+  showNewExpense(){
+    this.newExpense = ! this.newExpense;
+    this.showPayments = false;
+    this.evenIsShown = false;
+    this.percentIsShown = false;
+    this.fixedIsShown = false;
+  }
+  cancelShowNewExpense(){
+    this.newExpense = false;
+    this.showPayments = false;
+    this.evenIsShown = false;
+    this.percentIsShown = false;
+    this.fixedIsShown = false;
+    this.expenseName = "";
+    this.expenseDesc = "";
+    this.payment = 0;
+
+  }
 
   toggleEvenShow() {
 
@@ -72,8 +122,21 @@ createTable(){
 }
 
   Evenly(){
-    this.groupSize = this.group.length;
+    this.groupSize = this.groupUsers.Users.length;
     this.Splitpayment = this.payment / this.groupSize;
+    
+    this.users.forEach( () => {
+      this.pendingTransactions.push( {groupUsers: this.groupUsers, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.payment} );
+    });
+    this.newExpense = false;
+    this.showPayments = false;
+    this.evenIsShown = false;
+    this.percentIsShown = false;
+    this.fixedIsShown = false;
+    this.expenseName = "";
+    this.expenseDesc = "";
+    this.payment = 0;
+    console.log(this.groupUsers.Users)
   }
 
   Fixedamount(){
@@ -82,6 +145,17 @@ createTable(){
     {
       this.Splitpayment = this.fixedamt;
     }
+    this.users.forEach( () => {
+      this.pendingTransactions.push( {groupUsers: this.groupUsers, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.payment} );
+    });
+    this.newExpense = false;
+    this.showPayments = false;
+    this.evenIsShown = false;
+    this.percentIsShown = false;
+    this.fixedIsShown = false;
+    this.expenseName = "";
+    this.expenseDesc = "";
+    this.payment = 0;
   }
 
   Percentage(){
@@ -90,6 +164,17 @@ createTable(){
     {
       this.Splitpayment = this.payment * (this.percent / 100);
     }
+    this.users.forEach( () => {
+      this.pendingTransactions.push( {groupUsers: this.groupUsers, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.payment} );
+    });
+    this.newExpense = false;
+    this.showPayments = false;
+    this.evenIsShown = false;
+    this.percentIsShown = false;
+    this.fixedIsShown = false;
+    this.expenseName = "";
+    this.expenseDesc = "";
+    this.payment = 0;
   }
 
   clearAmountOwed(){
@@ -120,6 +205,7 @@ createTable(){
   }
 
   postUser(name: string, balance: number, groupId: number, id: number){
+
     this.userService.postUser(name, balance, groupId, id);
   }
 
