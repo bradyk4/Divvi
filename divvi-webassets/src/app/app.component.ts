@@ -9,6 +9,8 @@ import { UserService } from './services/user.service';
 import { GroupService } from './services/group.service';
 
 
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,6 +28,7 @@ export class AppComponent implements OnInit{
   name: any;
   groupID: any;
   id: any;
+  updateBalance: any;
 
   ngOnInit(): void {
     this.users = this.getUsers();
@@ -53,7 +56,8 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public expenseName!: string;
   public expenseDesc!: string;
   public pendingTransactions: Array<{groupUsers: string, expenseName: string, expenseDesc: string; payment: number}> =[]
-
+  
+  
 
   showUserAddInput(){
     this.addUser = ! this.addUser;
@@ -124,9 +128,13 @@ createTable(){
   Evenly(){
     this.groupSize = this.groupUsers.Users.length;
     this.Splitpayment = this.payment / this.groupSize;
-    
-    this.users.forEach( () => {
-      this.pendingTransactions.push( {groupUsers: this.groupUsers, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.payment} );
+
+  
+    this.users.forEach( (user:any) => {
+      user.balance = this.payment/ this.groupSize;
+      this.updateUserBalance(user.id, user.balance);
+      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.balance} );
+
     });
     this.newExpense = false;
     this.showPayments = false;
@@ -136,17 +144,14 @@ createTable(){
     this.expenseName = "";
     this.expenseDesc = "";
     this.payment = 0;
-    console.log(this.groupUsers.Users)
-  }
+    
+  } 
 
+  
   Fixedamount(){
     this.Splitpayment = 0;
-    for (this.username in this.group)
-    {
-      this.Splitpayment = this.fixedamt;
-    }
-    this.users.forEach( () => {
-      this.pendingTransactions.push( {groupUsers: this.groupUsers, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.payment} );
+    this.users.forEach( (user:any) => {
+      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.fixedamt} );
     });
     this.newExpense = false;
     this.showPayments = false;
@@ -160,12 +165,11 @@ createTable(){
 
   Percentage(){
     this.Splitpayment = 0;
-    for (this.username in this.group)
-    {
-      this.Splitpayment = this.payment * (this.percent / 100);
-    }
-    this.users.forEach( () => {
-      this.pendingTransactions.push( {groupUsers: this.groupUsers, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.payment} );
+    this.users.forEach( (user:any) => {
+      user.balance = this.payment * (user.percent / 100);
+      console.log(this.payment)
+      console.log(user.balance)
+      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.balance} );
     });
     this.newExpense = false;
     this.showPayments = false;
