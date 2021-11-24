@@ -117,12 +117,12 @@
     </div>
     <div *ngIf="fixedIsShown" class="row container-fluid"  id="fixedshow" >
       <ng-container *ngFor="let user of groupUsers.Users">Enter Fixed Amount for {{user.name}}: <input placeholder = "Fixed Amount" type="number" name="fixedamt" [(ngModel)] = "user.fixedamt"> <br> </ng-container>
-      <p >Enter Fixed Amount: <input placeholder = "Fixed Amount" id = "fixedamt" type="number" name="Fixedamount" [(ngModel)] = "fixedamt"></p>
+  
       <button  mat-raised-button (click)="Fixedamount()">Split Payment</button>
   </div>
   <div *ngIf="percentIsShown" class="row container-fluid"  id="percentshow" >
       <ng-container *ngFor="let user of groupUsers.Users">Enter Percentage for {{user.name}}: <input placeholder = "Percentage" type="number" name="percent" [(ngModel)] = "user.percent">> <br> </ng-container>
-      <p >Enter Percentage: <input placeholder = "Percentage" type="number" name="Percentage" [(ngModel)] = "percent"></p>
+      
       <button  mat-raised-button (click)="Percentage()">Split Payment</button>
   </div>
   

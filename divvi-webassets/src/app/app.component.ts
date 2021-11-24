@@ -131,10 +131,11 @@ createTable(){
 
   
     this.users.forEach( (user:any) => {
-      user.balance = this.payment/ this.groupSize;
+      var balance = this.payment / this.groupSize;
+      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+      user.balance += this.payment/ this.groupSize;
       this.updateUserBalance(user.id, user.balance);
-      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.balance} );
-
+      console.log(user.id, user.balance)
     });
     this.newExpense = false;
     this.showPayments = false;
@@ -214,7 +215,11 @@ createTable(){
   }
 
   updateUserBalance(id: number, balance: number){
-    this.userService.updateUserBalance(id, balance);
+    this.userService.updateUserBalance(id, balance).subscribe(data => {
+      this.user.id = data;
+      this.user.balance = data;
+      return data
+    });
   }
 
   deleteUser(id: number){
