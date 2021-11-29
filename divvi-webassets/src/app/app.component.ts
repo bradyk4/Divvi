@@ -43,8 +43,14 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public expense!: number;
   public Splitpayment!: number;
   public groupSize: number = 0;
-  public fixedamt!: number;
-  public percent!: number;
+  public fixedamt1!: number;
+  public fixedamt2!: number;
+  public fixedamt3!: number;
+  public fixedamt4!: number;
+  public percent1!: number;
+  public percent2!: number;
+  public percent3!: number;
+  public percent4!: number;
   addUser: boolean = false;
   alert: boolean = false;
   showPayments: boolean = false;
@@ -151,9 +157,14 @@ createTable(){
   
   Fixedamount(){
     this.Splitpayment = 0;
-    this.users.forEach( (user:any) => {
-      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.fixedamt} );
-    });
+    var balance = this.fixedamt1
+    this.pendingTransactions.push( {groupUsers: "Kyle Brady", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+    var balance = this.fixedamt2
+    this.pendingTransactions.push( {groupUsers: "Kenny Williams", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+    var balance = this.fixedamt3
+    this.pendingTransactions.push( {groupUsers: "TJ Brown", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+    var balance = this.fixedamt4
+    this.pendingTransactions.push( {groupUsers: "Jeremy Mazurowski", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
     this.newExpense = false;
     this.showPayments = false;
     this.evenIsShown = false;
@@ -166,12 +177,19 @@ createTable(){
 
   Percentage(){
     this.Splitpayment = 0;
-    this.users.forEach( (user:any) => {
-      user.balance = this.payment * (user.percent / 100);
-      console.log(this.payment)
-      console.log(user.balance)
-      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.balance} );
-    });
+    var balance = this.payment * (this.percent1 / 100);
+    this.pendingTransactions.push( {groupUsers: "Kyle Brady", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+    var balance = this.payment * (this.percent2 / 100);
+    this.pendingTransactions.push( {groupUsers: "Kenny Williams", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+    var balance = this.payment * (this.percent3 / 100);
+    this.pendingTransactions.push( {groupUsers: "TJ Brown", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+    var balance = this.payment * (this.percent4 / 100);
+    this.pendingTransactions.push( {groupUsers: "Jeremy Mazurowski", expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+
+
+
+
+    
     this.newExpense = false;
     this.showPayments = false;
     this.evenIsShown = false;
