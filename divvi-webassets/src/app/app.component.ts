@@ -43,8 +43,8 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public expense!: number;
   public Splitpayment!: number;
   public groupSize: number = 0;
-  public fixedamt!: number;
-  public percent!: number;
+  public fixedamt: any = [];
+  public percent: any = [];
   addUser: boolean = false;
   alert: boolean = false;
   showPayments: boolean = false;
@@ -135,7 +135,6 @@ createTable(){
       this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
       user.balance += this.payment/ this.groupSize;
       this.updateUserBalance(user.id, user.balance);
-      console.log(user.id, user.balance)
     });
     this.newExpense = false;
     this.showPayments = false;
@@ -148,11 +147,13 @@ createTable(){
     
   } 
 
-  
+
   Fixedamount(){
     this.Splitpayment = 0;
     this.users.forEach( (user:any) => {
-      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.fixedamt} );
+      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.fixedamt[user.id -1 ]} );
+      user.balance += this.fixedamt[user.id - 1];
+      this.updateUserBalance(user.id, user.balance);
     });
     this.newExpense = false;
     this.showPayments = false;
@@ -167,10 +168,10 @@ createTable(){
   Percentage(){
     this.Splitpayment = 0;
     this.users.forEach( (user:any) => {
-      user.balance = this.payment * (user.percent / 100);
-      console.log(this.payment)
-      console.log(user.balance)
-      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: user.balance} );
+      this.Splitpayment = this.payment * (this.percent[user.id - 1] / 100);
+      user.balance += this.Splitpayment;
+      this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+      this.updateUserBalance(user.id, user.balance);
     });
     this.newExpense = false;
     this.showPayments = false;
