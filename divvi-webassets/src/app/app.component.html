@@ -49,7 +49,7 @@
     </tr>
     </table>
     </div>
-    
+
     <div class="col-md-6 float-right">
     <h4>Pending Transactions:</h4>
     <table class="table table-responsive table-striped table-bordered table-sm ">
@@ -98,7 +98,7 @@
   <input id="Expense" placeholder = "Expense Amount" type="number" name="payment" [(ngModel)] = "payment">
   <br>
   <button class="btn btn-success btn-sm col-md-4"(click)="showPaymentOptions()">Click to Create New Payment</button>
-      <button class="btn btn-danger btn-sm col-md-3"(click)="cancelShowNewExpense()">Click to cancel</button> 
+      <button class="btn btn-danger btn-sm col-md-3"(click)="cancelShowNewExpense()">Click to cancel</button>
   </div>
   <br>
   <br>
@@ -117,15 +117,15 @@
     </div>
     <div *ngIf="fixedIsShown" class="row container-fluid"  id="fixedshow" >
       <ng-container *ngFor="let user of groupUsers.Users; let i = index">Enter Fixed Amount for {{user.name}}: <input placeholder = "Fixed Amount" type="number" name="fixedamt" [(ngModel)]= "fixedamt[i]"> <br> </ng-container>
-  
+
       <button  mat-raised-button (click)="Fixedamount()">Split Payment</button>
   </div>
   <div *ngIf="percentIsShown" class="row container-fluid"  id="percentshow" >
-      <ng-container *ngFor="let user of groupUsers.Users; let i = index">Enter Percentage for {{user.name}}: <input placeholder = "Percentage" type="number" name="percent" [(ngModel)] = "percent[i]">> <br> </ng-container>
-      
+      <ng-container *ngFor="let user of groupUsers.Users; let i = index">Enter Percentage for {{user.name}}: <input placeholder = "Percentage" type="number" name="percent" [(ngModel)] = "percent[i]"> <br> </ng-container>
+
       <button  mat-raised-button (click)="Percentage()">Split Payment</button>
   </div>
-  
+
 
   <br>
   <br>
@@ -134,4 +134,3 @@
   <br>
   <button  mat-raised-button (click)="clearGroup()">Clear Group</button>
   <button  mat-raised-button (click)="clearAmountOwed()">Clear Amount Owed</button>
-  
