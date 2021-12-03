@@ -30,6 +30,7 @@ export class AppComponent implements OnInit{
   id: any;
   updateBalance: any;
 
+  // this method gets group #1, and the users within the group
   ngOnInit(): void {
     this.users = this.getUsers();
     this.groups = this.getGroups();
@@ -63,6 +64,9 @@ public group: Array<{username: string, amountOwed: number}> = [];
     this.addUser = ! this.addUser;
   }
 
+
+  // this method is the framework to check user entry - if expense Name, Description, or payment is blank or 0 then the payment options will not show and it will 
+  // require the user to re-enter their values.
   showPaymentOptions(){
     this.expenseName;
     this.expenseDesc;
@@ -79,6 +83,9 @@ public group: Array<{username: string, amountOwed: number}> = [];
     }
   }
 
+
+  // The following 4 methods is how we show which inputs / payment options we want to show. We call these on click when a user wants to split a payment, and when the user
+  // chooses how they want to split their payment (evenly, fixed, or percentage)
   showNewExpense(){
     this.newExpense = ! this.newExpense;
     this.showPayments = false;
@@ -98,13 +105,6 @@ public group: Array<{username: string, amountOwed: number}> = [];
 
   }
 
-  toggleEvenShow() {
-
-    this.fixedIsShown = false;
-    this.percentIsShown = false;
-    this.evenIsShown = ! this.evenIsShown;
-
-  }
   toggleFixedShow() {
     this.evenIsShown = false;
     this.percentIsShown = false;
@@ -119,12 +119,8 @@ public group: Array<{username: string, amountOwed: number}> = [];
 
   }
 
-createTable(){
-  this.amountOwed = 0;
-  this.group.push( {username: this.username, amountOwed: this.Splitpayment} );
-  this.username = "";
-}
 
+  // This Evenly function splits the payment, and pushes values to the database and the pending transactions table
   Evenly(){
     this.groupSize = this.groupUsers.Users.length;
     this.Splitpayment = this.payment / this.groupSize;
@@ -148,6 +144,8 @@ createTable(){
   } 
 
 
+  // The fixed amount method reads each payment for each user. The user ID is read on click in the HTML using the index and for each user in the group, the amount entered
+  // is read and pushed to the pending transactions table and the database in the updateUserBalance() method.
   Fixedamount(){
     this.Splitpayment = 0;
     this.users.forEach( (user:any) => {
@@ -165,6 +163,9 @@ createTable(){
     this.payment = 0;
   }
 
+
+  // The percentage method reads each payment for each user. The user ID is read on click in the HTML using the index and for each user in the group, the amount entered
+  // is read and pushed to the pending transactions table and the database in the updateUserBalance() method.
   Percentage(){
     this.Splitpayment = 0;
     this.users.forEach( (user:any) => {
@@ -183,6 +184,8 @@ createTable(){
     this.payment = 0;
   }
 
+  
+  // Framework to clear amount owed 
   clearAmountOwed(){
     for (this.username in this.group)
     {
@@ -191,10 +194,14 @@ createTable(){
 
   }
 
+
+  //framework to delete a group
   clearGroup(){
     this.group.length = 0;
   }
 
+
+  
   // setup user API functions
   getUsers(){
     this.userService.getUsers().subscribe(data => {
