@@ -1,0 +1,9 @@
+header {
+  padding: 5px;
+  text-align: center;
+  background: #00008B;
+  color:white;
+  font-size: 30px;
+  border-style: solid;
+  border-width: 5px;
+}
