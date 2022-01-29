@@ -53,6 +53,8 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public expenseName!: string;
   public expenseDesc!: string;
   public pendingTransactions: Array<{groupUsers: string, expenseName: string, expenseDesc: string; payment: number}> =[]
+  last!: number;
+  
 
 
 
@@ -159,6 +161,14 @@ public group: Array<{username: string, amountOwed: number}> = [];
     this.payment = 0;
   }
 
+// handles the event for when changes are made to the percent input boxes
+  onPercentChange(event : Event) {
+
+    const eventTarget = event.target as HTMLInputElement;
+
+    console.log(eventTarget?.value);
+      // this.total = (100 - this.toNumber) / (this.groupUsers.Users.length - 1)this.total = (100 - this.toNumber) / (this.groupUsers.Users.length - 1)
+  }
 
   // The percentage method reads each payment for each user. The user ID is read on click in the HTML using the index and for each user in the group, the amount entered
   // is read and pushed to the pending transactions table and the database in the updateUserBalance() method.
