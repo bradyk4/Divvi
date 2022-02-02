@@ -4,6 +4,9 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING
     },
+    password: {
+      type: Sequelize.STRING
+    },
     balance: {
       type: Sequelize.DECIMAL(10, 2)
     },

@@ -1,6 +1,7 @@
 const db = require("../models");
 const User = db.user;
 const Op = require("sequelize");
+const { where } = require("sequelize");
 // Create and Save a new user
 exports.create = async(req, res) => {
   try{
@@ -31,6 +32,23 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// Find first user with matching username & password
+//  if none return error
+exports.findOne = (req, res) => {
+  const Username = req.params.username;
+  const Password = req.params.password;
+
+  User.findOne({ where: {name: Username, password: Password} })
+    .then(data => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "User does not exist. Please create an account if you have not already.",
+      });
+    });
+}
 
 // Find a single user with an id
 exports.findByPk = (req, res) => {
