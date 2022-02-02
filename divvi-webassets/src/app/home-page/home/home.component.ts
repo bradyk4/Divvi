@@ -54,7 +54,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public expenseDesc!: string;
   public pendingTransactions: Array<{groupUsers: string, expenseName: string, expenseDesc: string; payment: number}> =[]
   last!: number;
-  
+
 
 
 
@@ -223,9 +223,9 @@ public group: Array<{username: string, amountOwed: number}> = [];
     })
   }
 
-  postUser(name: string, balance: number, groupId: number){
+  postUser(name: string, balance: number, groupId: number, password: string){
 
-    this.userService.postUser(name, balance, groupId);
+    this.userService.postUser(name, password, balance, groupId);
   }
 
   updateUserBalance(id: number, balance: number){

@@ -19,9 +19,10 @@ export class UserService {
     return this.http.get('http://localhost:8090/api/users/'+id);
   }
 
-  postUser(name: string, balance: number, groupId: number){
+  postUser(name: string, password: string, balance: number, groupId: number){
     const body = {
       "name": name,
+      "password": password,
       "balance": balance,
       "groupId": groupId,
     }

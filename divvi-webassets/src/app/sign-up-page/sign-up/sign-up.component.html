@@ -1,1 +1,26 @@
-<p>sign-up works!</p>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign up</title>
+</head>
+
+<body>
+  <div class="main">
+    <p class="sign" align="center">Sign up</p>
+    <form class="form1">
+      <input [(ngModel)]="username" name="username" class="un" type="text" align="center" placeholder="Username">
+      <input [(ngModel)]="password" name="password" class="un" type="text" align="center" placeholder="Password">
+      <input [(ngModel)]="groupname" name="groupname" class="un" type="text" align="center" placeholder="Group Name">
+      <a (click)="onSubmit()" class="submit" align="center">Sign up</a>
+      <br>
+      <br>
+      <a routerLink="/sign-up" class="button" style="margin-left: 25px;">Sign Up</a>
+    </form>
+    </div>
+</body>
+
+</html>
+
+
