@@ -35,19 +35,29 @@ exports.findAll = (req, res) => {
 
 // Find first user with matching username & password
 //  if none return error
-exports.findOne = (req, res) => {
-  const Username = req.params.username;
-  const Password = req.params.password;
+exports.authUser = async(req, res) => {
+  const Username = req.body.username;
+  const Password = req.body.password;
 
-  User.findOne({ where: {name: Username, password: Password} })
-    .then(data => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "User does not exist. Please create an account if you have not already.",
-      });
-    });
+  try{
+    const user = await User.findOne({ where : {name : Username}});
+    if(user){
+        const password_valid = await bcrypt.compare(Password, password);
+        if(password_valid){
+          return res.status(200).json({
+          user
+          });
+        } else {
+          res.status(400).json({ error : "Password Incorrect" });
+        }
+      
+      }else{
+        res.status(404).json({ error : "User does not exist" });
+      }
+  }
+  catch(err){
+    console.log(err);
+  }
 }
 
 // Find a single user with an id

@@ -11,7 +11,7 @@ module.exports = app => {
   router.get("/", controller.findAll);
 
   // Authenticate login with UserName and Password
-  router.get("/auth/:username/:password", controller.findOne);
+  router.post("/auth/login", controller.authUser);
 
   // Retrieve a single user with id
   router.get("/:id", controller.findByPk);

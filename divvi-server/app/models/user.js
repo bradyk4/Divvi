@@ -1,3 +1,5 @@
+var bcrypt = require("bcrypt");
+
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("User", {
     // Model attributes are defined here
@@ -26,6 +28,14 @@ module.exports = (sequelize, Sequelize) => {
     timestamps: false,
     updatedAt: false,
     createdAt: false,
+    instanceMethods: {
+      generateHash(password) {
+        return bcrypt.hash(password, bcrypt.genSaltSync(8));
+      },
+    validPassword(password) {
+        return bcrypt.compare(password, this.password);
+      }
+    }
     }
   );
 
