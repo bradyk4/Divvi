@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt')
+
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("User", {
     // Model attributes are defined here
