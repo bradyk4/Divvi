@@ -23,31 +23,37 @@
     <div class="col-md-6">
       <!--This table displays the group preloaded from the ngOnIt function in the app component. -->
   <table class="table table-responsive table-striped table-bordered table-sm" *ngIf="groupUsers">
-    <thead class="thead-dark">
+    <thead class="table-dark">
     <tr>
-      <th >Group Name</th>
-      <th>Number</th>
-      <th>ID</th>
-      <th>Users:</th>
+      <th scope="col">Group Name</th>
+      <th scope="col">Number</th>
+      <th scope="col">ID</th>
+      <th scope="col">Users:</th>
     </tr>
     </thead>
+    <tbody>
     <tr *ngIf="groupUsers">
       <td>{{groupUsers.name}}</td>
       <td>{{groupUsers.number}}</td>
       <td>{{groupUsers.id}}</td>
     </tr>
+    </tbody>
+    <thead class="table-dark">
     <tr>
-      <th>User</th>
-      <th>Balance</th>
-      <th>Group ID</th>
-      <th>ID</th>
+      <th scope="col">User</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Group ID</th>
+      <th scope="col">ID</th>
     </tr>
+    </thead>
+    <tbody>
     <tr *ngFor="let user of groupUsers.Users">
       <td>{{user.name}}</td>
       <td>{{user.balance}}</td>
       <td>{{user.groupId}}</td>
       <td>{{user.id}}</td>
     </tr>
+    </tbody>
     </table>
     </div>
 
@@ -56,20 +62,22 @@
     <div class="col-md-6 float-right">
     <h4>Pending Transactions:</h4>
     <table class="table table-responsive table-striped table-bordered table-sm ">
-      <thead class="thead-dark">
+      <thead class="table-dark">
       <tr>
-        <th>Username</th>
-        <th >Expense Name</th>
-        <th>Expense Description</th>
-        <th>Amount Owed</th>
+        <th scope="col">Username</th>
+        <th scope="col">Expense Name</th>
+        <th scope="col">Expense Description</th>
+        <th scope="col">Amount Owed</th>
       </tr>
+      </thead>
+      <tbody>
         <tr *ngFor="let transaction of pendingTransactions">
           <td>{{transaction.groupUsers}}</td>
           <td>{{transaction.expenseName}}</td>
           <td>{{transaction.expenseDesc}}</td>
           <td>{{transaction.payment}} </td>
         </tr>
-      </thead>
+      </tbody>
     </table>
     </div>
   </div>
@@ -78,9 +86,9 @@
 
     <button class="btn btn-primary"(click)="showUserAddInput()">Click to add member to group</button>
     <div *ngIf="addUser" class="row container-fluid col-md-6"  id="evenshow" >
-      <p style="text-align: left;">Please enter the username of the member you want to add to the group: <input id="name" type="text" [(ngModel)]="name" placeholder="Username" /></p>
-      <p style="text-align: left;">Please enter the group ID of the group you would like to be added to: <input id="groupID" type="text" [(ngModel)]="groupID" placeholder="Group ID" /></p>
-      <button class="btn btn-success btn-sm col-md-2">Click to add member to group</button>
+      <p style="text-align: left;">Please enter the username of the member you want to add to the group: <input id="name" name="username" type="text" placeholder="Username" [(ngModel)]="name"></p>
+      <p style="text-align: left;">Please enter the group ID of the group you would like to be added to: <input id="groupID" name="group" type="text" placeholder="groupName" [(ngModel)]="groupName"></p>
+      <button class="btn btn-success btn-sm col-md-2" (click)="addUserToGroup()">Add member to group</button>
       <button class="btn btn-danger btn-sm col-md-2"(click)="showUserAddInput()">Click to cancel</button>
     </div>
   </form>
@@ -133,12 +141,12 @@
     <!--First, the *ngIf will read if the fixed method was call, and if so this will display x amount of inputs for each user in a group. The index
     allows us to iterate through each group member and save values pertaining to each group member. this is the same for the percentage split.-->
     <div *ngIf="fixedIsShown" class="row container-fluid"  id="fixedshow" >
-      <ng-container *ngFor="let user of groupUsers.Users; let i = index">Enter Fixed Amount for {{user.name}}: <input placeholder = "Fixed Amount" type="number" name="fixedamt" [(ngModel)]= "fixedamt[i]"> <br> </ng-container>
+      <ng-container *ngFor="let user of groupUsers.Users">{{user.name}} <input id="{{user.id}}" step="0.01" placeholder = "{{initialValue}}" type="number" name="fixedamt" required (change)="onFixedChange($event)"> <br> </ng-container>
 
       <button  mat-raised-button (click)="Fixedamount()">Split Payment</button>
   </div>
   <div *ngIf="percentIsShown" class="row container-fluid"  id="percentshow" >
-    <ng-container *ngFor="let user of groupUsers.Users"> {{user.name}}<input type="number" step="0.01" value="{{last}}" required name="distribution" (change)="onPercentChange($event)"> </ng-container>
+    <ng-container *ngFor="let user of groupUsers.Users"> {{user.name}}<input id="{{user.id}}" type="number" step="0.01" placeholder={{initialValue}} required name="distribution" (change)="onPercentChange($event)"> </ng-container>
 
       <button  mat-raised-button (click)="Percentage()">Split Payment</button>
   </div>

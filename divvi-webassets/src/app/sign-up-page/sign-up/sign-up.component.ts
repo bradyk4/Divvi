@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserService } from 'src/app/services/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -7,9 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor() { }
+  username: any;
+  password: any;
+  groupName: any;
+
+  constructor(
+    private http:HttpClient,
+    private userService: UserService,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
   }
 
+ 
+  onBack() {
+    this.router.navigate(['/login']);
+  }
+  onSubmit() {
+    this.router.navigate(['/login']);
+  }
 }
