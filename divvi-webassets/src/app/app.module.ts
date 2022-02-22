@@ -9,15 +9,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { HomeComponent } from './home-page/home/home.component';
 import { LoginPageComponent } from './login-page/login-page/login-page.component';
 import { SignUpComponent } from './sign-up-page/sign-up/sign-up.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginPageComponent,
     SignUpComponent,
+    ConfirmationDialogComponent
 
   ],
   imports: [
@@ -29,10 +33,11 @@ import { SignUpComponent } from './sign-up-page/sign-up/sign-up.component';
     MatToolbarModule,
     FormsModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    BrowserAnimationsModule,
 
   ],
-  providers: [],
+  providers: [{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

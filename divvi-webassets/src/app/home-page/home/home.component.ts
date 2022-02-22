@@ -8,15 +8,19 @@ import {HttpClient} from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
 import { GroupService } from 'src/app/services/group.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+    animations: [
+    ],
 })
 export class HomeComponent implements OnInit {
-  constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService) {}
+  constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService, public dialog: MatDialog) {}
   title = 'Divvi';
   user: any;
   users: any;
@@ -67,6 +71,17 @@ public group: Array<{username: string, amountOwed: number}> = [];
   percentSum = 100;
   count = 0;
   fixedSum = 0;
+
+  openDialog (){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px',
+      height: '250px'
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+  });
+  }
 
   showUserAddInput(){
     this.addUser = ! this.addUser;
@@ -225,7 +240,6 @@ public group: Array<{username: string, amountOwed: number}> = [];
           this.expenseInput = +eventTarget.value;
           this.expenseTable.splice(this.expenseTable.findIndex(x => x.username === user.name), 1)
           this.expenseTable.push({id: user.id, username: user.name, expenseSplit: this.expenseInput})     
-          console.log(this.expenseTable)
           const iterator = this.expenseTable.values();
           this.count = 0;
           this.fixedSum = +this.payment;
@@ -295,7 +309,8 @@ public group: Array<{username: string, amountOwed: number}> = [];
     else if ((this.fixedSum == 0) && this.count != 0)
 
     {
-      alert(this.count + " users do not have fixed amounts")
+      this.openDialog();
+      
       this.fixedIsShown = true;
       this.newExpense = false;
       this.showPayments = false;
@@ -343,7 +358,6 @@ public group: Array<{username: string, amountOwed: number}> = [];
         this.expenseInput = +eventTarget.value;
         this.expenseTable.splice(this.expenseTable.findIndex(x => x.username === user.name), 1)
         this.expenseTable.push({id: user.id, username: user.name, expenseSplit: this.expenseInput})     
-        console.log(this.expenseTable)
         const iterator = this.expenseTable.values();
         this.count = 0;
         this.percentSum = 100;
