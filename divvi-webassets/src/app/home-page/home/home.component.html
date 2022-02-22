@@ -68,6 +68,7 @@
         <th scope="col">Expense Name</th>
         <th scope="col">Expense Description</th>
         <th scope="col">Amount Owed</th>
+        <th scope="col">Is Amount Paid?</th>
       </tr>
       </thead>
       <tbody>
@@ -76,9 +77,11 @@
           <td>{{transaction.expenseName}}</td>
           <td>{{transaction.expenseDesc}}</td>
           <td>{{transaction.payment.toFixed(2)}} </td>
+          <td><input type="checkbox" id="isAmountPaid"></td>
         </tr>
       </tbody>
     </table>
+   <!-- <button type="submit"></button> -->
     </div>
   </div>
 
