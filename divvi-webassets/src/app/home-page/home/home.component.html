@@ -1,6 +1,6 @@
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->t
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
 <!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
@@ -49,7 +49,7 @@
     <tbody>
     <tr *ngFor="let user of groupUsers.Users">
       <td>{{user.name}}</td>
-      <td>{{user.balance}}</td>
+      <td>{{user.balance.toFixed(2)}}</td>
       <td>{{user.groupId}}</td>
       <td>{{user.id}}</td>
     </tr>
@@ -75,7 +75,7 @@
           <td>{{transaction.groupUsers}}</td>
           <td>{{transaction.expenseName}}</td>
           <td>{{transaction.expenseDesc}}</td>
-          <td>{{transaction.payment}} </td>
+          <td>{{transaction.payment.toFixed(2)}} </td>
         </tr>
       </tbody>
     </table>
@@ -141,12 +141,12 @@
     <!--First, the *ngIf will read if the fixed method was call, and if so this will display x amount of inputs for each user in a group. The index
     allows us to iterate through each group member and save values pertaining to each group member. this is the same for the percentage split.-->
     <div *ngIf="fixedIsShown" class="row container-fluid"  id="fixedshow" >
-      <ng-container *ngFor="let user of groupUsers.Users">{{user.name}} <input id="{{user.id}}" step="0.01" placeholder = "{{initialValue}}" type="number" name="fixedamt" required (change)="onFixedChange($event)"> <br> </ng-container>
+      <ng-container *ngFor="let user of groupUsers.Users">{{user.name}} <input id="{{user.id}}" step="0.01" placeholder = "{{initialValue.toFixed(2)}}" type="number" name="fixedamt" required (change)="onFixedChange($event)"> <br> </ng-container>
 
       <button  mat-raised-button (click)="Fixedamount()">Split Payment</button>
   </div>
   <div *ngIf="percentIsShown" class="row container-fluid"  id="percentshow" >
-    <ng-container *ngFor="let user of groupUsers.Users"> {{user.name}}<input id="{{user.id}}" type="number" step="0.01" placeholder={{initialValue}} required name="distribution" (change)="onPercentChange($event)"> </ng-container>
+    <ng-container *ngFor="let user of groupUsers.Users"> {{user.name}}<input id="{{user.id}}" type="number" step="0.01" placeholder="{{initialValue.toFixed(2)}}" required name="distribution" (change)="onPercentChange($event)"> </ng-container>
 
       <button  mat-raised-button (click)="Percentage()">Split Payment</button>
   </div>

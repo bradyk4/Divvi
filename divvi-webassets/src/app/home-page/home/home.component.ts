@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import { GroupService } from 'src/app/services/group.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -181,9 +182,12 @@ public group: Array<{username: string, amountOwed: number}> = [];
     this.initialValue = 100/ this.groupUsers.Users.length;
     this.users.forEach( (user:any) => {
       this.expenseTable.push( {id: user.id, username: user.name, expenseSplit: undefined} );
-  
+
     });
-  
+    for (const value of this.expenseTable) {
+      console.log(value)
+      console.log(value.username)
+    }
       console.log(this.expenseTable)
   }
 
@@ -200,6 +204,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
       user.balance += this.payment/ this.groupSize;
       this.updateUserBalance(user.id, user.balance);
     });
+    this.expenseTable.splice(0,this.expenseTable.length)
     this.newExpense = false;
     this.showPayments = false;
     this.evenIsShown = false;
@@ -302,21 +307,16 @@ public group: Array<{username: string, amountOwed: number}> = [];
       
       console.log("Push expense table to DB");
       const iterator = this.expenseTable.values();
-      for (const user of this.users) {
-       console.log(user.balance)
-       if (+this.expenseTable.findIndex(x => x.username === user.name) != -1) {
-          for (const value of iterator) {
-              this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: value.expenseSplit!} );
-              console.log(value.id)
-
-              //console.log(this.Splitpayment)
-              //this.updateUserBalance(value.id, user.balance)
-            }
-            //console.log(user.balance += value.expenseSplit!)
-          }
-
-      
-      }
+      for (const value of iterator) {
+        this.users.forEach( (user:any) => {
+                if (user.name == value.username) {
+                this.Splitpayment = value.expenseSplit!
+                user.balance += this.Splitpayment
+                this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+                 this.updateUserBalance(value.id, user.balance)
+                }
+            });
+           }
       this.expenseTable.splice(0,this.expenseTable.length)
       this.newExpense = false;
       this.percentIsShown = false;
@@ -427,26 +427,26 @@ public group: Array<{username: string, amountOwed: number}> = [];
       
       console.log("Push expense table to DB");
       const iterator = this.expenseTable.values();
+      for (const value of iterator) {
       this.users.forEach( (user:any) => {
-        
-          for (const value of iterator) {
-            if (+this.expenseTable.findIndex(x => x.username === user.name) != -1) {
+              if (user.name == value.username) {
               this.Splitpayment = this.payment * (value.expenseSplit! / 100)
-              this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
-              console.log(value.id)
               user.balance += this.Splitpayment
+              this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
               this.updateUserBalance(value.id, user.balance)
-            }
-          }
-
-      });
+              }
+          });
+         }
       this.expenseTable.splice(0,this.expenseTable.length)
       this.newExpense = false;
-      this.percentIsShown = true;
+      this.percentIsShown = false;
       this.showPayments = false;
       this.evenIsShown = false;
       this.percentIsShown = false;
       this.fixedIsShown = false;
+      this.expenseName = "";
+      this.expenseDesc = "";
+      this.payment = 0;
     }
 
   }
