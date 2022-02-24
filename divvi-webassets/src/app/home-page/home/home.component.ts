@@ -12,11 +12,13 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-    animations: [
+  animations: [
+    
     ],
 })
 export class HomeComponent implements OnInit {
@@ -71,22 +73,95 @@ public group: Array<{username: string, amountOwed: number}> = [];
   percentSum = 100;
   count = 0;
   fixedSum = 0;
+  confirmation!: boolean;
 
-  openDialog (){
+//Opens a confirmation Dialog box.
+openDialogPerc (){
+  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    width: '250px',
+    height: '250px',
+});
+// grabs dialog data on close
+dialogRef.afterClosed().subscribe(result => {
+  this.confirmation = result.data
+    console.log(`Dialog result: ${result.data}`);
+    // if confirmation is true it sets all undefined to 0 and then pushes to DB
+    if (this.confirmation == true) {
+      const iterator = this.expenseTable.values();
+    for (const value of iterator) {
+      this.users.forEach( (user:any) => {
+              if (user.name == value.username && value.expenseSplit != undefined) {
+              this.Splitpayment = value.expenseSplit!
+              this.Splitpayment = this.payment * (value.expenseSplit! / 100)
+              user.balance += this.Splitpayment
+              this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+              this.updateUserBalance(value.id, user.balance)
+              }
+          });
+         }
+    this.expenseTable.splice(0,this.expenseTable.length)
+    this.newExpense = false;
+    this.percentIsShown = false;
+    this.showPayments = false;
+    this.evenIsShown = false;
+    this.percentIsShown = false;
+    this.fixedIsShown = false;
+    this.expenseName = "";
+    this.expenseDesc = "";
+    this.payment = 0;
+    }
+    // if false, just return to the payment screen to fix changes
+    else if (this.confirmation == false) {
+      return;
+    }
+});
+}
+//open dialog for fixed amount.
+  openDialogFixed (){
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
-      height: '250px'
+      height: '250px',
   });
-
+// grabs dialog data on close
   dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    this.confirmation = result.data
+      console.log(`Dialog result: ${result.data}`);
+      // if confirmation is true it sets all undefined to 0 and then pushes to DB
+      if (this.confirmation == true) {
+        const iterator = this.expenseTable.values();
+      for (const value of iterator) {
+        this.users.forEach( (user:any) => {
+                if (user.name == value.username && value.expenseSplit != undefined) {
+                this.Splitpayment = value.expenseSplit!
+                user.balance += this.Splitpayment
+                this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+                this.updateUserBalance(value.id, user.balance)
+                }
+            });
+           }
+      this.expenseTable.splice(0,this.expenseTable.length)
+      this.newExpense = false;
+      this.percentIsShown = false;
+      this.showPayments = false;
+      this.evenIsShown = false;
+      this.percentIsShown = false;
+      this.fixedIsShown = false;
+      this.expenseName = "";
+      this.expenseDesc = "";
+      this.payment = 0;
+      }
+      // if false, just return to the payment screen to fix changes
+      else if (this.confirmation == false) {
+        return;
+      }
   });
   }
 
   showUserAddInput(){
     this.addUser = ! this.addUser;
   }
-
+  
+// updates the User's group ID based on group Name selected
   addUserToGroup() {
     console.log(this.name)
     console.log(this.groupName)
@@ -180,6 +255,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   }
 
   toggleFixedShow() {
+    this.expenseTable.splice(0,this.expenseTable.length)
     this.evenIsShown = false;
     this.percentIsShown = false;
     this.fixedIsShown = ! this.fixedIsShown;
@@ -191,6 +267,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   }
 
   togglePercentShow() {
+    this.expenseTable.splice(0,this.expenseTable.length)
     this.fixedIsShown = false;
     this.evenIsShown = false;
     this.percentIsShown = ! this.percentIsShown;
@@ -267,7 +344,6 @@ public group: Array<{username: string, amountOwed: number}> = [];
   // is read and pushed to the pending transactions table and the database in the updateUserBalance() method.
   Fixedamount(){
     this.Splitpayment = 0;
-
     this.count =0;
 
     this.fixedSum = this.payment;
@@ -309,8 +385,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
     else if ((this.fixedSum == 0) && this.count != 0)
 
     {
-      this.openDialog();
-      
+      this.openDialogFixed();
       this.fixedIsShown = true;
       this.newExpense = false;
       this.showPayments = false;
@@ -429,7 +504,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
     else if ((this.percentSum == 0) && this.count != 0)
 
     {
-      alert(this.count + " users do not have percentages")
+      this.openDialogPerc();
       this.percentIsShown = true;
       this.newExpense = false;
       this.showPayments = false;
@@ -468,11 +543,11 @@ public group: Array<{username: string, amountOwed: number}> = [];
 
   // Framework to clear amount owed
   clearAmountOwed(){
-    for (this.username in this.group)
-    {
-      this.Splitpayment = 0;
-    }
-
+    this.users.forEach( (user:any) => {
+    
+      this.updateUserBalance(user.id, 0);
+      
+    });
   }
 
 

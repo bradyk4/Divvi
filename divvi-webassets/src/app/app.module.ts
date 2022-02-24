@@ -15,6 +15,7 @@ import { LoginPageComponent } from './login-page/login-page/login-page.component
 import { SignUpComponent } from './sign-up-page/sign-up/sign-up.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent,

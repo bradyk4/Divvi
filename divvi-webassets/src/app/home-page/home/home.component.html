@@ -1,6 +1,6 @@
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->t
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
 <!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
@@ -88,7 +88,7 @@
     <div *ngIf="addUser" class="row container-fluid col-md-6"  id="evenshow" >
       <p style="text-align: left;">Please enter the username of the member you want to add to the group: <input id="name" name="username" type="text" placeholder="Username" [(ngModel)]="name"></p>
       <p style="text-align: left;">Please enter the group ID of the group you would like to be added to: <input id="groupID" name="group" type="text" placeholder="groupName" [(ngModel)]="groupName"></p>
-      <button class="btn btn-success btn-sm col-md-2" (click)="addUserToGroup()">Add member to group</button>
+      <button class="btn btn-success btn-sm col-md-2" style="margin-right: 10px" (click)="addUserToGroup()">Add member to group</button>
       <button class="btn btn-danger btn-sm col-md-2"(click)="showUserAddInput()">Click to cancel</button>
     </div>
   </form>
@@ -113,8 +113,8 @@
   <label >Enter the Amount You Would Like to Split:   </label>
   <input id="Expense" placeholder = "Expense Amount" type="number" name="payment" [(ngModel)] = "payment">
   <br>
-  <button class="btn btn-success btn-sm col-md-4"(click)="showPaymentOptions()">Click to Create New Payment</button>
-      <button class="btn btn-danger btn-sm col-md-3"(click)="cancelShowNewExpense()">Click to cancel</button>
+  <button class="btn btn-success btn-sm col-md-3" style="margin-right: 10px; margin-top: 15px" (click)="showPaymentOptions()">Click to Create New Payment</button>
+      <button class="btn btn-danger btn-sm col-md-3" style="margin-top: 15px" (click)="cancelShowNewExpense()">Click to cancel</button>
   </div>
 
 
@@ -129,11 +129,9 @@
   <label>Select how you want to split your payments: </label>
   <br>
   <!--Because all we need is the split amount entered previously, we can simply call the evenly method on this click-->
-  <button class="btn btn-primary" mat-raised-button (click)="Evenly()">Evenly</button>
-
-
-  <button button class="btn btn-primary" mat-raised-button (click)="toggleFixedShow()">Fixed Amount</button>
-  <button button class="btn btn-primary" mat-raised-button (click)="togglePercentShow()">Percentage</button>
+  <button class="btn btn-primary col-sm-3" style="margin-right: 15px" mat-raised-button (click)="Evenly()">Evenly</button>
+  <button button class="btn btn-primary col-sm-3" style="margin-right: 15px" mat-raised-button (click)="toggleFixedShow()">Fixed Amount</button>
+  <button button class=" btn btn-primary col-sm-3" mat-raised-button (click)="togglePercentShow()">Percentage</button>
   </div>
 </form>
 </div>
