@@ -34,6 +34,14 @@ export class UserService {
     return this.http.put('http://localhost:8090/api/users/'+id, body)
   }
 
+  authenticateUser(name: string, password: string){
+    const body = {
+      "username": name,
+      "password": password
+    }
+    return this.http.post('http://localhost:8090/api/users/auth/login', body);
+  }
+
   deleteUser(id: number){
     return this.http.delete('http://localhost:8090'+id);
   }
