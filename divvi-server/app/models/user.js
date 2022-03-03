@@ -1,9 +1,12 @@
-var bcrypt = require('bcrypt')
+var bcrypt = require("bcrypt");
 
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("User", {
     // Model attributes are defined here
     name: {
+      type: Sequelize.STRING
+    },
+    password: {
       type: Sequelize.STRING
     },
     balance: {
@@ -25,6 +28,11 @@ module.exports = (sequelize, Sequelize) => {
     timestamps: false,
     updatedAt: false,
     createdAt: false,
+    instanceMethods: {
+      generateHash(password) {
+        return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+      }
+    }
     }
   );
 

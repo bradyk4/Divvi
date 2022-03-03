@@ -7,6 +7,7 @@ module.exports = (sequelize, Sequelize) => {
     number: {
       type: Sequelize.INTEGER
     },
+    
     id: {
       type: Sequelize.INTEGER,
       allowNull: false,

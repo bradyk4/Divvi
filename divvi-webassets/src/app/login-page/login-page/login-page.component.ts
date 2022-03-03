@@ -22,14 +22,22 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    console.log(this.username, this.password);
-    this.router.navigate(['/home']);
-    this.userService.getUsers().subscribe(data => {
-      console.log(data)
-    });
+  async onSubmit() {
+    try{
+      await this.userService.authenticateUser(this.username, this.password).subscribe(data => {
+        if(data){
+          console.log(data);
+          this.router.navigate(['/home']);
+        }
+        else{
+          alert("Error: incorrect username or password.")
 
-    //this.userService.postUser(this.username, 0, 1, this.password)
+        }
+      });
+    }
+    catch(HTTPErrorResponse){
+      alert("Error: incorrect username or password.");
+    }
   }
 
   onSignup() {

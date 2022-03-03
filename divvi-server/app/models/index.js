@@ -25,6 +25,7 @@ db.sequelize = sequelize;
 
 db.user = require('./user')(sequelize, Sequelize);
 db.group = require('./group')(sequelize, Sequelize);
+db.transactions = require('./transactions')(sequelize, Sequelize);
 
 db.group.hasMany(db.user, {foreignKey: 'groupId'});
 db.user.belongsTo(db.group, {foreignKey: 'id'});
