@@ -42,6 +42,7 @@ app.get("/", cors(corsOptionsDelegate), function (req, res, next) {
 // include routes
 require("./app/routes/user.routes")(app);
 require("./app/routes/group.routes")(app);
+require("./app/routes/transactions.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8090;

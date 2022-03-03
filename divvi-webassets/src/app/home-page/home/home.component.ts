@@ -573,9 +573,9 @@ dialogRef.afterClosed().subscribe(result => {
     })
   }
 
-  postUser(name: string, balance: number, groupId: number, password: string){
+  postUser(name: string, password: string, groupId: number, balance: number){
 
-    this.userService.postUser(name, balance, groupId, password);
+    this.userService.postUser(name, password, groupId, balance);
   }
 
   updateUserBalance(id: number, balance: number){

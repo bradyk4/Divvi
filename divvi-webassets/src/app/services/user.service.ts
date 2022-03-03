@@ -19,12 +19,12 @@ export class UserService {
     return this.http.get('http://localhost:8090/api/users/'+id);
   }
 
-  postUser(name: string, balance: number, groupId: number, password: string){
+  postUser(name: string, password: string, balance: number, groupId: number){
     const body = {
       "name": name,
+      "password": password,
       "balance": balance,
       "groupId": groupId,
-      "password": password
     }
     return this.http.post('http://localhost:8090/api/users/postUser', body)
   }
@@ -32,6 +32,14 @@ export class UserService {
   updateUserBalance(id: number, balance: number){
     const body = { "balance": balance };
     return this.http.put('http://localhost:8090/api/users/'+id, body)
+  }
+
+  authenticateUser(name: string, password: string){
+    const body = {
+      "username": name,
+      "password": password
+    }
+    return this.http.post('http://localhost:8090/api/users/auth/login', body);
   }
 
   deleteUser(id: number){

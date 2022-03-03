@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
 import {Router} from '@angular/router';
 
+
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -28,6 +30,13 @@ export class SignUpComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   onSubmit() {
+    this.username = this.username.toString();
+    this.password = this.password.toString();
+    let balance: number = 0;
+    let groupId: number = 1;
+    this.userService.postUser(this.username, this.password, groupId, balance).subscribe();
+
     this.router.navigate(['/login']);
   }
+
 }

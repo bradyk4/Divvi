@@ -3,12 +3,15 @@ module.exports = app => {
   const Router = require("express").Router();
 
   const router = Router;
-
+  
   // Create a new user
   router.post("/postUser", controller.create);
 
   // Retrieve all users
   router.get("/", controller.findAll);
+
+  // Authenticate login with UserName and Password
+  router.post("/auth/login", controller.authUser);
 
   // Retrieve a single user with id
   router.get("/:id", controller.findByPk);
