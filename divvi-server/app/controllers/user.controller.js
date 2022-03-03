@@ -1,10 +1,27 @@
 const db = require("../models");
 const User = db.user;
 const Op = require("sequelize");
+const { where } = require("sequelize");
+const bcrypt = require("bcrypt");
+
 // Create and Save a new user
 exports.create = async(req, res) => {
+  var name = req.body.name;
+  var balance = req.body.balance;
+  var groupId = req.body.groupId;
+  var password = req.body.password;
+
   try{
-    const user = await User.create(req.body);
+    password = bcrypt.hashSync(req.body.password, 10);
+    var body = {
+      name,
+      balance,
+      groupId,
+      password
+    }
+
+    const user = await User.create(body);
+    
     return res.status(201).json({
       user,
     });
@@ -31,6 +48,33 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// Find first user with matching username & password
+//  if none return error
+exports.authUser = async(req, res) => {
+  const Username = req.body.username;
+  var Password = req.body.password;
+
+  try{
+    const user = await User.findOne({ where : {name : Username}});
+    if(user){
+        const password_valid = await bcrypt.compare(Password, user.password);
+        if(password_valid){
+          return res.status(200).json({
+          user
+          });
+        } else {
+          res.status(400).json({ error : "Password Incorrect" });
+        }
+      
+    }else{
+      res.status(404).json({ error : "User does not exist" });
+    }
+  }
+  catch(err){
+    console.log(err);
+  }
+}
 
 // Find a single user with an id
 exports.findByPk = (req, res) => {

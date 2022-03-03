@@ -4,7 +4,7 @@ module.exports = {
   dialect: 'mssql',
   driver: 'tedious',
   user: 'bradyk4',
-  password: 'Pa$$w0rd',
+  password: 'P@ssword!005',
   db: 'divvi',
   options: {
     encrypt: true,

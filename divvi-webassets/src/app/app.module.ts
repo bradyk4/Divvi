@@ -4,17 +4,20 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
-import { UserCreationComponent } from './user-creation/user-creation.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { HomeComponent } from './home-page/home/home.component';
+import { LoginPageComponent } from './login-page/login-page/login-page.component';
+import { SignUpComponent } from './sign-up-page/sign-up/sign-up.component';
 @NgModule({
   declarations: [
     AppComponent,
-    UserCreationComponent,
- 
+    HomeComponent,
+    LoginPageComponent,
+    SignUpComponent,
 
   ],
   imports: [
@@ -30,7 +33,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [UserCreationComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
