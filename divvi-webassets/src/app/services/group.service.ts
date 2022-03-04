@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
+
 const baseURL = "http://localhost:8090/";
 
 @Injectable({
@@ -26,7 +27,7 @@ export class GroupService {
     const body = {
       "name": name,
       "number": number,
-      "id": id
+      "id": number
     }
     return this.http.post('http://localhost:8090/api/users/postUser', body)
   }

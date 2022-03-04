@@ -10,8 +10,7 @@ import { GroupService } from 'src/app/services/group.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ],
 })
 export class HomeComponent implements OnInit {
-  constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService, public dialog: MatDialog) {}
+  constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService, private transactionService: TransactionService, public dialog: MatDialog) {}
   title = 'Divvi';
   user: any;
   users: any;
@@ -34,12 +33,14 @@ export class HomeComponent implements OnInit {
   groupName: any;
   id: any;
   updateBalance: any;
+  transactions: any;
 
   // this method gets group #1, and the users within the group
   ngOnInit(): void {
     this.users = this.getUsers();
     this.groups = this.getGroups();
     this.groupUsers = this.getGroupUsers(1);
+    this.transactions = this.getTransactions();
   }
 
 public group: Array<{username: string, amountOwed: number}> = [];
@@ -74,6 +75,24 @@ public group: Array<{username: string, amountOwed: number}> = [];
   count = 0;
   fixedSum = 0;
   confirmation!: boolean;
+
+// handles true/false change for isAmountPaid check box
+onPaidChange(event: Event){
+  const eventTarget = event.target as HTMLInputElement;
+  console.log(eventTarget)
+  console.log(eventTarget.id)
+
+  if (eventTarget.checked == true) {
+    //do something for checked
+    console.log(eventTarget.checked)
+  }
+
+  else if (eventTarget.checked == false) {
+    //do nothing for unchecked
+    console.log(eventTarget.checked)
+  }
+
+}  
 
 //Opens a confirmation Dialog box.
 openDialogPerc (){
@@ -610,4 +629,12 @@ dialogRef.afterClosed().subscribe(result => {
     })
   }
 
+  getTransactions() {
+    this.transactionService.getTransactions().subscribe(data => {
+      this.transactions = data;
+      return this.transactions
+    });
+  }
+
 }
+ 
