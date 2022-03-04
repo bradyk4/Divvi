@@ -27,32 +27,23 @@
     <thead class="table-dark">
     <tr>
       <th scope="col">Group Name</th>
-      <th scope="col">Number</th>
-      <th scope="col">ID</th>
-      <th scope="col">Users:</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngIf="groupUsers">
       <td>{{groupUsers.name}}</td>
-      <td>{{groupUsers.number}}</td>
-      <td>{{groupUsers.id}}</td>
     </tr>
     </tbody>
     <thead class="table-dark">
     <tr>
       <th scope="col">User</th>
       <th scope="col">Balance</th>
-      <th scope="col">Group ID</th>
-      <th scope="col">ID</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let user of groupUsers.Users">
       <td>{{user.name}}</td>
       <td>{{user.balance.toFixed(2)}}</td>
-      <td>{{user.groupId}}</td>
-      <td>{{user.id}}</td>
     </tr>
     </tbody>
     </table>

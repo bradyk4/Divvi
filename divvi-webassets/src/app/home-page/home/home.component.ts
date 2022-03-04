@@ -10,6 +10,7 @@ import { GroupService } from 'src/app/services/group.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
 
 
 
@@ -34,12 +35,17 @@ export class HomeComponent implements OnInit {
   groupName: any;
   id: any;
   updateBalance: any;
+  callLoginMethod = LoginPageComponent.loginData
+  groupId: number = LoginPageComponent.loginData.user.groupId;
+ 
 
   // this method gets group #1, and the users within the group
   ngOnInit(): void {
+
     this.users = this.getUsers();
     this.groups = this.getGroups();
-    this.groupUsers = this.getGroupUsers(1);
+    this.groupUsers = this.getGroupUsers(this.groupId); 
+    
   }
 
 public group: Array<{username: string, amountOwed: number}> = [];
@@ -74,7 +80,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   count = 0;
   fixedSum = 0;
   confirmation!: boolean;
-
+  authId = 3;
 //Opens a confirmation Dialog box.
 openDialogPerc (){
   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -241,6 +247,8 @@ dialogRef.afterClosed().subscribe(result => {
     this.evenIsShown = false;
     this.percentIsShown = false;
     this.fixedIsShown = false;
+    
+    
   }
   cancelShowNewExpense(){
     this.newExpense = false;
