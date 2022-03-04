@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
 
 
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.com
     ],
 })
 export class HomeComponent implements OnInit {
-  constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService, public dialog: MatDialog) {}
+  constructor(private http : HttpClient, private userService: UserService, private groupService: GroupService, private transactionService: TransactionService, public dialog: MatDialog) {}
   title = 'Divvi';
   user: any;
   users: any;
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
   callLoginMethod = LoginPageComponent.loginData
   groupId: number = LoginPageComponent.loginData.user.groupId;
  
+  transactions: any;
 
   // this method gets group #1, and the users within the group
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class HomeComponent implements OnInit {
     this.users = this.getUsers();
     this.groups = this.getGroups();
     this.groupUsers = this.getGroupUsers(this.groupId); 
-    
+    this.transactions = this.getTransactions();
   }
 
 public group: Array<{username: string, amountOwed: number}> = [];
@@ -81,6 +83,25 @@ public group: Array<{username: string, amountOwed: number}> = [];
   fixedSum = 0;
   confirmation!: boolean;
   authId = 3;
+
+// handles true/false change for isAmountPaid check box
+onPaidChange(event: Event){
+  const eventTarget = event.target as HTMLInputElement;
+  console.log(eventTarget)
+  console.log(eventTarget.id)
+
+  if (eventTarget.checked == true) {
+    //do something for checked
+    console.log(eventTarget.checked)
+  }
+
+  else if (eventTarget.checked == false) {
+    //do nothing for unchecked
+    console.log(eventTarget.checked)
+  }
+
+}  
+
 //Opens a confirmation Dialog box.
 openDialogPerc (){
   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -618,4 +639,12 @@ dialogRef.afterClosed().subscribe(result => {
     })
   }
 
+  getTransactions() {
+    this.transactionService.getTransactions().subscribe(data => {
+      this.transactions = data;
+      return this.transactions
+    });
+  }
+
 }
+ 
