@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit {
   id: any;
   updateBalance: any;
   callLoginMethod = LoginPageComponent.loginData
-  groupId: number = LoginPageComponent.loginData.user.groupId;
+  groupId: number = LoginPageComponent.loginData.user.groupId
+  authUserId: number = LoginPageComponent.loginData.user.id;
+  
  
   transactions: any;
 
@@ -84,6 +86,11 @@ public group: Array<{username: string, amountOwed: number}> = [];
   confirmation!: boolean;
   authId = 3;
 
+
+
+
+
+
 // handles true/false change for isAmountPaid check box
 onPaidChange(event: Event){
   const eventTarget = event.target as HTMLInputElement;
@@ -101,6 +108,9 @@ onPaidChange(event: Event){
   }
 
 }  
+
+
+
 
 //Opens a confirmation Dialog box.
 openDialogPerc (){
@@ -268,6 +278,13 @@ dialogRef.afterClosed().subscribe(result => {
     this.evenIsShown = false;
     this.percentIsShown = false;
     this.fixedIsShown = false;
+
+  this.transactions.forEach((data: any) => {
+
+    console.log(data.userID)
+    console.log(this.authUserId)
+  });
+    
     
     
   }

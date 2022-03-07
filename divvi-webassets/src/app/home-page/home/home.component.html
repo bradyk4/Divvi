@@ -52,6 +52,7 @@
 
     <!--This is the pending transactions table - currently stored in the front end only.-->
     <div class="col-md-6 float-right">
+
     <table class="table table-responsive table-striped table-bordered table-md ">
       <thead class="table-dark">
       <tr>
@@ -64,11 +65,36 @@
       </thead>
       <tbody>
         <tr *ngFor="let transaction of transactions">
+        <ng-container *ngIf="transaction.userID === authUserId">
           <td>{{transaction.userName}}</td>
           <td>{{transaction.expenseName}}</td>
           <td>{{transaction.expenseDesc}}</td>
           <td>{{transaction.amountOwed.toFixed(2)}}</td>
           <td><input type="checkbox" id="{{transaction.transactionID}}" name="isAmountPaid" (change)="onPaidChange($event)"></td>
+        </ng-container>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-responsive table-striped table-bordered table-md ">
+      <thead class="table-dark">
+      <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Expense Name</th>
+        <th scope="col">Expense Description</th>
+        <th scope="col">Amount Owed</th>
+        <th scope="col">Has Paid?</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions">
+        <ng-container *ngIf="transaction.creatorID === authUserId">
+          <td>{{transaction.userName}}</td>
+          <td>{{transaction.expenseName}}</td>
+          <td>{{transaction.expenseDesc}}</td>
+          <td>{{transaction.amountOwed.toFixed(2)}}</td>
+          <td><input type="checkbox" id="{{transaction.transactionID}}" name="isAmountPaid" (change)="onPaidChange($event)"></td>
+        </ng-container>
         </tr>
       </tbody>
     </table>
