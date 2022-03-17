@@ -14,14 +14,13 @@ export class TransactionService {
   getTransaction(id: number){
     return this.http.get('http://localhost:8090/api/transactions/'+id)
   }
-  postTransaction(userName: string, expenseName: string, expenseDesc: string, amountOwed: number, userID: number, transactionID: number, creatorID: number, isAmountPaid: boolean){
+  postTransaction(userName: string, expenseName: string, expenseDesc: string, amountOwed: number, userID: number, creatorID: number, isAmountPaid: boolean){
     const body = {
       "userName": userName,
       "expenseName": expenseName,
       "expenseDesc": expenseDesc,
       "amountOwed": amountOwed,
       "userID": userID,
-      "transactionID": transactionID,
       "creatorID": creatorID,
       "isAmountPaid": isAmountPaid
 

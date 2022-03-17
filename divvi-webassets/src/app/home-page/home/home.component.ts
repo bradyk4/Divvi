@@ -75,6 +75,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   count = 0;
   fixedSum = 0;
   confirmation!: boolean;
+  public authID: number = 3;
 
 // handles true/false change for isAmountPaid check box
 onPaidChange(event: Event){
@@ -634,7 +635,15 @@ dialogRef.afterClosed().subscribe(result => {
       this.transactions = data;
       return this.transactions
     });
+  
   }
 
+  postTransaction(userName: string, expenseName: string, expenseDesc: string, amountOwed: number, userID: number, creatorID: number, isAmountPaid: boolean) {
+    
+    this.transactionService.postTransaction(userName, expenseName, expenseDesc, amountOwed, userID, creatorID, isAmountPaid);
+  }
+
+  
 }
+
  
