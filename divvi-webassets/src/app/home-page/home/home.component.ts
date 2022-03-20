@@ -10,6 +10,9 @@ import { GroupService } from 'src/app/services/group.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
+
+
 import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
@@ -33,13 +36,19 @@ export class HomeComponent implements OnInit {
   groupName: any;
   id: any;
   updateBalance: any;
+  callLoginMethod = LoginPageComponent.loginData
+  groupId: number = LoginPageComponent.loginData.user.groupId
+  authUserId: number = LoginPageComponent.loginData.user.id;
+  sum: any;
+ 
   transactions: any;
-
+  initialBalance: any;
   // this method gets group #1, and the users within the group
   ngOnInit(): void {
+
     this.users = this.getUsers();
     this.groups = this.getGroups();
-    this.groupUsers = this.getGroupUsers(1);
+    this.groupUsers = this.getGroupUsers(this.groupId); 
     this.transactions = this.getTransactions();
   }
 
@@ -65,6 +74,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   public pendingTransactions: Array<{groupUsers: string, expenseName: string, expenseDesc: string; payment: number}> =[]
   last!: {};
   public expenseTable: Array<{ id: number; username: string;  expenseSplit?: number}> = [];
+  public runningBalance: Array<{id: number, username: string, balance: number}> = [];
   inGroup!: boolean;
   groupExists!: boolean;
   nameID!: number;
@@ -94,6 +104,9 @@ onPaidChange(event: Event){
   }
 
 }  
+
+
+
 
 //Opens a confirmation Dialog box.
 openDialogPerc (){
@@ -261,6 +274,17 @@ dialogRef.afterClosed().subscribe(result => {
     this.evenIsShown = false;
     this.percentIsShown = false;
     this.fixedIsShown = false;
+    this.initialBalance = this.getInitialBalance();
+    console.log(this.initialBalance)
+
+  this.transactions.forEach((data: any) => {
+
+    console.log(data.userID)
+    console.log(this.authUserId)
+  });
+    
+    
+    
   }
   cancelShowNewExpense(){
     this.newExpense = false;
@@ -311,10 +335,12 @@ dialogRef.afterClosed().subscribe(result => {
 
 
     this.users.forEach( (user:any) => {
+      this.Splitpayment = this.payment / this.groupSize;
       var balance = this.payment / this.groupSize;
+      this.transactionService.postTransaction(user.name, this.expenseName, this.expenseDesc, this.Splitpayment, user.id, this.authUserId, false).subscribe();
       this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
       user.balance += this.payment/ this.groupSize;
-      this.updateUserBalance(user.id, user.balance);
+      //this.updateUserBalance(user.id, user.balance);
     });
     this.expenseTable.splice(0,this.expenseTable.length)
     this.newExpense = false;
@@ -422,8 +448,9 @@ dialogRef.afterClosed().subscribe(result => {
                 if (user.name == value.username) {
                 this.Splitpayment = value.expenseSplit!
                 user.balance += this.Splitpayment
+                this.transactionService.postTransaction(value.username, this.expenseName, this.expenseDesc, this.Splitpayment, value.id, this.authUserId, false).subscribe();
                 this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
-                 this.updateUserBalance(value.id, user.balance)
+                 //this.updateUserBalance(value.id, user.balance)
                 }
             });
            }
@@ -541,8 +568,9 @@ dialogRef.afterClosed().subscribe(result => {
               if (user.name == value.username) {
               this.Splitpayment = this.payment * (value.expenseSplit! / 100)
               user.balance += this.Splitpayment
+              this.transactionService.postTransaction(value.username, this.expenseName, this.expenseDesc, this.Splitpayment, value.id, this.authUserId, false).subscribe();
               this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
-              this.updateUserBalance(value.id, user.balance)
+              //this.updateUserBalance(value.id, user.balance)
               }
           });
          }
@@ -576,6 +604,33 @@ dialogRef.afterClosed().subscribe(result => {
     this.group.length = 0;
   }
 
+
+  getInitialBalance(){
+  this.sum = 0;
+  this.users.forEach((user:any) => {
+    this.runningBalance.push({id: user.id, username: user.name, balance: 0})
+  });
+    console.log(this.runningBalance)
+
+    this.transactions.forEach((trans:any) => {
+      this.sum = 0;
+      const iterator = this.runningBalance.values()
+      for (const value of iterator) {
+        this.sum = 0;
+        if (trans.userID == this.authUserId && value.id == trans.creatorID) {
+          this.sum += trans.amountOwed
+          this.runningBalance.splice(this.runningBalance.findIndex(x => x.id === trans.creatorID),1)
+          this.runningBalance.push({id: trans.creatorID, username: value.username, balance: this.sum})
+        }
+        else if (trans.creatorID == this.authUserId && value.id == trans.userID) {
+          this.sum = value.balance - trans.amountOwed
+          this.runningBalance.splice(this.runningBalance.findIndex(x => x.id === trans.userID),1)
+          this.runningBalance.push({id: trans.userID, username: value.username, balance: this.sum})
+        }
+      }
+      console.log(this.runningBalance)
+    });
+  }
 
 
   // setup user API functions
