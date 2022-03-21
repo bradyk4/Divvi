@@ -14,6 +14,7 @@ import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.com
 
 
 import { TransactionService } from 'src/app/services/transaction.service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -42,14 +43,16 @@ export class HomeComponent implements OnInit {
   
  
   transactions: any;
+  transactionData: any;
+  test1: any;
 
   // this method gets group #1, and the users within the group
   ngOnInit(): void {
-
     this.users = this.getUsers();
     this.groups = this.getGroups();
     this.groupUsers = this.getGroupUsers(this.groupId); 
     this.transactions = this.getTransactions();
+    
   }
 
 public group: Array<{username: string, amountOwed: number}> = [];
@@ -85,6 +88,7 @@ public group: Array<{username: string, amountOwed: number}> = [];
   fixedSum = 0;
   confirmation!: boolean;
   authId = 3;
+  htmlTest!: String;
 
 
 
@@ -110,6 +114,10 @@ onPaidChange(event: Event){
 }  
 
 
+creatorIdName(){
+  
+  
+}
 
 
 //Opens a confirmation Dialog box.
@@ -132,6 +140,7 @@ dialogRef.afterClosed().subscribe(result => {
               this.Splitpayment = this.payment * (value.expenseSplit! / 100)
               user.balance += this.Splitpayment
               this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+              this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
               this.updateUserBalance(value.id, user.balance)
               }
           });
@@ -172,6 +181,7 @@ dialogRef.afterClosed().subscribe(result => {
                 this.Splitpayment = value.expenseSplit!
                 user.balance += this.Splitpayment
                 this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+                this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
                 this.updateUserBalance(value.id, user.balance)
                 }
             });
@@ -329,6 +339,19 @@ dialogRef.afterClosed().subscribe(result => {
       console.log(this.expenseTable)
   }
 
+  test(){
+    this.users.forEach((user:any) => {
+      this.transactions.forEach((transaction:any) => {
+        if(transaction.creatorID == user.id && this.authUserId == transaction.userID)
+        {
+          console.log("this hit")
+          console.log(transaction.creatorID)
+          console.log(user.id)
+          return user.name;
+        }
+      });
+    });
+  }
 
   // This Evenly function splits the payment, and pushes values to the database and the pending transactions table
   Evenly(){
@@ -338,7 +361,9 @@ dialogRef.afterClosed().subscribe(result => {
 
     this.users.forEach( (user:any) => {
       var balance = this.payment / this.groupSize;
+      
       this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
+      this.transactionService.postTransaction( user.name, this.expenseName, this.expenseDesc, balance, user.id, this.authUserId, false ).subscribe();
       user.balance += this.payment/ this.groupSize;
       this.updateUserBalance(user.id, user.balance);
     });
@@ -449,6 +474,7 @@ dialogRef.afterClosed().subscribe(result => {
                 this.Splitpayment = value.expenseSplit!
                 user.balance += this.Splitpayment
                 this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+                this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
                  this.updateUserBalance(value.id, user.balance)
                 }
             });
@@ -567,7 +593,14 @@ dialogRef.afterClosed().subscribe(result => {
               if (user.name == value.username) {
               this.Splitpayment = this.payment * (value.expenseSplit! / 100)
               user.balance += this.Splitpayment
-              this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
+              this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
+              console.log(value.username)
+              console.log(this.expenseName)
+              console.log(this.expenseDesc)
+              console.log(this.Splitpayment)
+              console.log(value.id)
+              console.log(this.authUserId)
+              //this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
               this.updateUserBalance(value.id, user.balance)
               }
           });
@@ -661,6 +694,13 @@ dialogRef.afterClosed().subscribe(result => {
       this.transactions = data;
       return this.transactions
     });
+  }
+
+  postTransaction(userName: string, expenseName: string, expenseDesc: string, amountOwed: number, userID: number, creatorID: number, isAmountPaid: boolean) 
+  {   
+
+    this.transactionService.postTransaction(userName, expenseName, expenseDesc, amountOwed, userID, creatorID, isAmountPaid);
+
   }
 
 }
