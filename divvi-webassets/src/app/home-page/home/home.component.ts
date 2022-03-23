@@ -705,11 +705,8 @@ export class HomeComponent implements OnInit {
   }
 
   updateUserBalance(id: number, balance: number) {
-    this.userService.updateUserBalance(id, balance).subscribe((data) => {
-      this.user.id = data;
-      this.user.balance = data;
-      return data;
-    });
+    this.userService.updateUserBalance(id, balance).subscribe();
+    this.getGroupUsers(this.groupId);
   }
 
   deleteUser(id: number) {
