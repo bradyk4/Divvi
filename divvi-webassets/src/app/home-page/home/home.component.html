@@ -1,4 +1,3 @@
-
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
@@ -8,181 +7,387 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class = "container" href="/styles.css">
-  <header style= "border: black; border-width:2px; border-style:solid;">
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+  crossorigin="anonymous"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+<div class="container" href="/styles.css">
+  <header style="border: black; border-width: 2px; border-style: solid">
     <h1>Divvi Web Application</h1>
-    <i class="fa fa-cloud" style="color:grey; font-size:40px;text-shadow:2px 2px 4px #000000;"></i>
+    <i
+      class="fa fa-cloud"
+      style="color: grey; font-size: 40px; text-shadow: 2px 2px 4px #000000"
+    ></i>
   </header>
   <body>
-  <form>
-  <div class="row">
-  <h2 class="col-md-6 float-left">Existing Groups:</h2>
-  <h2 class="col-md-6 float-right">Pending Transactions:</h2>
-  <hr>
-    <div class="col-md-6">
-      <!--This table displays the group preloaded from the ngOnIt function in the app component. -->
-  <table class="table table-hover table-striped table-sm" *ngIf="groupUsers">
-    <thead class="table-dark">
-    <tr class="text-center">
-      <th scope="col">Group Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngIf="groupUsers" class="table-light text-center">
-      <td>{{groupUsers.name}}</td>
-    </tr>
-    </tbody>
-    <thead class="table-dark text-center">
-    <tr>
-      <th scope="col">User</th>
-      <th scope="col">Balance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of groupUsers.Users" class="table-light text-center">
-      <td>{{user.name}}</td>
-      <td>{{user.balance.toFixed(2)}}</td>
-    </tr>
-    </tbody>
-    </table>
-    <button class="btn btn-primary"(click)="showUserAddInput()">Click to add member to group</button>
-    <div *ngIf="addUser"   id="evenshow" >
-      <p style="text-align: left;">Please enter the username of the member you want to add to the group: <input id="name" name="username" type="text" placeholder="Username" [(ngModel)]="name"></p>
-      <p style="text-align: left;">Please enter the group ID of the group you would like to be added to: <input id="groupID" name="group" type="text" placeholder="groupName" [(ngModel)]="groupName"></p>
-      <button class="btn btn-success btn-sm col-md-2" style="margin-right: 10px" (click)="addUserToGroup()">Add member to group</button>
-      <button class="btn btn-danger btn-sm col-md-2"(click)="showUserAddInput()">Click to cancel</button>
-    </div>
-    <br>
-    <br>
-    <form id="createNewExpense" >
-      <button class="btn btn-primary"(click)="showNewExpense()">Click to Create a New Expense</button>
-    
-    
-      <!-- This Div contains the entries required to create a new expense with the name, description, and amount of the expense -->
-      <div *ngIf="newExpense" class="row container-fluid col-md-6"  id="evenshow" >
-      <p class="h4 ">Create a New Expense</p>
-      <label >Enter a Name For the Expense:   </label>
-      <input id="Expense Name" placeholder = "Expense Name" type="text" name="Expense" [(ngModel)] = "expenseName">
-      <br>
-      <br>
-      <label >Enter a Description For the Expense:   </label>
-      <input id="Expense Description" placeholder = "Expense Description" type="text" name="Expense" [(ngModel)] = "expenseDesc">
-      <br>
-      <br>
-      <label >Enter the Amount You Would Like to Split:   </label>
-      <input id="Expense" placeholder = "Expense Amount" type="number" name="payment" [(ngModel)] = "payment">
-      <br>
-      <button class="btn btn-success btn-sm " style="margin-right: 10px; margin-top: 15px" (click)="showPaymentOptions()">Click to Create New Payment</button>
-          <button class="btn btn-danger btn-sm " style="margin-top: 15px" (click)="cancelShowNewExpense()">Click to cancel</button>
-      </div>
-    
-      <div *ngIf="showPayments" class="row container-fluid col-md-6"  id="evenshow" >
-        <label>Select how you want to split your payments: </label>
-        <br>
-        <!--Because all we need is the split amount entered previously, we can simply call the evenly method on this click-->
-        <button class="btn btn-primary" style="margin-bottom: 15px" mat-raised-button (click)="Evenly()">Evenly</button>
-        <br>
-        <button button class="btn btn-primary " style="margin-bottom: 15px" mat-raised-button (click)="toggleFixedShow()">Fixed Amount</button>
-        <br>
-        <button button class=" btn btn-primary margin-bottom: 15px" mat-raised-button (click)="togglePercentShow()">Percentage</button>
-        
+    <form>
+      <div class="row">
+        <h2 class="col-md-6 float-left">Existing Groups:</h2>
+        <h2 class="col-md-6 float-right">Pending Transactions:</h2>
+        <hr />
+        <div class="col-md-6">
+          <!--This table displays the group preloaded from the ngOnIt function in the app component. -->
+          <table
+            class="table table-hover table-striped table-sm"
+            *ngIf="groupUsers"
+          >
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Group Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="groupUsers" class="table-light text-center">
+                <td>{{ groupUsers.name }}</td>
+              </tr>
+            </tbody>
+            <thead class="table-dark text-center">
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let user of groupUsers.Users"
+                class="table-light text-center"
+              >
+                <td>{{ user.name }}</td>
+                <td>{{ user.balance.toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button class="btn btn-primary" (click)="showGroupAddInput()">
+            Click to create a group
+          </button>
+          <div *ngIf="addGroup" id="evenshow">
+            <p style="text-align: left">
+              Please enter the name of the group you would like to add:
+              <input
+                id="groupName"
+                name="groupName"
+                type="text"
+                placeholder="Group Name"
+                [(ngModel)]="groupName"
+              />
+            </p>
+            <p style="text-align: left">
+              Please enter the group number of the group you would like to add
+              to:
+              <input
+                id="groupNumber"
+                name="groupNumber"
+                type="number"
+                placeholder="groupNumber"
+                [(ngModel)]="groupNumber"
+              />
+            </p>
+            <button
+              class="btn btn-success btn-sm col-md-2"
+              style="margin-right: 10px"
+              (click)="createGroup()"
+            >
+              Create group
+            </button>
+            <button
+              class="btn btn-danger btn-sm col-md-2"
+              (click)="showGroupAddInput()"
+            >
+              Click to cancel
+            </button>
+          </div>
+
+          <br />
+          <br />
+
+          <button class="btn btn-primary" (click)="showUserAddInput()">
+            Click to add member to group
+          </button>
+          <div *ngIf="addUser" id="evenshow">
+            <p style="text-align: left">
+              Please enter the username of the member you want to add to the
+              group:
+              <input
+                id="name"
+                name="username"
+                type="text"
+                placeholder="Username"
+                [(ngModel)]="name"
+              />
+            </p>
+            <p style="text-align: left">
+              Please enter the group ID of the group you would like to be added
+              to:
+              <input
+                id="groupName"
+                name="groupName"
+                type="text"
+                placeholder="Group Name"
+                [(ngModel)]="groupName"
+              />
+            </p>
+            <button
+              class="btn btn-success btn-sm col-md-2"
+              style="margin-right: 10px"
+              (click)="addUserToGroup()"
+            >
+              Add member to group
+            </button>
+            <button
+              class="btn btn-danger btn-sm col-md-2"
+              (click)="showUserAddInput()"
+            >
+              Click to cancel
+            </button>
+          </div>
+          <br />
+          <br />
+          <form id="createNewExpense">
+            <button class="btn btn-primary" (click)="showNewExpense()">
+              Click to Create a New Expense
+            </button>
+
+            <!-- This Div contains the entries required to create a new expense with the name, description, and amount of the expense -->
+            <div
+              *ngIf="newExpense"
+              class="row container-fluid col-md-6"
+              id="evenshow"
+            >
+              <p class="h4">Create a New Expense</p>
+              <label>Enter a Name For the Expense: </label>
+              <input
+                id="Expense Name"
+                placeholder="Expense Name"
+                type="text"
+                name="Expense"
+                [(ngModel)]="expenseName"
+              />
+              <br />
+              <br />
+              <label>Enter a Description For the Expense: </label>
+              <input
+                id="Expense Description"
+                placeholder="Expense Description"
+                type="text"
+                name="Expense"
+                [(ngModel)]="expenseDesc"
+              />
+              <br />
+              <br />
+              <label>Enter the Amount You Would Like to Split: </label>
+              <input
+                id="Expense"
+                placeholder="Expense Amount"
+                type="number"
+                name="payment"
+                [(ngModel)]="payment"
+              />
+              <br />
+              <button
+                class="btn btn-success btn-sm"
+                style="margin-right: 10px; margin-top: 15px"
+                (click)="showPaymentOptions()"
+              >
+                Click to Create New Payment
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin-top: 15px"
+                (click)="cancelShowNewExpense()"
+              >
+                Click to cancel
+              </button>
+            </div>
+
+            <div
+              *ngIf="showPayments"
+              class="row container-fluid col-md-6"
+              id="evenshow"
+            >
+              <label>Select how you want to split your payments: </label>
+              <br />
+              <!--Because all we need is the split amount entered previously, we can simply call the evenly method on this click-->
+              <button
+                class="btn btn-primary"
+                style="margin-bottom: 15px"
+                mat-raised-button
+                (click)="Evenly()"
+              >
+                Evenly
+              </button>
+              <br />
+              <button
+                button
+                class="btn btn-primary"
+                style="margin-bottom: 15px"
+                mat-raised-button
+                (click)="toggleFixedShow()"
+              >
+                Fixed Amount
+              </button>
+              <br />
+              <button
+                button
+                class="btn btn-primary margin-bottom: 15px"
+                mat-raised-button
+                (click)="togglePercentShow()"
+              >
+                Percentage
+              </button>
+            </div>
+          </form>
+          <br />
+
+          <br />
+          <br />
         </div>
-    </form>
-    <br>
-    
-    
-      <br>
-      <br>
-    </div>
 
+        <!--This is the pending transactions table - currently stored in the front end only.-->
+        <div class="col-md-6 float-right">
+          <h2>Expenses Requested</h2>
+          <table class="table table-hover table table-striped">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Requestor</th>
+                <th scope="col">Expense Name</th>
+                <th scope="col">Expense Description</th>
+                <th scope="col">Amount Owed</th>
+                <th scope="col">Has Paid?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let transaction of transactions"
+                class="table-danger text-center"
+              >
+                <ng-container *ngIf="transaction.userID === authUserId">
+                  <td>{{ transaction.userName }}</td>
+                  <td>{{ transaction.expenseName }}</td>
+                  <td>{{ transaction.expenseDesc }}</td>
+                  <td>{{ transaction.amountOwed.toFixed(2) }}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      id="{{ transaction.transactionID }}"
+                      name="isAmountPaid"
+                      (change)="onPaidChange($event)"
+                    />
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Expenses You Created</h2>
+          <table class="table table-sm table-striped table-bordered table-md">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">User Requested</th>
+                <th scope="col">Expense Name</th>
+                <th scope="col">Expense Description</th>
+                <th scope="col">Amount Owed</th>
+                <th scope="col">Has Paid?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let transaction of transactions"
+                class="table-success text-center"
+              >
+                <ng-container *ngIf="transaction.creatorID === authUserId">
+                  <td>{{ transaction.userName }}</td>
+                  <td>{{ transaction.expenseName }}</td>
+                  <td>{{ transaction.expenseDesc }}</td>
+                  <td>{{ transaction.amountOwed.toFixed(2) }}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      id="{{ transaction.transactionID }}"
+                      name="isAmountPaid"
+                      (change)="onPaidChange($event)"
+                    />
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <button type="submit"></button> -->
+        </div>
+      </div>
 
-    <!--This is the pending transactions table - currently stored in the front end only.-->
-    <div class="col-md-6 float-right">
+      <!-- Currently not functionable with the database - However, this is where we will add members to groups-->
 
-    <h2>Expenses Requested</h2>
-    <table class="table table-hover table table-striped ">
-      <thead class="table-dark">
-      <tr class="text-center">
-        <th scope="col">Requestor</th>
-        <th scope="col">Expense Name</th>
-        <th scope="col">Expense Description</th>
-        <th scope="col">Amount Owed</th>
-        <th scope="col">Has Paid?</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let transaction of transactions" class = "table-danger text-center">
-        <ng-container *ngIf="transaction.userID === authUserId">
-          <td>{{transaction.userName}}</td>
-          <td>{{transaction.expenseName}}</td>
-          <td>{{transaction.expenseDesc}}</td>
-          <td>{{transaction.amountOwed.toFixed(2)}}</td>
-          <td><input type="checkbox" id="{{transaction.transactionID}}" name="isAmountPaid" (change)="onPaidChange($event)"></td>
-        </ng-container>
-        </tr>
-      </tbody>
-    </table>
-    <h2>Expenses You Created</h2>
-    <table class="table table-sm table-striped table-bordered table-md ">
-      <thead class="table-dark">
-      <tr class="text-center">
-        <th scope="col">User Requested</th>
-        <th scope="col">Expense Name</th>
-        <th scope="col">Expense Description</th>
-        <th scope="col">Amount Owed</th>
-        <th scope="col">Has Paid?</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let transaction of transactions" class="table-success text-center">
-        <ng-container *ngIf="transaction.creatorID === authUserId">
-          <td>{{transaction.userName}}</td>
-          <td>{{transaction.expenseName}}</td>
-          <td>{{transaction.expenseDesc}}</td>
-          <td>{{transaction.amountOwed.toFixed(2)}}</td>
-          <td><input type="checkbox" id="{{transaction.transactionID}}" name="isAmountPaid" (change)="onPaidChange($event)"></td>
-        </ng-container>
-        </tr>
-      </tbody>
-    </table>
-   <!-- <button type="submit"></button> -->
-    </div>
-  </div>
+      <!--This div is where the user selects their payment option. When selected - on the "click" the toggle method will be called to show inputs for the various splitting methods-->
 
-<!-- Currently not functionable with the database - However, this is where we will add members to groups-->
-
-    
-  
-
-
-
-
-  <!--This div is where the user selects their payment option. When selected - on the "click" the toggle method will be called to show inputs for the various splitting methods-->
-
- 
-
-
-
-    <!--First, the *ngIf will read if the fixed method was call, and if so this will display x amount of inputs for each user in a group. The index
+      <!--First, the *ngIf will read if the fixed method was call, and if so this will display x amount of inputs for each user in a group. The index
     allows us to iterate through each group member and save values pertaining to each group member. this is the same for the percentage split.-->
-    <div *ngIf="fixedIsShown" class="row container-fluid col-md-4"  id="fixedshow" >
-      <ng-container *ngFor="let user of groupUsers.Users">{{user.name}} <input id="{{user.id}}" step="0.01" placeholder = "{{initialValue.toFixed(2)}}" type="number" name="fixedamt" required (change)="onFixedChange($event)"> <br> </ng-container>
+      <div
+        *ngIf="fixedIsShown"
+        class="row container-fluid col-md-4"
+        id="fixedshow"
+      >
+        <ng-container *ngFor="let user of groupUsers.Users"
+          >{{ user.name }}
+          <input
+            id="{{ user.id }}"
+            step="0.01"
+            placeholder="{{ initialValue.toFixed(2) }}"
+            type="number"
+            name="fixedamt"
+            required
+            (change)="onFixedChange($event)"
+          />
+          <br />
+        </ng-container>
 
-      <button class="btn btn-success" mat-raised-button (click)="Fixedamount()">Split Payment</button>
-  </div>
-  <div *ngIf="percentIsShown" class="row container-fluid col-md-4"  id="percentshow" >
-    <ng-container *ngFor="let user of groupUsers.Users"> {{user.name}}<input id="{{user.id}}" type="number" step="0.01" placeholder="{{initialValue.toFixed(2)}}" required name="distribution" (change)="onPercentChange($event)"> </ng-container>
+        <button
+          class="btn btn-success"
+          mat-raised-button
+          (click)="Fixedamount()"
+        >
+          Split Payment
+        </button>
+      </div>
+      <div
+        *ngIf="percentIsShown"
+        class="row container-fluid col-md-4"
+        id="percentshow"
+      >
+        <ng-container *ngFor="let user of groupUsers.Users">
+          {{ user.name
+          }}<input
+            id="{{ user.id }}"
+            type="number"
+            step="0.01"
+            placeholder="{{ initialValue.toFixed(2) }}"
+            required
+            name="distribution"
+            (change)="onPercentChange($event)"
+          />
+        </ng-container>
 
-      <button class="btn btn-success" mat-raised-button (click)="Percentage()">Split Payment</button>
-  </div>
-</form>
+        <button
+          class="btn btn-success"
+          mat-raised-button
+          (click)="Percentage()"
+        >
+          Split Payment
+        </button>
+      </div>
+    </form>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <!-- <button id="clearGroup" type="button" class="btn-primary" style="margin-right: 25px"  (click)="clearGroup()">Clear Group</button>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <!-- <button id="clearGroup" type="button" class="btn-primary" style="margin-right: 25px"  (click)="clearGroup()">Clear Group</button>
   <button id="clearAmount" type="button" class="btn-primary"  (click)="clearAmountOwed()">Clear Amount Owed</button> -->
+  </body>
+</div>

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { map, filter, switchMap } from 'rxjs/operators';
+
 
 
 const baseURL = "http://localhost:8090/";
@@ -23,13 +25,13 @@ export class GroupService {
     return this.http.get('http://localhost:8090/api/groups/users/' + id);
   }
 
-  postGroup(name: string, number: number, id: number){
+  postGroup(name: string, number: number){
+    console.log(name, number);
     const body = {
       "name": name,
-      "number": number,
-      "id": number
+      "number": number
     }
-    return this.http.post('http://localhost:8090/api/users/postUser', body)
+    return this.http.post('http://localhost:8090/api/groups/postGroup', body);
   }
 
   updateGroupName(id: number, name: string){
