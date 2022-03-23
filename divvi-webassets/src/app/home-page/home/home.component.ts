@@ -265,6 +265,8 @@ export class HomeComponent implements OnInit {
     });
     if (this.groupExists == false){
       this.groupService.postGroup(this.groupName, this.groupNumber).subscribe();
+      alert('Group created successfully!');
+      this.showGroupAddInput();
     }
   }
 
@@ -306,6 +308,8 @@ export class HomeComponent implements OnInit {
     ) {
       this.userService.updateUserGroup(user.id, this.groupID).subscribe();
       this.getGroupUsers(this.groupID);
+      alert('User added to group successfully! (may need to refresh to see changes)');
+      this.showUserAddInput();
     }
   }
 
