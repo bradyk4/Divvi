@@ -1,24 +1,12 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { Inject, OnChanges, SimpleChange } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-  MatDialogConfig,
-} from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
 import { GroupService } from 'src/app/services/group.service';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
 
 import { TransactionService } from 'src/app/services/transaction.service';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -82,12 +70,6 @@ export class HomeComponent implements OnInit {
   public iterate!: number;
   public expenseName!: string;
   public expenseDesc!: string;
-  public pendingTransactions: Array<{
-    groupUsers: string;
-    expenseName: string;
-    expenseDesc: string;
-    payment: number;
-  }> = [];
   last!: {};
   public expenseTable: Array<{
     id: number;
@@ -105,7 +87,6 @@ export class HomeComponent implements OnInit {
   fixedSum = 0;
   confirmation!: boolean;
   authId = 3;
-  htmlTest!: String;
 
   // handles true/false change for isAmountPaid check box
   onPaidChange(event: Event) {
@@ -141,12 +122,6 @@ export class HomeComponent implements OnInit {
               this.Splitpayment = value.expenseSplit!;
               this.Splitpayment = this.payment * (value.expenseSplit! / 100);
               user.balance += this.Splitpayment;
-              this.pendingTransactions.push({
-                groupUsers: value.username,
-                expenseName: this.expenseName,
-                expenseDesc: this.expenseDesc,
-                payment: this.Splitpayment,
-              });
               this.transactionService
                 .postTransaction(
                   value.username,
@@ -200,12 +175,6 @@ export class HomeComponent implements OnInit {
             ) {
               this.Splitpayment = value.expenseSplit!;
               user.balance += this.Splitpayment;
-              this.pendingTransactions.push({
-                groupUsers: value.username,
-                expenseName: this.expenseName,
-                expenseDesc: this.expenseDesc,
-                payment: this.Splitpayment,
-              });
               this.transactionService
                 .postTransaction(
                   value.username,
@@ -250,14 +219,14 @@ export class HomeComponent implements OnInit {
 
   createGroup() {
     this.groups.forEach((group: any) => {
-      if ((this.groupName == group.name)) {
+      if (this.groupName == group.name) {
         alert('Group already exists');
         this.groupExists = true;
       } else {
         this.groupExists = false;
       }
     });
-    if (this.groupExists == false){
+    if (this.groupExists == false) {
       this.groupService.postGroup(this.groupName, this.groupNumber).subscribe();
       alert('Group created successfully!');
       this.showGroupAddInput();
@@ -267,32 +236,29 @@ export class HomeComponent implements OnInit {
   // updates the User's group ID based on group Name selected
   addUserToGroup() {
     let user = this.users.find((user: any) => user.name == this.name);
-    if (user == undefined){
+    if (user == undefined) {
       this.userExists = false;
       alert('User does not exist');
       return;
-    }
-    else {
+    } else {
       this.userExists = true;
     }
 
     let group = this.groups.find((group: any) => group.name == this.groupName);
-    if (group == undefined){
+    if (group == undefined) {
       this.groupExists = false;
       alert('Group does not exist');
       return;
-    }
-    else {
+    } else {
       this.groupExists = true;
       this.groupID = group.id;
     }
 
-    if (user.groupId == this.groupID){
+    if (user.groupId == this.groupID) {
       this.inGroup = true;
       alert('User is already in group');
       return;
-    }
-    else{
+    } else {
       this.inGroup = false;
     }
     if (
@@ -302,7 +268,9 @@ export class HomeComponent implements OnInit {
     ) {
       this.userService.updateUserGroup(user.id, this.groupID).subscribe();
       this.getGroupUsers(this.groupID);
-      alert('User added to group successfully! (may need to refresh to see changes)');
+      alert(
+        'User added to group successfully! (may need to refresh to see changes)'
+      );
       this.showUserAddInput();
     }
   }
@@ -337,8 +305,7 @@ export class HomeComponent implements OnInit {
     this.percentIsShown = false;
     this.fixedIsShown = false;
 
-    this.transactions.forEach((data: any) => {
-    });
+    this.transactions.forEach((data: any) => {});
   }
   cancelShowNewExpense() {
     this.newExpense = false;
@@ -405,12 +372,6 @@ export class HomeComponent implements OnInit {
     this.users.forEach((user: any) => {
       var balance = this.payment / this.groupSize;
 
-      this.pendingTransactions.push({
-        groupUsers: user.name,
-        expenseName: this.expenseName,
-        expenseDesc: this.expenseDesc,
-        payment: balance,
-      });
       this.transactionService
         .postTransaction(
           user.name,
@@ -509,12 +470,6 @@ export class HomeComponent implements OnInit {
           if (user.name == value.username) {
             this.Splitpayment = value.expenseSplit!;
             user.balance += this.Splitpayment;
-            this.pendingTransactions.push({
-              groupUsers: value.username,
-              expenseName: this.expenseName,
-              expenseDesc: this.expenseDesc,
-              payment: this.Splitpayment,
-            });
             this.transactionService
               .postTransaction(
                 value.username,
