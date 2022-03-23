@@ -25,16 +25,15 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
- 
+
   onBack() {
     this.router.navigate(['/login']);
   }
   onSubmit() {
     this.username = this.username.toString();
     this.password = this.password.toString();
-    let balance: number = 0;
     let groupId: number = 1;
-    this.userService.postUser(this.username, this.password, groupId, balance).subscribe();
+    this.userService.postUser(this.username, this.password, 0, groupId).subscribe();
 
     this.router.navigate(['/login']);
   }

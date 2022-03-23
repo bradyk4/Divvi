@@ -21,7 +21,7 @@ import { ThisReceiver } from '@angular/compiler';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   animations: [
-    
+
     ],
 })
 export class HomeComponent implements OnInit {
@@ -40,8 +40,8 @@ export class HomeComponent implements OnInit {
   callLoginMethod = LoginPageComponent.loginData
   groupId: number = LoginPageComponent.loginData.user.groupId
   authUserId: number = LoginPageComponent.loginData.user.id;
-  
- 
+
+
   transactions: any;
   transactionData: any;
   test1: any;
@@ -50,9 +50,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.users = this.getUsers();
     this.groups = this.getGroups();
-    this.groupUsers = this.getGroupUsers(this.groupId); 
+    this.groupUsers = this.getGroupUsers(this.groupId);
     this.transactions = this.getTransactions();
-    
+
   }
 
 public group: Array<{username: string, amountOwed: number}> = [];
@@ -111,12 +111,12 @@ onPaidChange(event: Event){
     console.log(eventTarget.checked)
   }
 
-}  
+}
 
 
 creatorIdName(){
-  
-  
+
+
 }
 
 
@@ -142,6 +142,7 @@ dialogRef.afterClosed().subscribe(result => {
               this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
               this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
               this.updateUserBalance(value.id, user.balance)
+              this.getTransactions();
               }
           });
          }
@@ -182,7 +183,8 @@ dialogRef.afterClosed().subscribe(result => {
                 user.balance += this.Splitpayment
                 this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
                 this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
-                this.updateUserBalance(value.id, user.balance)
+                this.updateUserBalance(value.id, user.balance);
+                this.getTransactions();
                 }
             });
            }
@@ -207,7 +209,7 @@ dialogRef.afterClosed().subscribe(result => {
   showUserAddInput(){
     this.addUser = ! this.addUser;
   }
-  
+
 // updates the User's group ID based on group Name selected
   addUserToGroup() {
     console.log(this.name)
@@ -229,7 +231,7 @@ dialogRef.afterClosed().subscribe(result => {
     });
     this.groups.forEach( (group:any) => {
       // checks that group exists
-      if (this.groupName == group.name) 
+      if (this.groupName == group.name)
       {
         this.groupID == group.id
         this.groupExists == true;
@@ -237,12 +239,12 @@ dialogRef.afterClosed().subscribe(result => {
         this.groupUsers.Users.forEach( (user:any) => {
           console.log(user)
           // checks if user is already in group
-          if (this.name == user.name) 
+          if (this.name == user.name)
           {
             this.inGroup = true
             return;
           }
-          else 
+          else
           {
             this.inGroup = false
           }
@@ -254,7 +256,7 @@ dialogRef.afterClosed().subscribe(result => {
         this.groupExists == false;
       }
     });
-    if (this.groupExists == true && this.inGroup == false && this.userExists == true) 
+    if (this.groupExists == true && this.inGroup == false && this.userExists == true)
       {
         this.userService.updateUserGroup(this.nameID, this.groupID)
       }
@@ -294,9 +296,9 @@ dialogRef.afterClosed().subscribe(result => {
     console.log(data.userID)
     console.log(this.authUserId)
   });
-    
-    
-    
+
+
+
   }
   cancelShowNewExpense(){
     this.newExpense = false;
@@ -318,7 +320,7 @@ dialogRef.afterClosed().subscribe(result => {
     this.initialValue = this.payment / this.groupUsers.Users.length;
     this.users.forEach( (user:any) => {
       this.expenseTable.push( {id: user.id, username: user.name, expenseSplit: undefined} );
-  
+
     });
   }
 
@@ -361,11 +363,12 @@ dialogRef.afterClosed().subscribe(result => {
 
     this.users.forEach( (user:any) => {
       var balance = this.payment / this.groupSize;
-      
+
       this.pendingTransactions.push( {groupUsers: user.name, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: balance} );
       this.transactionService.postTransaction( user.name, this.expenseName, this.expenseDesc, balance, user.id, this.authUserId, false ).subscribe();
       user.balance += this.payment/ this.groupSize;
       this.updateUserBalance(user.id, user.balance);
+      this.getTransactions();
     });
     this.expenseTable.splice(0,this.expenseTable.length)
     this.newExpense = false;
@@ -379,7 +382,7 @@ dialogRef.afterClosed().subscribe(result => {
 
   }
 
-    onFixedChange(event: Event) 
+    onFixedChange(event: Event)
     {
       const eventTarget = event.target as HTMLInputElement;
 
@@ -387,27 +390,27 @@ dialogRef.afterClosed().subscribe(result => {
         if((user.id == +eventTarget.id) && +this.expenseTable.findIndex(x => x.username === user.name) != -1){
           this.expenseInput = +eventTarget.value;
           this.expenseTable.splice(this.expenseTable.findIndex(x => x.username === user.name), 1)
-          this.expenseTable.push({id: user.id, username: user.name, expenseSplit: this.expenseInput})     
+          this.expenseTable.push({id: user.id, username: user.name, expenseSplit: this.expenseInput})
           const iterator = this.expenseTable.values();
           this.count = 0;
           this.fixedSum = +this.payment;
-          for (const value of iterator) 
+          for (const value of iterator)
           {
             if (value.expenseSplit == undefined)
             {
               this.count++
-  
+
             }
             else
             {
               this.fixedSum -= value.expenseSplit!
-  
+
             }
-  
+
           }
           this.initialValue = (this.fixedSum / this.count)
         }
-  
+
         });
     }
 
@@ -465,7 +468,7 @@ dialogRef.afterClosed().subscribe(result => {
     else
 
     {
-      
+
       console.log("Push expense table to DB");
       const iterator = this.expenseTable.values();
       for (const value of iterator) {
@@ -475,7 +478,8 @@ dialogRef.afterClosed().subscribe(result => {
                 user.balance += this.Splitpayment
                 this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
                 this.transactionService.postTransaction( value.username, this.expenseName, this.expenseDesc, this.Splitpayment, +value.id, this.authUserId, false ).subscribe();
-                 this.updateUserBalance(value.id, user.balance)
+                 this.updateUserBalance(value.id, user.balance);
+                 this.getTransactions();
                 }
             });
            }
@@ -495,7 +499,7 @@ dialogRef.afterClosed().subscribe(result => {
 
 // handles the event for when changes are made to the percent input boxes
   onPercentChange(event : Event) {
-    // we need to push the percent to local array on change, then the if statement below can check everything. 
+    // we need to push the percent to local array on change, then the if statement below can check everything.
     // then we need to push all the values to the database on the percentage method
     const eventTarget = event.target as HTMLInputElement;
 
@@ -504,11 +508,11 @@ dialogRef.afterClosed().subscribe(result => {
       if((user.id == +eventTarget.id) && +this.expenseTable.findIndex(x => x.username === user.name) != -1){
         this.expenseInput = +eventTarget.value;
         this.expenseTable.splice(this.expenseTable.findIndex(x => x.username === user.name), 1)
-        this.expenseTable.push({id: user.id, username: user.name, expenseSplit: this.expenseInput})     
+        this.expenseTable.push({id: user.id, username: user.name, expenseSplit: this.expenseInput})
         const iterator = this.expenseTable.values();
         this.count = 0;
         this.percentSum = 100;
-        for (const value of iterator) 
+        for (const value of iterator)
         {
           if (value.expenseSplit == undefined)
           {
@@ -585,7 +589,7 @@ dialogRef.afterClosed().subscribe(result => {
     else
 
     {
-      
+
       console.log("Push expense table to DB");
       const iterator = this.expenseTable.values();
       for (const value of iterator) {
@@ -601,7 +605,8 @@ dialogRef.afterClosed().subscribe(result => {
               console.log(value.id)
               console.log(this.authUserId)
               //this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
-              this.updateUserBalance(value.id, user.balance)
+              this.updateUserBalance(value.id, user.balance);
+              this.getTransactions();
               }
           });
          }
@@ -623,9 +628,9 @@ dialogRef.afterClosed().subscribe(result => {
   // Framework to clear amount owed
   clearAmountOwed(){
     this.users.forEach( (user:any) => {
-    
+
       this.updateUserBalance(user.id, 0);
-      
+      this.getTransactions();
     });
   }
 
@@ -652,9 +657,9 @@ dialogRef.afterClosed().subscribe(result => {
     })
   }
 
-  postUser(name: string, password: string, groupId: number, balance: number){
-
-    this.userService.postUser(name, password, groupId, balance);
+  postUser(name: string, password: string, groupId: number){
+    let balance = 0;
+    this.userService.postUser(name, password, balance, groupId);
   }
 
   updateUserBalance(id: number, balance: number){
@@ -696,12 +701,12 @@ dialogRef.afterClosed().subscribe(result => {
     });
   }
 
-  postTransaction(userName: string, expenseName: string, expenseDesc: string, amountOwed: number, userID: number, creatorID: number, isAmountPaid: boolean) 
-  {   
+  postTransaction(userName: string, expenseName: string, expenseDesc: string, amountOwed: number, userID: number, creatorID: number, isAmountPaid: boolean)
+  {
 
     this.transactionService.postTransaction(userName, expenseName, expenseDesc, amountOwed, userID, creatorID, isAmountPaid);
 
   }
 
 }
- 
+

@@ -24,7 +24,7 @@ export class UserService {
       "name": name,
       "password": password,
       "balance": balance,
-      "groupId": groupId,
+      "groupId": groupId
     }
     return this.http.post('http://localhost:8090/api/users/postUser', body)
   }
