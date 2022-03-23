@@ -52,7 +52,6 @@ export class SignUpComponent implements OnInit {
       if (this.groupName == group.name)
       {
         this.groupId = group.id;
-        console.log(this.username, this.password, 0, this.groupId);
         this.userService.postUser(this.username, this.password, 0, this.groupId).subscribe();
       }
       else{

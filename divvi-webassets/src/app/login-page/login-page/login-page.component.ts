@@ -29,7 +29,6 @@ export class LoginPageComponent implements OnInit {
       await this.userService.authenticateUser(this.username, this.password).subscribe(data => {
         if(data){
           LoginPageComponent.loginData = data;
-          console.log(data);
           this.router.navigate(['/home']);
           return LoginPageComponent.loginData;
         }

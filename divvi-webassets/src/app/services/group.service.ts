@@ -26,7 +26,6 @@ export class GroupService {
   }
 
   postGroup(name: string, number: number){
-    console.log(name, number);
     const body = {
       "name": name,
       "number": number

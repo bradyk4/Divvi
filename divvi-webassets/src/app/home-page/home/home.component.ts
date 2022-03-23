@@ -110,15 +110,11 @@ export class HomeComponent implements OnInit {
   // handles true/false change for isAmountPaid check box
   onPaidChange(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
-    console.log(eventTarget);
-    console.log(eventTarget.id);
 
     if (eventTarget.checked == true) {
       //do something for checked
-      console.log(eventTarget.checked);
     } else if (eventTarget.checked == false) {
       //do nothing for unchecked
-      console.log(eventTarget.checked);
     }
   }
 
@@ -133,7 +129,6 @@ export class HomeComponent implements OnInit {
     // grabs dialog data on close
     dialogRef.afterClosed().subscribe((result) => {
       this.confirmation = result.data;
-      console.log(`Dialog result: ${result.data}`);
       // if confirmation is true it sets all undefined to 0 and then pushes to DB
       if (this.confirmation == true) {
         const iterator = this.expenseTable.values();
@@ -194,7 +189,6 @@ export class HomeComponent implements OnInit {
     // grabs dialog data on close
     dialogRef.afterClosed().subscribe((result) => {
       this.confirmation = result.data;
-      console.log(`Dialog result: ${result.data}`);
       // if confirmation is true it sets all undefined to 0 and then pushes to DB
       if (this.confirmation == true) {
         const iterator = this.expenseTable.values();
@@ -344,8 +338,6 @@ export class HomeComponent implements OnInit {
     this.fixedIsShown = false;
 
     this.transactions.forEach((data: any) => {
-      console.log(data.userID);
-      console.log(this.authUserId);
     });
   }
   cancelShowNewExpense() {
@@ -389,10 +381,7 @@ export class HomeComponent implements OnInit {
       });
     });
     for (const value of this.expenseTable) {
-      console.log(value);
-      console.log(value.username);
     }
-    console.log(this.expenseTable);
   }
 
   test() {
@@ -402,9 +391,6 @@ export class HomeComponent implements OnInit {
           transaction.creatorID == user.id &&
           this.authUserId == transaction.userID
         ) {
-          console.log('this hit');
-          console.log(transaction.creatorID);
-          console.log(user.id);
           return user.name;
         }
       });
@@ -517,7 +503,6 @@ export class HomeComponent implements OnInit {
       this.newExpense = false;
       this.showPayments = false;
     } else {
-      console.log('Push expense table to DB');
       const iterator = this.expenseTable.values();
       for (const value of iterator) {
         this.users.forEach((user: any) => {
@@ -628,7 +613,6 @@ export class HomeComponent implements OnInit {
       this.newExpense = false;
       this.showPayments = false;
     } else {
-      console.log('Push expense table to DB');
       const iterator = this.expenseTable.values();
       for (const value of iterator) {
         this.users.forEach((user: any) => {
@@ -646,12 +630,6 @@ export class HomeComponent implements OnInit {
                 false
               )
               .subscribe();
-            console.log(value.username);
-            console.log(this.expenseName);
-            console.log(this.expenseDesc);
-            console.log(this.Splitpayment);
-            console.log(value.id);
-            console.log(this.authUserId);
             //this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
             this.updateUserBalance(value.id, user.balance);
             this.getTransactions();
