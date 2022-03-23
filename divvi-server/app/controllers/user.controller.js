@@ -101,9 +101,18 @@ exports.findByPk = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  User.update(req.body, {
-    where: { id: id },
-  })
+  //custom logic for if request body is a password
+  if (req.body.password){
+    var password = req.body.password;
+  //hash new password and store as variable
+    password = bcrypt.hashSync(req.body.password, 10);
+    var body = {
+      password
+    }
+
+    User.update(body, {
+      where: { id: id },
+    })
     .then((num) => {
       if (num == 1) {
         res.send({
@@ -120,6 +129,29 @@ exports.update = (req, res) => {
         message: "Error updating user with id=" + id,
       });
     });
+  }
+  else{
+    //if request body is not a password
+    User.update(req.body, {
+      where: { id: id },
+    })
+      .then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "user was updated successfully.",
+          });
+        } else {
+          res.send({
+            message: `Cannot update user with id=${id}. Maybe user was not found or req.body is empty!`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error updating user with id=" + id,
+        });
+      });
+  }
 };
 
 // Delete a user with the specified id in the request

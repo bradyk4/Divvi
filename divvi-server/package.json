@@ -8,7 +8,7 @@
     "start": "nodemon server.js"
   },
   "keywords": [],
-  "author": "Kyle Brady & Sr. Design Group 42",
+  "author": "Sr. Design Group 42",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.2",

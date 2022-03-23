@@ -1,4 +1,5 @@
 <html>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <head>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
@@ -9,14 +10,15 @@
 <body>
   <div class="main">
     <p class="sign" align="center">Sign in</p>
+    <i class="fa fa-cloud" style="color:grey; font-size:50px;text-shadow:2px 2px 4px #000000;"></i>
     <form class="form1">
-      <input [(ngModel)]="username" name="username" class="un" type="text" align="center" placeholder="Username">
-      <input [(ngModel)]="password" name="password" class="pass" type="password" align="center" placeholder="Password">
-      <a (click)="onSubmit()" class="submit" align="center">Sign in</a>
+      <input class="un" name="username" type="text" align="center" placeholder="Username" [(ngModel)] = "username">
+      <input class="pass" name="username" type="password" align="center" placeholder="Password" [(ngModel)] = "password">
+      <a class="submit" align="center" (click)="onSubmit()">Sign in</a>
       <br>
       <br>
-      <a routerLink="/sign-up" class="button" style="margin-left: 25px;">Sign Up</a>
-    </form>
+      <a (click)="onSignup()" class="button" style="margin-left: 25px;">Register</a>  
+    </form>  
     </div>
 </body>
 

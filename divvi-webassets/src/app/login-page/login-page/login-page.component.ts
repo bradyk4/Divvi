@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
 import {Router} from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 @Component({
   selector: 'app-login-page',
@@ -11,6 +13,7 @@ import {Router} from '@angular/router';
 export class LoginPageComponent implements OnInit {
   username: any;
   password: any;
+  public static loginData: any;
 
   constructor(
     private http:HttpClient,
@@ -25,8 +28,10 @@ export class LoginPageComponent implements OnInit {
     try{
       await this.userService.authenticateUser(this.username, this.password).subscribe(data => {
         if(data){
+          LoginPageComponent.loginData = data;
           console.log(data);
           this.router.navigate(['/home']);
+          return LoginPageComponent.loginData;
         }
         else{
           alert("Error: incorrect username or password.")
@@ -39,4 +44,7 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
+  onSignup() {
+    this.router.navigate(['/sign-up']);
+  }
 }

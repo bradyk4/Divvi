@@ -24,7 +24,7 @@ export class UserService {
       "name": name,
       "password": password,
       "balance": balance,
-      "groupId": groupId,
+      "groupId": groupId
     }
     return this.http.post('http://localhost:8090/api/users/postUser', body)
   }
@@ -44,5 +44,10 @@ export class UserService {
 
   deleteUser(id: number){
     return this.http.delete('http://localhost:8090'+id);
+  }
+
+  updateUserGroup(id: number, groupId: number) {
+    const body = { "groupId": groupId};
+    return this.http.put('http://localhost:8090/api/users/'+id, body)
   }
 }
