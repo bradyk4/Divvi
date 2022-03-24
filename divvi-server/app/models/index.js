@@ -27,7 +27,15 @@ db.user = require('./user')(sequelize, Sequelize);
 db.group = require('./group')(sequelize, Sequelize);
 db.transactions = require('./transactions')(sequelize, Sequelize);
 
-db.group.hasMany(db.user, {foreignKey: 'groupId'});
-db.user.belongsTo(db.group, {foreignKey: 'id'});
+db.group.belongsToMany(db.user, {
+  through: "GroupsUsers",
+  as: "users",
+  foreignKey: "groupID",
+});
+db.user.belongsToMany(db.group, {
+  through: "GroupsUsers",
+  as: "groups",
+  foreignKey: "userID",
+});
 
 module.exports = db;

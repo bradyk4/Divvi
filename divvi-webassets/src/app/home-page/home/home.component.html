@@ -55,7 +55,7 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let user of groupUsers.Users"
+                *ngFor="let user of groupUsers.users"
                 class="table-light text-center"
               >
                 <td>{{ user.name }}</td>
@@ -334,7 +334,7 @@
         class="row container-fluid col-md-4"
         id="fixedshow"
       >
-        <ng-container *ngFor="let user of groupUsers.Users"
+        <ng-container *ngFor="let user of groupUsers.users"
           >{{ user.name }}
           <input
             id="{{ user.id }}"
@@ -361,7 +361,7 @@
         class="row container-fluid col-md-4"
         id="percentshow"
       >
-        <ng-container *ngFor="let user of groupUsers.Users">
+        <ng-container *ngFor="let user of groupUsers.users">
           {{ user.name
           }}<input
             id="{{ user.id }}"

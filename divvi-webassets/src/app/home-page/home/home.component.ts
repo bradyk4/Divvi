@@ -211,6 +211,7 @@ export class HomeComponent implements OnInit {
 
   showUserAddInput() {
     this.addUser = !this.addUser;
+    console.log(this.groupUsers);
   }
 
   createGroup() {
@@ -320,7 +321,7 @@ export class HomeComponent implements OnInit {
     this.evenIsShown = false;
     this.percentIsShown = false;
     this.fixedIsShown = !this.fixedIsShown;
-    this.initialValue = this.payment / this.groupUsers.Users.length;
+    this.initialValue = this.payment / this.groupUsers.users.length;
     this.users.forEach((user: any) => {
       this.expenseTable.push({
         id: user.id,
@@ -335,7 +336,7 @@ export class HomeComponent implements OnInit {
     this.fixedIsShown = false;
     this.evenIsShown = false;
     this.percentIsShown = !this.percentIsShown;
-    this.initialValue = 100 / this.groupUsers.Users.length;
+    this.initialValue = 100 / this.groupUsers.users.length;
     this.users.forEach((user: any) => {
       this.expenseTable.push({
         id: user.id,
@@ -651,6 +652,7 @@ export class HomeComponent implements OnInit {
   getGroupUsers(id: number) {
     this.groupService.getGroupUsers(id).subscribe((data) => {
       this.groupUsers = data;
+      return this.groupUsers;
     });
   }
 

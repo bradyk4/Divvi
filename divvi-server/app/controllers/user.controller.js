@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.user;
+const Group = db.group;
 const Op = require("sequelize");
 const { where } = require("sequelize");
 const bcrypt = require("bcrypt");
@@ -96,6 +97,38 @@ exports.findByPk = (req, res) => {
       });
     });
 };
+
+// find group by id and display users in group
+exports.findGroupsByUser = (req, res) => {
+  const ID = req.params.id;
+
+  User.findByPk(ID, {
+    include: [
+      {
+        model: Group,
+        as: "groups",
+        attributes: ["id", "name", "number"],
+        through: {
+          attributes: [],
+        }
+      },
+    ],
+  })
+  .then((data) => {
+    if (data) {
+      res.json(data);
+    } else {
+      res.status(404).send({
+        message: "Error retrieving user with id=" + ID,
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message: "Error retrieving user with id=" + ID,
+    });
+  });
+}
 
 // Update a user by the id in the request
 exports.update = (req, res) => {

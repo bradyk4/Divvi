@@ -1,6 +1,7 @@
 const db = require("../models");
 const Group = db.group;
 const Op = require("sequelize");
+const { user } = require("../models");
 const User = db.user;
 // Create and Save a new group
 exports.create = async(req, res) => {
@@ -58,21 +59,32 @@ exports.findByPk = (req, res) => {
 exports.findUsersByGroup = (req, res) => {
   const ID = req.params.id;
 
-  Group.findByPk(ID, {include: User})
-    .then(data => {
-      if (data){
-        res.json(data);
-      }else {
-        res.status(404).send({
-          message: "Error retrieving users from group with id=" + ID,
-        });     
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error retrieving users from group with id=" + ID,
-      })
-    })
+  Group.findByPk(ID, {
+    include: [
+      {
+        model: User,
+        as: "users",
+        attributes: ["id", "name", "balance"],
+        through: {
+          attributes: [],
+        }
+      },
+    ],
+  })
+  .then((data) => {
+    if (data) {
+      res.json(data);
+    } else {
+      res.status(404).send({
+        message: "Error retrieving group with id=" + ID,
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message: "Error retrieving group with id=" + ID,
+    });
+  });
 
 
 }
