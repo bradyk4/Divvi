@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const Transaction = sequelize.define("Transaction", {
       // Model attributes are defined here
-      userName: {
+      debtorName: {
         type: Sequelize.STRING
       },
       expenseName: {
@@ -27,6 +27,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       creatorID: {
         type: Sequelize.INTEGER,
+      },
+      creatorName: {
+        type: Sequelize.STRING
       },
       isAmountPaid: {
           type: Sequelize.BOOLEAN

@@ -251,7 +251,7 @@
 
         <!--This is the pending transactions table - currently stored in the front end only.-->
         <div class="col-md-6 float-right">
-          <h2>Expenses Requested</h2>
+          <h2>Expenses You Owe</h2>
           <table class="table table-hover table table-striped">
             <thead class="table-dark">
               <tr class="text-center">
@@ -268,7 +268,7 @@
                 class="table-danger text-center"
               >
                 <ng-container *ngIf="transaction.userID === authUserId">
-                  <td>{{ transaction.userName }}</td>
+                  <td>{{ transaction.creatorName }}</td>
                   <td>{{ transaction.expenseName }}</td>
                   <td>{{ transaction.expenseDesc }}</td>
                   <td>{{ transaction.amountOwed.toFixed(2) }}</td>
@@ -284,7 +284,7 @@
               </tr>
             </tbody>
           </table>
-          <h2>Expenses You Created</h2>
+          <h2>Expenses You Requested</h2>
           <table class="table table-sm table-striped table-bordered table-md">
             <thead class="table-dark">
               <tr class="text-center">
@@ -301,18 +301,20 @@
                 class="table-success text-center"
               >
                 <ng-container *ngIf="transaction.creatorID === authUserId">
-                  <td>{{ transaction.userName }}</td>
-                  <td>{{ transaction.expenseName }}</td>
-                  <td>{{ transaction.expenseDesc }}</td>
-                  <td>{{ transaction.amountOwed.toFixed(2) }}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      id="{{ transaction.transactionID }}"
-                      name="isAmountPaid"
-                      (change)="onPaidChange($event)"
-                    />
-                  </td>
+                  <ng-container *ngIf="transaction.debtorName != creatorName">
+                    <td>{{ transaction.debtorName }}</td>
+                    <td>{{ transaction.expenseName }}</td>
+                    <td>{{ transaction.expenseDesc }}</td>
+                    <td>{{ transaction.amountOwed.toFixed(2) }}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        id="{{ transaction.transactionID }}"
+                        name="isAmountPaid"
+                        (change)="onPaidChange($event)"
+                      />
+                    </td>
+                  </ng-container>
                 </ng-container>
               </tr>
             </tbody>

@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   callLoginMethod = LoginPageComponent.loginData;
   groupId: number = LoginPageComponent.loginData.user.groupId;
   authUserId: number = LoginPageComponent.loginData.user.id;
+  creatorName: string = LoginPageComponent.loginData.user.name;
 
   transactions: any;
   transactionData: any;
@@ -50,8 +51,6 @@ export class HomeComponent implements OnInit {
     this.transactions = this.getTransactions();
   }
 
-  public group: Array<{ username: string; amountOwed: number }> = [];
-  public username!: string;
   public amountOwed!: number;
   public payment!: number;
   public expense!: number;
@@ -73,7 +72,7 @@ export class HomeComponent implements OnInit {
   last!: {};
   public expenseTable: Array<{
     id: number;
-    username: string;
+    debtorName: string;
     expenseSplit?: number;
   }> = [];
   inGroup!: boolean;
@@ -116,7 +115,7 @@ export class HomeComponent implements OnInit {
         for (const value of iterator) {
           this.users.forEach((user: any) => {
             if (
-              user.name == value.username &&
+              user.name == value.debtorName &&
               value.expenseSplit != undefined
             ) {
               this.Splitpayment = value.expenseSplit!;
@@ -124,12 +123,13 @@ export class HomeComponent implements OnInit {
               user.balance += this.Splitpayment;
               this.transactionService
                 .postTransaction(
-                  value.username,
+                  value.debtorName,
                   this.expenseName,
                   this.expenseDesc,
                   this.Splitpayment,
                   +value.id,
                   this.authUserId,
+                  this.creatorName,
                   false
                 )
                 .subscribe();
@@ -170,19 +170,20 @@ export class HomeComponent implements OnInit {
         for (const value of iterator) {
           this.users.forEach((user: any) => {
             if (
-              user.name == value.username &&
+              user.name == value.debtorName &&
               value.expenseSplit != undefined
             ) {
               this.Splitpayment = value.expenseSplit!;
               user.balance += this.Splitpayment;
               this.transactionService
                 .postTransaction(
-                  value.username,
+                  value.debtorName,
                   this.expenseName,
                   this.expenseDesc,
                   this.Splitpayment,
                   +value.id,
                   this.authUserId,
+                  this.creatorName,
                   false
                 )
                 .subscribe();
@@ -328,7 +329,7 @@ export class HomeComponent implements OnInit {
     this.users.forEach((user: any) => {
       this.expenseTable.push({
         id: user.id,
-        username: user.name,
+        debtorName: user.name,
         expenseSplit: undefined,
       });
     });
@@ -343,7 +344,7 @@ export class HomeComponent implements OnInit {
     this.users.forEach((user: any) => {
       this.expenseTable.push({
         id: user.id,
-        username: user.name,
+        debtorName: user.name,
         expenseSplit: undefined,
       });
     });
@@ -380,6 +381,7 @@ export class HomeComponent implements OnInit {
           balance,
           user.id,
           this.authUserId,
+          this.creatorName,
           false
         )
         .subscribe();
@@ -404,16 +406,16 @@ export class HomeComponent implements OnInit {
     this.users.forEach((user: any) => {
       if (
         user.id == +eventTarget.id &&
-        +this.expenseTable.findIndex((x) => x.username === user.name) != -1
+        +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1
       ) {
         this.expenseInput = +eventTarget.value;
         this.expenseTable.splice(
-          this.expenseTable.findIndex((x) => x.username === user.name),
+          this.expenseTable.findIndex((x) => x.debtorName === user.name),
           1
         );
         this.expenseTable.push({
           id: user.id,
-          username: user.name,
+          debtorName: user.name,
           expenseSplit: this.expenseInput,
         });
         const iterator = this.expenseTable.values();
@@ -467,17 +469,18 @@ export class HomeComponent implements OnInit {
       const iterator = this.expenseTable.values();
       for (const value of iterator) {
         this.users.forEach((user: any) => {
-          if (user.name == value.username) {
+          if (user.name == value.debtorName) {
             this.Splitpayment = value.expenseSplit!;
             user.balance += this.Splitpayment;
             this.transactionService
               .postTransaction(
-                value.username,
+                value.debtorName,
                 this.expenseName,
                 this.expenseDesc,
                 this.Splitpayment,
                 +value.id,
                 this.authUserId,
+                this.creatorName,
                 false
               )
               .subscribe();
@@ -508,16 +511,16 @@ export class HomeComponent implements OnInit {
     this.users.forEach((user: any) => {
       if (
         user.id == +eventTarget.id &&
-        +this.expenseTable.findIndex((x) => x.username === user.name) != -1
+        +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1
       ) {
         this.expenseInput = +eventTarget.value;
         this.expenseTable.splice(
-          this.expenseTable.findIndex((x) => x.username === user.name),
+          this.expenseTable.findIndex((x) => x.debtorName === user.name),
           1
         );
         this.expenseTable.push({
           id: user.id,
-          username: user.name,
+          debtorName: user.name,
           expenseSplit: this.expenseInput,
         });
         const iterator = this.expenseTable.values();
@@ -571,17 +574,18 @@ export class HomeComponent implements OnInit {
       const iterator = this.expenseTable.values();
       for (const value of iterator) {
         this.users.forEach((user: any) => {
-          if (user.name == value.username) {
+          if (user.name == value.debtorName) {
             this.Splitpayment = this.payment * (value.expenseSplit! / 100);
             user.balance += this.Splitpayment;
             this.transactionService
               .postTransaction(
-                value.username,
+                value.debtorName,
                 this.expenseName,
                 this.expenseDesc,
                 this.Splitpayment,
                 +value.id,
                 this.authUserId,
+                this.creatorName,
                 false
               )
               .subscribe();
@@ -610,11 +614,6 @@ export class HomeComponent implements OnInit {
       this.updateUserBalance(user.id, 0);
       this.getTransactions();
     });
-  }
-
-  //framework to delete a group
-  clearGroup() {
-    this.group.length = 0;
   }
 
   // setup user API functions
@@ -674,21 +673,23 @@ export class HomeComponent implements OnInit {
   }
 
   postTransaction(
-    userName: string,
+    debtorName: string,
     expenseName: string,
     expenseDesc: string,
     amountOwed: number,
     userID: number,
     creatorID: number,
+    creatorName: string,
     isAmountPaid: boolean
   ) {
     this.transactionService.postTransaction(
-      userName,
+      debtorName,
       expenseName,
       expenseDesc,
       amountOwed,
       userID,
       creatorID,
+      creatorName,
       isAmountPaid
     );
   }
