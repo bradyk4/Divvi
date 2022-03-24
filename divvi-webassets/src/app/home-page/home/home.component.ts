@@ -56,7 +56,6 @@ export class HomeComponent implements OnInit {
   public expense!: number;
   public Splitpayment!: number;
   public groupSize: number = 0;
-  public fixedamt: any = [];
   public percent: any = [];
   addUser: boolean = false;
   addGroup: boolean = false;
@@ -77,7 +76,6 @@ export class HomeComponent implements OnInit {
   }> = [];
   inGroup!: boolean;
   groupExists!: boolean;
-  nameID!: number;
   userExists!: boolean;
   expenseInput = 0;
   initialValue!: number;
@@ -85,7 +83,6 @@ export class HomeComponent implements OnInit {
   count = 0;
   fixedSum = 0;
   confirmation!: boolean;
-  authId = 3;
 
   // handles true/false change for isAmountPaid check box
   onPaidChange(event: Event) {
@@ -97,8 +94,6 @@ export class HomeComponent implements OnInit {
       //do nothing for unchecked
     }
   }
-
-  creatorIdName() {}
 
   //Opens a confirmation Dialog box.
   openDialogPerc() {
