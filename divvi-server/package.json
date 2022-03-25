@@ -1,0 +1,28 @@
+{
+  "name": "divvi-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "Sr. Design Group 42",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.2",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mssql": "^7.2.1",
+    "mysql2": "^2.3.2",
+    "sequelize": "^6.9.0",
+    "sqlite3": "^5.0.2",
+    "tedious": "^14.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
