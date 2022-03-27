@@ -11,7 +11,10 @@ module.exports = app => {
     router.get("/", controller.findAll);
   
     // Retrieve a single transaction with id
-    router.get("/:transactionID", controller.findByPk);
+    router.get("/:id", controller.findByPk);
+
+    // Delete transaction with id
+    router.delete("/:id", controller.delete);
   
     // Default route for transaction data
     app.use('/api/transactions', router);

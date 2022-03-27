@@ -7,7 +7,7 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionService } from 'src/app/services/transaction.service';
-
+import { DeletionDialogComponent } from 'src/app/deletion-dialog/deletion-dialog.component';
 
 
 @Component({
@@ -90,11 +90,28 @@ export class HomeComponent implements OnInit {
   onPaidChange(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
 
+
     if (eventTarget.checked == true) {
-      //do something for checked
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '250px',
+        height: '250px',
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.confirmation = result.data
+        if (this.confirmation == true) {
+          this.transactionService.deleteTransaction(+eventTarget.id).subscribe();
+          this.getTransactions();
+        }
+        else if (this.confirmation == false) {
+          eventTarget.checked = false;
+          return;
+        }
+        this.getTransactions();
+      });
     } else if (eventTarget.checked == false) {
-      //do nothing for unchecked
+      //do nothing
     }
+
   }
 
   //Opens a confirmation Dialog box.

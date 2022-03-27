@@ -53,3 +53,27 @@ exports.findByPk = (req, res) => {
       });
     });
 };
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Transaction.destroy({
+    where: { transactionID: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Transaction was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Transaction with id=${id}. Maybe Transaction was not found!`
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete Transaction with id=" + id,
+      });
+    });
+};
