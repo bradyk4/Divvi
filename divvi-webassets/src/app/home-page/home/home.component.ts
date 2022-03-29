@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   selectedGroup: any;
   groups: any;
   groupUsers: any;
+  userGroups: any;
   name: any;
   groupNumber: any;
   groupID: any;
@@ -49,6 +50,7 @@ export class HomeComponent implements OnInit {
     this.groups = this.getGroups();
     this.groupUsers = this.getGroupUsers(this.groupId);
     this.transactions = this.getTransactions();
+    this.userGroups = this.getUsersGroups(this.authUserId);
   }
 
   public amountOwed!: number;
@@ -211,7 +213,6 @@ export class HomeComponent implements OnInit {
 
   showUserAddInput() {
     this.addUser = !this.addUser;
-    console.log(this.groupUsers);
   }
 
   createGroup() {
@@ -654,6 +655,18 @@ export class HomeComponent implements OnInit {
       this.groupUsers = data;
       return this.groupUsers;
     });
+  }
+
+  getUsersGroups(id: number) {
+    this.userService.getUserGroups(id).subscribe((data) => {
+      this.userGroups = data;
+      return this.userGroups;
+    });
+  }
+
+  groupSelectBtn(event: Event){
+    const groupSelect = event.target as HTMLInputElement;
+    this.getGroupUsers(+groupSelect.id);
   }
 
   getGroup(id: number) {

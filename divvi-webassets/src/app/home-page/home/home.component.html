@@ -27,8 +27,25 @@
   </header>
   <body>
     <form>
+
+      <div ngbDropdown *ngIf="userGroups">
+
+        <button class="btn btn-secondary" id="dropdown" ngbDropdownToggle>Groups</button>
+
+          <div ngbDropdownMenu="dropdown">
+
+            <ng-container *ngFor="let group of userGroups.groups">
+              <button ngbDropdownItem (click)="groupSelectBtn($event)" id="{{group.id}}">{{group.name}}</button>
+            </ng-container>
+
+          </div>
+      </div>
+
+
+
       <div class="row">
         <h2 class="col-md-6 float-left">Existing Groups:</h2>
+
         <h2 class="col-md-6 float-right">Pending Transactions:</h2>
         <hr />
         <div class="col-md-6">
