@@ -222,10 +222,12 @@ export class HomeComponent implements OnInit {
         this.groupExists = true;
       } else {
         this.groupExists = false;
+        this.groupId = group.id;
       }
     });
     if (this.groupExists == false) {
       this.groupService.postGroup(this.groupName, this.groupNumber).subscribe();
+      this.getGroupUsers(this.groupId);
       alert('Group created successfully!');
       this.showGroupAddInput();
       this.getGroups();
@@ -267,6 +269,7 @@ export class HomeComponent implements OnInit {
     ) {
       this.userService.updateUserGroup(user.id, this.groupID).subscribe();
       this.getGroupUsers(this.groupID);
+      this.getUsersGroups(user.id);
       alert(
         'User added to group successfully! (may need to refresh to see changes)'
       );
