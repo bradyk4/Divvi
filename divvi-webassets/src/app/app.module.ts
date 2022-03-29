@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateGroupDialogComponent } from './create-group-dialog/create-group-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeletionDialogComponent } from './deletion-dialog/deletion-dialog.component';
+import { ExpenseDialogComponent } from './expense-dialog/expense-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DeletionDialogComponent } from './deletion-dialog/deletion-dialog.compo
     SignUpComponent,
     ConfirmationDialogComponent,
     CreateGroupDialogComponent,
-    DeletionDialogComponent
+    DeletionDialogComponent,
+    ExpenseDialogComponent
 
   ],
   imports: [

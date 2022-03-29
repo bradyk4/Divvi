@@ -8,6 +8,7 @@ import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { DeletionDialogComponent } from 'src/app/deletion-dialog/deletion-dialog.component';
+import { ExpenseDialogComponent } from 'src/app/expense-dialog/expense-dialog.component';
 
 
 @Component({
@@ -92,7 +93,7 @@ export class HomeComponent implements OnInit {
 
 
     if (eventTarget.checked == true) {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      const dialogRef = this.dialog.open(DeletionDialogComponent, {
         width: '250px',
         height: '250px',
       });
@@ -293,6 +294,7 @@ export class HomeComponent implements OnInit {
   // this method is the framework to check user entry - if expense Name, Description, or payment is blank or 0 then the payment options will not show and it will
   // require the user to re-enter their values.
   showPaymentOptions() {
+
     this.expenseName;
     this.expenseDesc;
     this.payment;
@@ -302,12 +304,28 @@ export class HomeComponent implements OnInit {
       this.payment == 0 ||
       this.payment == null
     ) {
-      this.alert = !this.alert;
+      alert("You need to fill everything out")
       this.expenseName = '';
       this.expenseDesc = '';
       this.payment = 0;
     } else {
       this.showPayments = !this.showPayments;
+      //open dialog if everything is filled out
+      const dialogRef = this.dialog.open(ExpenseDialogComponent, {
+        width: '500px',
+        height: '500px',
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.confirmation = result.data
+        if (this.confirmation == true) {
+          
+
+        }
+        else if (this.confirmation == false) {
+          return;
+        }
+
+      });
     }
   }
 
@@ -366,18 +384,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  test() {
-    this.users.forEach((user: any) => {
-      this.transactions.forEach((transaction: any) => {
-        if (
-          transaction.creatorID == user.id &&
-          this.authUserId == transaction.userID
-        ) {
-          return user.name;
-        }
-      });
-    });
-  }
 
   // This Evenly function splits the payment, and pushes values to the database and the pending transactions table
   Evenly() {
