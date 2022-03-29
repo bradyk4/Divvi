@@ -213,7 +213,6 @@ export class HomeComponent implements OnInit {
 
   showUserAddInput() {
     this.addUser = !this.addUser;
-    console.log(this.groupUsers);
   }
 
   createGroup() {
@@ -661,9 +660,13 @@ export class HomeComponent implements OnInit {
   getUsersGroups(id: number) {
     this.userService.getUserGroups(id).subscribe((data) => {
       this.userGroups = data;
-      console.log(this.userGroups);
       return this.userGroups;
     });
+  }
+
+  groupSelectBtn(event: Event){
+    const groupSelect = event.target as HTMLInputElement;
+    this.getGroupUsers(+groupSelect.id);
   }
 
   getGroup(id: number) {

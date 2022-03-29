@@ -35,7 +35,7 @@
           <div ngbDropdownMenu="dropdown">
 
             <ng-container *ngFor="let group of userGroups.groups">
-              <button ngbDropdownItem id="{{group.id}}">{{group.name}}</button>
+              <button ngbDropdownItem (click)="groupSelectBtn($event)" id="{{group.id}}">{{group.name}}</button>
             </ng-container>
 
           </div>
