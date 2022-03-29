@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class ExpenseDialogComponent implements OnInit {
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: boolean, private groupService: GroupService, private http: HttpClient, public dialogRef: MatDialogRef<ExpenseDialogComponent>) { }
+  constructor( @Inject(MAT_DIALOG_DATA) public data: any, private groupService: GroupService, private http: HttpClient, public dialogRef: MatDialogRef<ExpenseDialogComponent>) { }
 
   groupUsers: any;
   groupId: number = LoginPageComponent.loginData.user.groupId;
@@ -29,7 +29,6 @@ export class ExpenseDialogComponent implements OnInit {
     expenseSplit?: number;
   }> = [];
 
-
   ngOnInit(): void {
     this.groupUsers = this.getGroupUsers(this.groupId);
   }
@@ -37,36 +36,41 @@ export class ExpenseDialogComponent implements OnInit {
 
   dropdownFunc(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
- 
     if (+eventTarget.value == 1) {
+      this.payment = this.data
+      this.expenseTable.splice(0, this.expenseTable.length);
+      this.initialValue = this.payment / this.groupUsers.Users.length;
       this.dropdownVal = 1;
-      this.groupUsers.forEach((user: any) => {
-        this.expenseTable.push({
-          id: user.id,
-          debtorName: user.name,
-          expenseSplit: undefined,
-        });
-      });
+
     }
     else if (+eventTarget.value == 2) {
+      this.payment = this.data
+      this.expenseTable.splice(0, this.expenseTable.length);
+      this.initialValue = this.payment / this.groupUsers.Users.length;
       this.dropdownVal = 2;
-      this.groupUsers.forEach((user: any) => {
+      this.groupUsers.Users.forEach((user: any) => {
         this.expenseTable.push({
           id: user.id,
           debtorName: user.name,
           expenseSplit: undefined,
         });
       });
+      this.count = 0;
+      this.fixedSum = this.payment;
     }
     else if (+eventTarget.value == 3) {
+      this.payment = this.data
+      this.expenseTable.splice(0, this.expenseTable.length);
+      this.fixedSum = this.payment;
       this.dropdownVal = 3;
-      this.groupUsers.users.forEach((user: any) => {
+      this.groupUsers.Users.forEach((user: any) => {
         this.expenseTable.push({
           id: user.id,
           debtorName: user.name,
           expenseSplit: undefined,
         });
       });
+      this.initialValue = 100 / this.groupUsers.Users.length;
     }
     else {
       this.dropdownVal = 0;
@@ -74,18 +78,18 @@ export class ExpenseDialogComponent implements OnInit {
     }
   }
 
-  onYes() {
+  onSubmit() {
     this.dialogRef.close({data: true, dropdownVal: this.dropdownVal});
 }
 
-  onNo() {
+  onCancel() {
     this.dialogRef.close({data: false, dropdownVal: 0});
   }
 
 
   onFixedChange(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
-    this.groupUsers.forEach((user: any) => {
+    this.groupUsers.Users.forEach((user: any) => {
       if (
         user.id == +eventTarget.id &&
         +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1

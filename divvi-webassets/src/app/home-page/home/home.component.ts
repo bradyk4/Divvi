@@ -120,6 +120,9 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
       height: '250px',
+      data:  {
+        payment: this.payment
+      }
     });
     // grabs dialog data on close
     dialogRef.afterClosed().subscribe((result) => {
@@ -314,6 +317,7 @@ export class HomeComponent implements OnInit {
       const dialogRef = this.dialog.open(ExpenseDialogComponent, {
         width: '500px',
         height: '500px',
+        data: this.payment
       });
       dialogRef.afterClosed().subscribe((result) => {
         this.confirmation = result.data
@@ -380,8 +384,7 @@ export class HomeComponent implements OnInit {
         expenseSplit: undefined,
       });
     });
-    for (const value of this.expenseTable) {
-    }
+
   }
 
 
