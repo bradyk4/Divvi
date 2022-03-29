@@ -18,6 +18,7 @@ export class SignUpComponent implements OnInit {
   groupName: any;
   groups: any;
   groupId: any;
+  user: any;
 
   constructor(
     private http:HttpClient,
@@ -41,7 +42,7 @@ export class SignUpComponent implements OnInit {
   onBack() {
     this.router.navigate(['/login']);
   }
-  onSubmit() {
+  async onSubmit() {
     this.username = this.username.toString();
     this.password = this.password.toString();
     this.groupName = this.groupName.toString();
@@ -54,7 +55,7 @@ export class SignUpComponent implements OnInit {
     }
     else{
       this.groupId = group.id;
-      this.userService.postUser(this.username, this.password, 0, this.groupId);
+      this.userService.postUser(this.username, this.password, 0, this.groupId).subscribe();
     }
 
     this.router.navigate(['/login']);

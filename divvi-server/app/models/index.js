@@ -26,6 +26,7 @@ db.sequelize = sequelize;
 db.user = require('./user')(sequelize, Sequelize);
 db.group = require('./group')(sequelize, Sequelize);
 db.transactions = require('./transactions')(sequelize, Sequelize);
+db.groupsUsersRelation = require('./groupsUsersRelation')(sequelize, Sequelize);
 
 db.group.belongsToMany(db.user, {
   through: "GroupsUsers",
