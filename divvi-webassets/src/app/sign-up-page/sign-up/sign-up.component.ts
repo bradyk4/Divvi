@@ -27,12 +27,12 @@ export class SignUpComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.groups = this.getGroups();
+    this.getGroups();
   }
 
   // setup group API functions
-  getGroups(){
-    this.groupService.getGroups().subscribe(data => {
+  async getGroups(){
+    await this.groupService.getGroups().subscribe(data => {
       this.groups = data;
       return this.groups;
     });
@@ -47,18 +47,15 @@ export class SignUpComponent implements OnInit {
     this.groupName = this.groupName.toString();
 
     //assign group name to group id for user creation
-    this.groups.forEach((group: any) => {
-      // checks that group exists
-      if (this.groupName == group.name)
-      {
-        console.log(this.groupName, group.name);
-        this.groupId = group.id;
-        this.userService.postUser(this.username, this.password, 0, this.groupId).subscribe();
-      }
-      else{
-        console.error("No group exists with that name.");
-      }
-    });
+    let group = this.groups.find((group: any) => group.name == this.groupName);
+
+    if (group == undefined){
+      alert('No group exists with that name: ' + this.groupName);
+    }
+    else{
+      this.groupId = group.id;
+      this.userService.postUser(this.username, this.password, 0, this.groupId);
+    }
 
     this.router.navigate(['/login']);
   }
