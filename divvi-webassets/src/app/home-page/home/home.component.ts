@@ -228,6 +228,7 @@ export class HomeComponent implements OnInit {
       this.groupService.postGroup(this.groupName, this.groupNumber).subscribe();
       alert('Group created successfully!');
       this.showGroupAddInput();
+      this.getGroups();
     }
   }
 
