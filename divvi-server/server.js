@@ -44,6 +44,7 @@ app.get("/", cors(corsOptionsDelegate), function (req, res, next) {
 require("./app/routes/user.routes")(app);
 require("./app/routes/group.routes")(app);
 require("./app/routes/transactions.routes")(app);
+require("./app/routes/groupsUsersRelation.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8090;

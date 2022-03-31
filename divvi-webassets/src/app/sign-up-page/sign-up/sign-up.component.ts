@@ -15,9 +15,9 @@ export class SignUpComponent implements OnInit {
 
   username: any;
   password: any;
-  groupName: any;
   groups: any;
   groupId: any;
+  users: any;
 
   constructor(
     private http:HttpClient,
@@ -27,14 +27,14 @@ export class SignUpComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getGroups();
+    this.getUsers();
   }
 
-  // setup group API functions
-  async getGroups(){
-    await this.groupService.getGroups().subscribe(data => {
-      this.groups = data;
-      return this.groups;
+
+  async getUsers(){
+    await this.userService.getUsers().subscribe((data) => {
+      this.users = data;
+      return this.users;
     });
   }
 
@@ -44,17 +44,14 @@ export class SignUpComponent implements OnInit {
   onSubmit() {
     this.username = this.username.toString();
     this.password = this.password.toString();
-    this.groupName = this.groupName.toString();
 
-    //assign group name to group id for user creation
-    let group = this.groups.find((group: any) => group.name == this.groupName);
-
-    if (group == undefined){
-      alert('No group exists with that name: ' + this.groupName);
+    let user = this.users.find((user: any) => user.name == this.username);
+    if (user == undefined){
+      this.userService.postUser(this.username, this.password, 0, 0).subscribe();
+      this.getUsers();
     }
     else{
-      this.groupId = group.id;
-      this.userService.postUser(this.username, this.password, 0, this.groupId);
+      alert('User with that name already exists. Please try again.')
     }
 
     this.router.navigate(['/login']);
