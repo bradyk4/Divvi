@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { DeletionDialogComponent } from 'src/app/deletion-dialog/deletion-dialog.component';
 import { ExpenseDialogComponent } from 'src/app/expense-dialog/expense-dialog.component';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
     private groupService: GroupService,
     private transactionService: TransactionService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router:Router
   ) {}
   title = 'Divvi';
   user: any;
@@ -86,6 +88,8 @@ export class HomeComponent implements OnInit {
   count = 0;
   fixedSum = 0;
   confirmation!: boolean;
+  runningBalanceSum!: any;
+  public runningBalance: Array<{id: number, balance: number}> = [];
 
   // handles true/false change for isAmountPaid check box
   onPaidChange(event: Event) {
@@ -102,12 +106,14 @@ export class HomeComponent implements OnInit {
         if (this.confirmation == true) {
           this.transactionService.deleteTransaction(+eventTarget.id).subscribe();
           this.getTransactions();
+          this.getInitialBalance()
         }
         else if (this.confirmation == false) {
           eventTarget.checked = false;
           return;
         }
         this.getTransactions();
+        this.getInitialBalance();
       });
     } else if (eventTarget.checked == false) {
       //do nothing
@@ -230,6 +236,7 @@ export class HomeComponent implements OnInit {
 
   showGroupAddInput() {
     this.addGroup = !this.addGroup;
+    this.getInitialBalance();
   }
 
   showUserAddInput() {
@@ -317,18 +324,15 @@ export class HomeComponent implements OnInit {
       const dialogRef = this.dialog.open(ExpenseDialogComponent, {
         width: '500px',
         height: '500px',
-        data: this.payment
+        data: {
+          payment: this.payment,
+          expenseName: this.expenseName,
+          expenseDesc: this.expenseDesc
+        }
       });
       dialogRef.afterClosed().subscribe((result) => {
+        this.getTransactions();
         this.confirmation = result.data
-        if (this.confirmation == true) {
-          
-
-        }
-        else if (this.confirmation == false) {
-          return;
-        }
-
       });
     }
   }
@@ -389,7 +393,7 @@ export class HomeComponent implements OnInit {
 
 
   // This Evenly function splits the payment, and pushes values to the database and the pending transactions table
-  Evenly() {
+  async Evenly() {
     this.groupSize = this.groupUsers.Users.length;
     this.Splitpayment = this.payment / this.groupSize;
 
@@ -421,6 +425,7 @@ export class HomeComponent implements OnInit {
     this.expenseName = '';
     this.expenseDesc = '';
     this.payment = 0;
+    await this.getInitialBalance();
   }
 
   onFixedChange(event: Event) {
@@ -629,6 +634,60 @@ export class HomeComponent implements OnInit {
       this.expenseDesc = '';
       this.payment = 0;
     }
+  }
+
+
+  async getInitialBalance(){
+   
+    this.runningBalance = [];
+    this.runningBalanceSum = 0
+   this.groupUsers.Users.forEach((user:any) =>{
+
+    this.runningBalance.push( {id: user.id, balance: 0 } )
+
+  });
+   
+     
+       await this.transactions.forEach((trans:any) => {
+     
+     
+      if (this.authUserId == trans.userID)
+      {
+     
+        const iterator = this.runningBalance.values()
+        for (const value of iterator){
+        if (value.id == trans.creatorID)
+        {
+        this.runningBalanceSum = trans.amountOwed + value.balance
+        }
+        }
+        this.runningBalance.splice(this.runningBalance.findIndex(x => x.id === trans.creatorID),1)
+        this.runningBalance.push( {id: trans.creatorID, balance: this.runningBalanceSum } )
+       
+
+
+      }
+      else if(this.authUserId == trans.creatorID)
+      {
+        const iterator = this.runningBalance.values()
+        for (const value of iterator){
+          if (value.id == trans.userID)
+        {
+        this.runningBalanceSum = value.balance - trans.amountOwed
+        }
+        }
+      this.runningBalance.splice(this.runningBalance.findIndex(x => x.id === trans.userID),1)
+      this.runningBalance.push( {id: trans.userID,balance: this.runningBalanceSum } )
+       
+      }
+      });
+     
+    const iterator = this.runningBalance.values()
+     for (const value of iterator){
+      this.updateUserBalance(value.id, value.balance)
+    }
+
+ 
   }
 
   // Framework to clear amount owed
