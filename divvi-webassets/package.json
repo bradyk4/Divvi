@@ -15,7 +15,7 @@
     "@angular/cdk": "^13.0.0",
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
-    "@angular/core": "~12.2.0",
+    "@angular/core": "^12.2.16",
     "@angular/forms": "~12.2.0",
     "@angular/localize": "~12.2.0",
     "@angular/material": "~13.0.0-next.7+89.sha-a662737",
@@ -28,7 +28,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.6.1",
+    "jquery": "^3.6.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
