@@ -13,11 +13,8 @@
   integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
   crossorigin="anonymous"
 />
-<<<<<<< HEAD
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-=======
->>>>>>> origin
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -32,20 +29,6 @@
   </header>
   <body>
     <form>
-<<<<<<< HEAD
-      <div ngbDropdown>
-        <button class="btn btn-secondary" id="dropdown" 
-                ngbDropdownToggle>Groups</button>
-        <div ngbDropdownMenu="dropdown">
-          <button ngbDropdownItem>GeeksforGeeks</button>
-          <button ngbDropdownItem>Angular10</button>
-          <button ngbDropdownItem>ng bootstrap</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <h2 class="col-md-6 float-left">Existing Groups:</h2>
-=======
 
       <div ngbDropdown *ngIf="userGroups">
 
@@ -65,7 +48,6 @@
       <div class="row">
         <h2 class="col-md-6 float-left">Existing Groups:</h2>
 
->>>>>>> origin
         <h2 class="col-md-6 float-right">Pending Transactions:</h2>
         <hr />
         <div class="col-md-6">
@@ -92,11 +74,7 @@
             </thead>
             <tbody>
               <tr
-<<<<<<< HEAD
-                *ngFor="let user of groupUsers.Users"
-=======
                 *ngFor="let user of groupUsers.users"
->>>>>>> origin
                 class="table-light text-center"
               >
                 <td>{{ user.name }}</td>
@@ -120,12 +98,7 @@
               />
             </p>
             <p style="text-align: left">
-<<<<<<< HEAD
-              Please enter the group number of the group you would like to add
-              to:
-=======
               Please enter the group number:
->>>>>>> origin
               <input
                 id="groupNumber"
                 name="groupNumber"
@@ -168,11 +141,7 @@
               />
             </p>
             <p style="text-align: left">
-<<<<<<< HEAD
-              Please enter the group ID of the group you would like to be added
-=======
               Please enter the name of the group you would like to be added
->>>>>>> origin
               to:
               <input
                 id="groupName"
@@ -383,11 +352,7 @@
         class="row container-fluid col-md-4"
         id="fixedshow"
       >
-<<<<<<< HEAD
-        <ng-container *ngFor="let user of groupUsers.Users"
-=======
         <ng-container *ngFor="let user of groupUsers.users"
->>>>>>> origin
           >{{ user.name }}
           <input
             id="{{ user.id }}"
@@ -398,10 +363,7 @@
             required
             (change)="onFixedChange($event)"
           />
-<<<<<<< HEAD
-=======
           <br />
->>>>>>> origin
         </ng-container>
 
         <button
@@ -417,15 +379,9 @@
         class="row container-fluid col-md-4"
         id="percentshow"
       >
-<<<<<<< HEAD
-        <ng-container *ngFor="let user of groupUsers.Users">
-          {{ user.name
-          }}<input
-=======
         <ng-container *ngFor="let user of groupUsers.users">
           {{ user.name}}
           <input
->>>>>>> origin
             id="{{ user.id }}"
             type="number"
             step="0.01"

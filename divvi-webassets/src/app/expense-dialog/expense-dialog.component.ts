@@ -42,7 +42,7 @@ export class ExpenseDialogComponent implements OnInit {
   }> = [];
 
   ngOnInit(): void {
-    this.groupUsers = this.getGroupUsers(this.groupId);
+    this.groupUsers = this.getGroupUsers(this.data.groupID);
     this.transactions = this.getTransactions();
   }
 
@@ -65,8 +65,8 @@ export class ExpenseDialogComponent implements OnInit {
       this.expenseDesc = this.data.expenseDesc;
 
       this.expenseTable.splice(0, this.expenseTable.length);
-      this.initialValue = this.payment / (this.groupUsers.Users.length - 1);
-      let users = this.groupUsers.Users.filter((user:any) => user.id != this.authUserId)
+      this.initialValue = this.payment / (this.groupUsers.users.length - 1);
+      let users = this.groupUsers.users.filter((user:any) => user.id != this.authUserId)
       users.forEach((user: any) => {
         this.expenseTable.push({
           id: user.id,
@@ -84,7 +84,7 @@ export class ExpenseDialogComponent implements OnInit {
       this.expenseDesc = this.data.expenseDesc;
       this.expenseTable.splice(0, this.expenseTable.length);
       this.percentSum = 100;
-      let users = this.groupUsers.Users.filter((user:any) => user.id != this.authUserId)
+      let users = this.groupUsers.users.filter((user:any) => user.id != this.authUserId)
       users.forEach((user: any) => {
         this.expenseTable.push({
           id: user.id,
@@ -92,7 +92,7 @@ export class ExpenseDialogComponent implements OnInit {
           expenseSplit: undefined,
         });
       });
-      this.initialValue = 100 / (this.groupUsers.Users.length - 1);
+      this.initialValue = 100 / (this.groupUsers.users.length - 1);
     }
     else {
       this.dropdownVal = 0;
@@ -103,9 +103,9 @@ export class ExpenseDialogComponent implements OnInit {
   onSubmit() {
     //evenly
     if (this.dropdownVal == 1){
-      this.evenlySplit = this.payment / this.groupUsers.Users.length;
-      let creator = this.groupUsers.Users.find((user:any) => user.id = this.authUserId)
-      let users = this.groupUsers.Users.filter((user:any) => user.id != this.authUserId)
+      this.evenlySplit = this.payment / this.groupUsers.users.length;
+      let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
+      let users = this.groupUsers.users.filter((user:any) => user.id != this.authUserId)
       users.forEach((user:any) =>{
         this.transactionService
         .postTransaction(
@@ -138,7 +138,7 @@ export class ExpenseDialogComponent implements OnInit {
         this.openDialogFixed();
       }
       else {
-        let creator = this.groupUsers.Users.find((user:any) => user.id = this.authUserId)
+        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
         this.expenseTable.forEach((input: any) => {
           this.transactionService
           .postTransaction(
@@ -169,7 +169,7 @@ export class ExpenseDialogComponent implements OnInit {
 
       }
       else{
-        let creator = this.groupUsers.Users.find((user:any) => user.id = this.authUserId)
+        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
         this.expenseTable.forEach((input: any) => {
           this.percentSplit = this.payment * (input.expenseSplit / 100)
           this.transactionService
@@ -195,6 +195,7 @@ export class ExpenseDialogComponent implements OnInit {
         console.log(this.dialogRef.disableClose)
         alert("Please select an option")
     }
+    this.getTransactions();
 }
 
   onCancel() {
@@ -204,7 +205,7 @@ export class ExpenseDialogComponent implements OnInit {
 
   onFixedChange(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
-    this.groupUsers.Users.forEach((user: any) => {
+    this.groupUsers.users.forEach((user: any) => {
       if (
         user.id == +eventTarget.id &&
         +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1
@@ -240,7 +241,7 @@ export class ExpenseDialogComponent implements OnInit {
     // then we need to push all the values to the database on the percentage method
     const eventTarget = event.target as HTMLInputElement;
 
-    this.groupUsers.Users.forEach((user: any) => {
+    this.groupUsers.users.forEach((user: any) => {
       if (
         user.id == +eventTarget.id &&
         +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1
@@ -269,7 +270,7 @@ export class ExpenseDialogComponent implements OnInit {
       }
     });
 
-    // this.total = (100 - this.toNumber) / (this.groupUsers.Users.length - 1)this.total = (100 - this.toNumber) / (this.groupUsers.Users.length - 1)
+    
   }
 
 
@@ -330,7 +331,7 @@ export class ExpenseDialogComponent implements OnInit {
       this.confirmation = result.data;
       // if confirmation is true it sets all undefined to 0 and then pushes to DB
       if (this.confirmation == true) {
-        let creator = this.groupUsers.Users.find((user:any) => user.id = this.authUserId)
+        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
         this.expenseTable.forEach((input: any) => {
           if(input.expenseSplit != 0 && input.expenseSplit != undefined){
             this.transactionService
@@ -372,7 +373,7 @@ export class ExpenseDialogComponent implements OnInit {
       this.confirmation = result.data;
       // if confirmation is true it sets all undefined to 0 and then pushes to DB
       if (this.confirmation == true) {
-        let creator = this.groupUsers.Users.find((user:any) => user.id = this.authUserId)
+        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
         this.expenseTable.forEach((input: any) => {
           if(input.expenseSplit != 0 && input.expenseSplit != undefined){
             this.percentSplit = this.payment * (input.expenseSplit / 100)

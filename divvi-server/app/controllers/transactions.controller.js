@@ -52,7 +52,6 @@ exports.findByPk = (req, res) => {
         message: "Error retrieving transaction with id=" + ID,
       });
     });
-<<<<<<< HEAD
 };
 
 exports.delete = (req, res) => {
@@ -77,6 +76,4 @@ exports.delete = (req, res) => {
         message: "Could not delete Transaction with id=" + id,
       });
     });
-=======
->>>>>>> origin
 };

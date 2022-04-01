@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   groupId: number = LoginPageComponent.loginData.user.groupId;
   authUserId: number = LoginPageComponent.loginData.user.id;
   creatorName: string = LoginPageComponent.loginData.user.name;
-
+  groupSelectID: any;
   transactions: any;
   transactionData: any;
   test1: any;
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit {
         if (this.confirmation == true) {
           this.transactionService.deleteTransaction(+eventTarget.id).subscribe();
           this.getTransactions();
-          this.getInitialBalance()
+          this.getInitialBalance();
         }
         else if (this.confirmation == false) {
           eventTarget.checked = false;
@@ -332,12 +332,13 @@ export class HomeComponent implements OnInit {
         data: {
           payment: this.payment,
           expenseName: this.expenseName,
-          expenseDesc: this.expenseDesc
+          expenseDesc: this.expenseDesc,
+          groupID: this.groupSelectID
         }
       });
       dialogRef.afterClosed().subscribe((result) => {
-        this.getTransactions();
         this.confirmation = result.data
+        this.getTransactions();
       });
     }
   }
@@ -646,7 +647,7 @@ export class HomeComponent implements OnInit {
    
     this.runningBalance = [];
     this.runningBalanceSum = 0
-   this.groupUsers.Users.forEach((user:any) =>{
+   this.groupUsers.users.forEach((user:any) =>{
 
     this.runningBalance.push( {id: user.id, balance: 0 } )
 
@@ -756,6 +757,7 @@ export class HomeComponent implements OnInit {
 
   groupSelectBtn(event: Event){
     const groupSelect = event.target as HTMLInputElement;
+    this.groupSelectID = +groupSelect.id;
     this.getGroupUsers(+groupSelect.id);
   }
 

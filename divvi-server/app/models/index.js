@@ -26,11 +26,6 @@ db.sequelize = sequelize;
 db.user = require('./user')(sequelize, Sequelize);
 db.group = require('./group')(sequelize, Sequelize);
 db.transactions = require('./transactions')(sequelize, Sequelize);
-<<<<<<< HEAD
-
-db.group.hasMany(db.user, {foreignKey: 'groupId'});
-db.user.belongsTo(db.group, {foreignKey: 'id'});
-=======
 db.groupsUsersRelation = require('./groupsUsersRelation')(sequelize, Sequelize);
 
 db.group.belongsToMany(db.user, {
@@ -43,6 +38,5 @@ db.user.belongsToMany(db.group, {
   as: "groups",
   foreignKey: "userID",
 });
->>>>>>> origin
 
 module.exports = db;

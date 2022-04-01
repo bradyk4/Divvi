@@ -1,9 +1,6 @@
 const db = require("../models");
 const User = db.user;
-<<<<<<< HEAD
-=======
 const Group = db.group;
->>>>>>> origin
 const Op = require("sequelize");
 const { where } = require("sequelize");
 const bcrypt = require("bcrypt");
@@ -101,8 +98,6 @@ exports.findByPk = (req, res) => {
     });
 };
 
-<<<<<<< HEAD
-=======
 // find group by id and display users in group
 exports.findGroupsByUser = (req, res) => {
   const ID = req.params.id;
@@ -135,7 +130,6 @@ exports.findGroupsByUser = (req, res) => {
   });
 }
 
->>>>>>> origin
 // Update a user by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
