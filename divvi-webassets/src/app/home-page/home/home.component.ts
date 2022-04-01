@@ -114,7 +114,6 @@ export class HomeComponent implements OnInit {
 
   showGroupAddInput() {
     this.addGroup = !this.addGroup;
-    this.getInitialBalance();
   }
 
   showUserAddInput() {
