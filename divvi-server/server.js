@@ -31,7 +31,11 @@ app.use(cors(corsOptionsDelegate), function (req, res, next) {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+<<<<<<< HEAD
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+=======
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
+>>>>>>> origin
   next();
 });
 
@@ -44,6 +48,10 @@ app.get("/", cors(corsOptionsDelegate), function (req, res, next) {
 require("./app/routes/user.routes")(app);
 require("./app/routes/group.routes")(app);
 require("./app/routes/transactions.routes")(app);
+<<<<<<< HEAD
+=======
+require("./app/routes/groupsUsersRelation.routes")(app);
+>>>>>>> origin
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8090;

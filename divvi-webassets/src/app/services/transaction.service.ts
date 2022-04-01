@@ -27,8 +27,11 @@ export class TransactionService {
     }
     return this.http.post('http://localhost:8090/api/transactions/post', body)
   }
+<<<<<<< HEAD
 
   deleteTransaction(id: number){
     return this.http.delete('http://localhost:8090/api/transactions/'+id);
   }
+=======
+>>>>>>> origin
 }

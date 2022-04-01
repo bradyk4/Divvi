@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   selectedGroup: any;
   groups: any;
   groupUsers: any;
+  userGroups: any;
   name: any;
   groupNumber: any;
   groupID: any;
@@ -54,6 +55,7 @@ export class HomeComponent implements OnInit {
     this.groups = this.getGroups();
     this.groupUsers = this.getGroupUsers(this.groupId);
     this.transactions = this.getTransactions();
+    this.userGroups = this.getUsersGroups(this.authUserId);
   }
 
   public amountOwed!: number;
@@ -250,12 +252,15 @@ export class HomeComponent implements OnInit {
         this.groupExists = true;
       } else {
         this.groupExists = false;
+        this.groupId = group.id;
       }
     });
     if (this.groupExists == false) {
       this.groupService.postGroup(this.groupName, this.groupNumber).subscribe();
+      this.getGroupUsers(this.groupId);
       alert('Group created successfully!');
       this.showGroupAddInput();
+      this.getGroups();
     }
   }
 
@@ -294,6 +299,7 @@ export class HomeComponent implements OnInit {
     ) {
       this.userService.updateUserGroup(user.id, this.groupID).subscribe();
       this.getGroupUsers(this.groupID);
+      this.getUsersGroups(user.id);
       alert(
         'User added to group successfully! (may need to refresh to see changes)'
       );
@@ -304,7 +310,6 @@ export class HomeComponent implements OnInit {
   // this method is the framework to check user entry - if expense Name, Description, or payment is blank or 0 then the payment options will not show and it will
   // require the user to re-enter their values.
   showPaymentOptions() {
-
     this.expenseName;
     this.expenseDesc;
     this.payment;
@@ -365,7 +370,7 @@ export class HomeComponent implements OnInit {
     this.evenIsShown = false;
     this.percentIsShown = false;
     this.fixedIsShown = !this.fixedIsShown;
-    this.initialValue = this.payment / this.groupUsers.Users.length;
+    this.initialValue = this.payment / this.groupUsers.users.length;
     this.users.forEach((user: any) => {
       this.expenseTable.push({
         id: user.id,
@@ -380,7 +385,7 @@ export class HomeComponent implements OnInit {
     this.fixedIsShown = false;
     this.evenIsShown = false;
     this.percentIsShown = !this.percentIsShown;
-    this.initialValue = 100 / this.groupUsers.Users.length;
+    this.initialValue = 100 / this.groupUsers.users.length;
     this.users.forEach((user: any) => {
       this.expenseTable.push({
         id: user.id,
@@ -738,8 +743,20 @@ export class HomeComponent implements OnInit {
   getGroupUsers(id: number) {
     this.groupService.getGroupUsers(id).subscribe((data) => {
       this.groupUsers = data;
-      return this.groupUsers
+      return this.groupUsers;
     });
+  }
+
+  getUsersGroups(id: number) {
+    this.userService.getUserGroups(id).subscribe((data) => {
+      this.userGroups = data;
+      return this.userGroups;
+    });
+  }
+
+  groupSelectBtn(event: Event){
+    const groupSelect = event.target as HTMLInputElement;
+    this.getGroupUsers(+groupSelect.id);
   }
 
   getGroup(id: number) {

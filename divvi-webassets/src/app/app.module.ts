@@ -15,10 +15,14 @@ import { LoginPageComponent } from './login-page/login-page/login-page.component
 import { SignUpComponent } from './sign-up-page/sign-up/sign-up.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+<<<<<<< HEAD
 import { CreateGroupDialogComponent } from './create-group-dialog/create-group-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeletionDialogComponent } from './deletion-dialog/deletion-dialog.component';
 import { ExpenseDialogComponent } from './expense-dialog/expense-dialog.component';
+=======
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+>>>>>>> origin
 
 @NgModule({
   declarations: [
@@ -26,10 +30,14 @@ import { ExpenseDialogComponent } from './expense-dialog/expense-dialog.componen
     HomeComponent,
     LoginPageComponent,
     SignUpComponent,
+<<<<<<< HEAD
     ConfirmationDialogComponent,
     CreateGroupDialogComponent,
     DeletionDialogComponent,
     ExpenseDialogComponent
+=======
+    ConfirmationDialogComponent
+>>>>>>> origin
 
   ],
   imports: [

@@ -1,6 +1,10 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
+<<<<<<< HEAD
 @use "@angular/material" as mat;
+=======
+@use '@angular/material' as mat;
+>>>>>>> origin
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -19,6 +23,7 @@ $Divvi-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
+<<<<<<< HEAD
 $Divvi-theme: mat.define-light-theme(
   (
     color: (
@@ -28,9 +33,23 @@ $Divvi-theme: mat.define-light-theme(
     ),
   )
 );
+=======
+$Divvi-theme: mat.define-light-theme((
+  color: (
+    primary: $Divvi-primary,
+    accent: $Divvi-accent,
+    warn: $Divvi-warn,
+  )
+));
+>>>>>>> origin
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+<<<<<<< HEAD
 
 @include mat.all-component-themes($Divvi-theme);
+=======
+@include mat.all-component-themes($Divvi-theme);
+
+>>>>>>> origin
