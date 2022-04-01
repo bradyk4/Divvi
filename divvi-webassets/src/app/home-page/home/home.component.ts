@@ -38,15 +38,12 @@ export class HomeComponent implements OnInit {
   groupID: any;
   groupName: any;
   id: any;
-  updateBalance: any;
-  callLoginMethod = LoginPageComponent.loginData;
   groupId: number = LoginPageComponent.loginData.user.groupId;
   authUserId: number = LoginPageComponent.loginData.user.id;
   creatorName: string = LoginPageComponent.loginData.user.name;
   groupSelectID: any;
   transactions: any;
   transactionData: any;
-  test1: any;
 
   // this method gets group #1, and the users within the group
   ngOnInit(): void {
@@ -61,16 +58,10 @@ export class HomeComponent implements OnInit {
   public expense!: number;
   public Splitpayment!: number;
   public groupSize: number = 0;
-  public percent: any = [];
   addUser: boolean = false;
   addGroup: boolean = false;
-  alert: boolean = false;
   showPayments: boolean = false;
   newExpense: boolean = false;
-  evenIsShown: boolean = false;
-  fixedIsShown: boolean = false;
-  percentIsShown: boolean = false;
-  public iterate!: number;
   public expenseName!: string;
   public expenseDesc!: string;
   last!: {};
@@ -233,54 +224,19 @@ export class HomeComponent implements OnInit {
   showNewExpense() {
     this.newExpense = !this.newExpense;
     this.showPayments = false;
-    this.evenIsShown = false;
-    this.percentIsShown = false;
-    this.fixedIsShown = false;
+
 
     this.transactions.forEach((data: any) => {});
   }
   cancelShowNewExpense() {
     this.newExpense = false;
     this.showPayments = false;
-    this.evenIsShown = false;
-    this.percentIsShown = false;
-    this.fixedIsShown = false;
     this.expenseName = '';
     this.expenseDesc = '';
     this.payment = 0;
     this.expenseTable.splice(0, this.expenseTable.length);
   }
 
-  toggleFixedShow() {
-    this.expenseTable.splice(0, this.expenseTable.length);
-    this.evenIsShown = false;
-    this.percentIsShown = false;
-    this.fixedIsShown = !this.fixedIsShown;
-    this.initialValue = this.payment / this.groupUsers.users.length;
-    this.users.forEach((user: any) => {
-      this.expenseTable.push({
-        id: user.id,
-        debtorName: user.name,
-        expenseSplit: undefined,
-      });
-    });
-  }
-
-  togglePercentShow() {
-    this.expenseTable.splice(0, this.expenseTable.length);
-    this.fixedIsShown = false;
-    this.evenIsShown = false;
-    this.percentIsShown = !this.percentIsShown;
-    this.initialValue = 100 / this.groupUsers.users.length;
-    this.users.forEach((user: any) => {
-      this.expenseTable.push({
-        id: user.id,
-        debtorName: user.name,
-        expenseSplit: undefined,
-      });
-    });
-
-  }
 
   async getInitialBalance(){
    
