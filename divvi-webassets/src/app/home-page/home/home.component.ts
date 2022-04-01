@@ -215,6 +215,7 @@ export class HomeComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         this.confirmation = result.data
         this.getTransactions();
+        alert('Transaction submitted! Please click the refresh button to see changes to balance.')
       });
     }
   }
@@ -239,7 +240,7 @@ export class HomeComponent implements OnInit {
 
 
   async getInitialBalance(){
-   
+
     this.runningBalance = [];
     this.runningBalanceSum = 0
    this.groupUsers.users.forEach((user:any) =>{
@@ -247,14 +248,14 @@ export class HomeComponent implements OnInit {
     this.runningBalance.push( {id: user.id, balance: 0 } )
 
   });
-   
-     
+
+
        await this.transactions.forEach((trans:any) => {
-     
-     
+
+
       if (this.authUserId == trans.userID)
       {
-     
+
         const iterator = this.runningBalance.values()
         for (const value of iterator){
         if (value.id == trans.creatorID)
@@ -264,7 +265,7 @@ export class HomeComponent implements OnInit {
         }
         this.runningBalance.splice(this.runningBalance.findIndex(x => x.id === trans.creatorID),1)
         this.runningBalance.push( {id: trans.creatorID, balance: this.runningBalanceSum } )
-       
+
 
 
       }
@@ -279,16 +280,16 @@ export class HomeComponent implements OnInit {
         }
       this.runningBalance.splice(this.runningBalance.findIndex(x => x.id === trans.userID),1)
       this.runningBalance.push( {id: trans.userID,balance: this.runningBalanceSum } )
-       
+
       }
       });
-     
+
     const iterator = this.runningBalance.values()
      for (const value of iterator){
       this.updateUserBalance(value.id, value.balance)
     }
 
- 
+
   }
 
   // setup user API functions
@@ -346,6 +347,15 @@ export class HomeComponent implements OnInit {
     const groupSelect = event.target as HTMLInputElement;
     this.groupSelectID = +groupSelect.id;
     this.getGroupUsers(+groupSelect.id);
+    this.groupUsers.users.forEach((user: any) => {
+      this.updateUserBalance(user.id, 0);
+    });
+  }
+
+  refreshButton(){
+    this.getInitialBalance();
+    this.getUsersGroups(this.authUserId);
+    this.getGroupUsers(this.groupSelectID);
   }
 
   getGroup(id: number) {
