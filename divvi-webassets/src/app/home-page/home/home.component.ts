@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
 import { GroupService } from 'src/app/services/group.service';
-import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { LoginPageComponent } from 'src/app/login-page/login-page/login-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionService } from 'src/app/services/transaction.service';

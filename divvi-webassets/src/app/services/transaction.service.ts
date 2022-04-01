@@ -25,7 +25,7 @@ export class TransactionService {
       "creatorName": creatorName,
       "isAmountPaid": isAmountPaid
     }
-    return this.http.post('http://localhost:8090/api/transactions/post', body)
+    return this.http.post('http://localhost:8090/api/transactions/post', body);
   }
 
   deleteTransaction(id: number){

@@ -4,7 +4,6 @@ import { GroupService } from 'src/app/services/group.service';
 import { LoginPageComponent } from '../login-page/login-page/login-page.component';
 import { HttpClient } from '@angular/common/http';
 import { TransactionService } from '../services/transaction.service';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -120,7 +119,6 @@ export class ExpenseDialogComponent implements OnInit {
         ).subscribe();
 
       });
-  
 
       this.dialogRef.close({data: true, dropdownVal: this.dropdownVal})
     }
@@ -135,7 +133,27 @@ export class ExpenseDialogComponent implements OnInit {
         )
       }
       else if (this.fixedSum == 0 && this.count != 0) {
-        this.openDialogFixed();
+        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
+        this.expenseTable.forEach((input: any) => {
+          if(input.expenseSplit != 0 && input.expenseSplit != undefined){
+            this.transactionService
+            .postTransaction(
+              input.debtorName,
+              this.expenseName,
+              this.expenseDesc,
+              input.expenseSplit,
+              input.id,
+              this.authUserId,
+              creator.name,
+              false
+            ).subscribe();
+            
+          }
+          else {
+            //do nothing
+            return;
+          }
+        });
       }
       else {
         let creator = this.groupUsers.users.find((user:any) => user.id == this.authUserId)
@@ -164,8 +182,27 @@ export class ExpenseDialogComponent implements OnInit {
         );
       }
       else if (this.percentSum == 0 && this.count !=0){
-        this.openDialogPerc();
-
+        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
+        this.expenseTable.forEach((input: any) => {
+          if(input.expenseSplit != 0 && input.expenseSplit != undefined){
+            this.percentSplit = this.payment * (input.expenseSplit / 100)
+            this.transactionService
+            .postTransaction(
+              input.debtorName,
+              this.expenseName,
+              this.expenseDesc,
+              this.percentSplit,
+              input.id,
+              this.authUserId,
+              creator.name,
+              false
+            ).subscribe();
+          }
+          else {
+            //do nothing
+            return;
+          }
+        });
       }
       else{
         let creator = this.groupUsers.users.find((user:any) => user.id == this.authUserId)
@@ -183,7 +220,7 @@ export class ExpenseDialogComponent implements OnInit {
             false
           ).subscribe();
 
-        })
+        });
       }
 
       this.dialogRef.close({data: true, dropdownVal: this.dropdownVal})
@@ -198,6 +235,7 @@ export class ExpenseDialogComponent implements OnInit {
 
   onCancel() {
     this.dialogRef.close({data: false, dropdownVal: 0});
+    this.getTransactions();
   }
 
 
@@ -309,100 +347,6 @@ export class ExpenseDialogComponent implements OnInit {
       return this.transactions;
     });
   }
-
-
-
-
-
-
-
-
-
-
-  openDialogFixed() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '250px',
-      height: '250px',
-    });
-    // grabs dialog data on close
-    dialogRef.afterClosed().subscribe((result) => {
-      this.confirmation = result.data;
-      // if confirmation is true it sets all undefined to 0 and then pushes to DB
-      if (this.confirmation == true) {
-        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
-        this.expenseTable.forEach((input: any) => {
-          if(input.expenseSplit != 0 && input.expenseSplit != undefined){
-            this.transactionService
-            .postTransaction(
-              input.debtorName,
-              this.expenseName,
-              this.expenseDesc,
-              input.expenseSplit,
-              input.id,
-              this.authUserId,
-              creator.name,
-              false
-            ).subscribe();
-          }
-          else {
-            //do nothing
-            return;
-          }
-        })
-      }
-      // if false, just return to the payment screen to fix changes
-      else if (this.confirmation == false) {
-        return;
-      }
-    });
-  }
-
-  //Opens a confirmation Dialog box.
-  openDialogPerc() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '250px',
-      height: '250px',
-      data:  {
-        payment: this.payment
-      }
-    });
-    // grabs dialog data on close
-    dialogRef.afterClosed().subscribe((result) => {
-      this.confirmation = result.data;
-      // if confirmation is true it sets all undefined to 0 and then pushes to DB
-      if (this.confirmation == true) {
-        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
-        this.expenseTable.forEach((input: any) => {
-          if(input.expenseSplit != 0 && input.expenseSplit != undefined){
-            this.percentSplit = this.payment * (input.expenseSplit / 100)
-            this.transactionService
-            .postTransaction(
-              input.debtorName,
-              this.expenseName,
-              this.expenseDesc,
-              this.percentSplit,
-              input.id,
-              this.authUserId,
-              creator.name,
-              false
-            ).subscribe();
-            this.getTransactions();
-          }
-          else {
-            //do nothing
-            return;
-          }
-        })
-      }
-      // if false, just return to the payment screen to fix changes
-      else if (this.confirmation == false) {
-        return;
-      }
-    });
-  }
-
-
-
 
 }
 

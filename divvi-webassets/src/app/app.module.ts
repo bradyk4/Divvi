@@ -13,7 +13,6 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { HomeComponent } from './home-page/home/home.component';
 import { LoginPageComponent } from './login-page/login-page/login-page.component';
 import { SignUpComponent } from './sign-up-page/sign-up/sign-up.component';
-import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeletionDialogComponent } from './deletion-dialog/deletion-dialog.component';
@@ -25,7 +24,6 @@ import { ExpenseDialogComponent } from './expense-dialog/expense-dialog.componen
     HomeComponent,
     LoginPageComponent,
     SignUpComponent,
-    ConfirmationDialogComponent,
     DeletionDialogComponent,
     ExpenseDialogComponent
 
