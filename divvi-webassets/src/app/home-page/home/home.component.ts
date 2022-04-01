@@ -53,7 +53,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.users = this.getUsers();
     this.groups = this.getGroups();
-    this.groupUsers = this.getGroupUsers(this.groupId);
     this.transactions = this.getTransactions();
     this.userGroups = this.getUsersGroups(this.authUserId);
   }
@@ -123,119 +122,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  //Opens a confirmation Dialog box.
-  openDialogPerc() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '250px',
-      height: '250px',
-      data:  {
-        payment: this.payment
-      }
-    });
-    // grabs dialog data on close
-    dialogRef.afterClosed().subscribe((result) => {
-      this.confirmation = result.data;
-      // if confirmation is true it sets all undefined to 0 and then pushes to DB
-      if (this.confirmation == true) {
-        const iterator = this.expenseTable.values();
-        for (const value of iterator) {
-          this.users.forEach((user: any) => {
-            if (
-              user.name == value.debtorName &&
-              value.expenseSplit != undefined
-            ) {
-              this.Splitpayment = value.expenseSplit!;
-              this.Splitpayment = this.payment * (value.expenseSplit! / 100);
-              user.balance += this.Splitpayment;
-              this.transactionService
-                .postTransaction(
-                  value.debtorName,
-                  this.expenseName,
-                  this.expenseDesc,
-                  this.Splitpayment,
-                  +value.id,
-                  this.authUserId,
-                  this.creatorName,
-                  false
-                )
-                .subscribe();
-              this.updateUserBalance(value.id, user.balance);
-              this.getTransactions();
-            }
-          });
-        }
-        this.expenseTable.splice(0, this.expenseTable.length);
-        this.newExpense = false;
-        this.percentIsShown = false;
-        this.showPayments = false;
-        this.evenIsShown = false;
-        this.percentIsShown = false;
-        this.fixedIsShown = false;
-        this.expenseName = '';
-        this.expenseDesc = '';
-        this.payment = 0;
-      }
-      // if false, just return to the payment screen to fix changes
-      else if (this.confirmation == false) {
-        return;
-      }
-    });
-  }
-  //open dialog for fixed amount.
-  openDialogFixed() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '250px',
-      height: '250px',
-    });
-    // grabs dialog data on close
-    dialogRef.afterClosed().subscribe((result) => {
-      this.confirmation = result.data;
-      // if confirmation is true it sets all undefined to 0 and then pushes to DB
-      if (this.confirmation == true) {
-        const iterator = this.expenseTable.values();
-        for (const value of iterator) {
-          this.users.forEach((user: any) => {
-            if (
-              user.name == value.debtorName &&
-              value.expenseSplit != undefined
-            ) {
-              this.Splitpayment = value.expenseSplit!;
-              user.balance += this.Splitpayment;
-              this.transactionService
-                .postTransaction(
-                  value.debtorName,
-                  this.expenseName,
-                  this.expenseDesc,
-                  this.Splitpayment,
-                  +value.id,
-                  this.authUserId,
-                  this.creatorName,
-                  false
-                )
-                .subscribe();
-              this.updateUserBalance(value.id, user.balance);
-              this.getTransactions();
-            }
-          });
-        }
-        this.expenseTable.splice(0, this.expenseTable.length);
-        this.newExpense = false;
-        this.percentIsShown = false;
-        this.showPayments = false;
-        this.evenIsShown = false;
-        this.percentIsShown = false;
-        this.fixedIsShown = false;
-        this.expenseName = '';
-        this.expenseDesc = '';
-        this.payment = 0;
-      }
-      // if false, just return to the payment screen to fix changes
-      else if (this.confirmation == false) {
-        return;
-      }
-    });
-  }
-
   showGroupAddInput() {
     this.addGroup = !this.addGroup;
     this.getInitialBalance();
@@ -257,7 +143,7 @@ export class HomeComponent implements OnInit {
     });
     if (this.groupExists == false) {
       this.groupService.postGroup(this.groupName, this.groupNumber).subscribe();
-      this.getGroupUsers(this.groupId);
+      this.getGroupUsers(this.groupSelectID);
       alert('Group created successfully!');
       this.showGroupAddInput();
       this.getGroups();
@@ -298,7 +184,7 @@ export class HomeComponent implements OnInit {
       this.userExists == true
     ) {
       this.userService.updateUserGroup(user.id, this.groupID).subscribe();
-      this.getGroupUsers(this.groupID);
+      this.getGroupUsers(this.groupSelectID);
       this.getUsersGroups(user.id);
       alert(
         'User added to group successfully! (may need to refresh to see changes)'
@@ -397,252 +283,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-
-  // This Evenly function splits the payment, and pushes values to the database and the pending transactions table
-  async Evenly() {
-    this.groupSize = this.groupUsers.Users.length;
-    this.Splitpayment = this.payment / this.groupSize;
-
-    this.users.forEach((user: any) => {
-      var balance = this.payment / this.groupSize;
-
-      this.transactionService
-        .postTransaction(
-          user.name,
-          this.expenseName,
-          this.expenseDesc,
-          balance,
-          user.id,
-          this.authUserId,
-          this.creatorName,
-          false
-        )
-        .subscribe();
-      user.balance += this.payment / this.groupSize;
-      this.updateUserBalance(user.id, user.balance);
-      this.getTransactions();
-    });
-    this.expenseTable.splice(0, this.expenseTable.length);
-    this.newExpense = false;
-    this.showPayments = false;
-    this.evenIsShown = false;
-    this.percentIsShown = false;
-    this.fixedIsShown = false;
-    this.expenseName = '';
-    this.expenseDesc = '';
-    this.payment = 0;
-    await this.getInitialBalance();
-  }
-
-  onFixedChange(event: Event) {
-    const eventTarget = event.target as HTMLInputElement;
-
-    this.users.forEach((user: any) => {
-      if (
-        user.id == +eventTarget.id &&
-        +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1
-      ) {
-        this.expenseInput = +eventTarget.value;
-        this.expenseTable.splice(
-          this.expenseTable.findIndex((x) => x.debtorName === user.name),
-          1
-        );
-        this.expenseTable.push({
-          id: user.id,
-          debtorName: user.name,
-          expenseSplit: this.expenseInput,
-        });
-        const iterator = this.expenseTable.values();
-        this.count = 0;
-        this.fixedSum = +this.payment;
-        for (const value of iterator) {
-          if (value.expenseSplit == undefined) {
-            this.count++;
-          } else {
-            this.fixedSum -= value.expenseSplit!;
-          }
-        }
-        this.initialValue = this.fixedSum / this.count;
-      }
-    });
-  }
-
-  // The fixed amount method reads each payment for each user. The user ID is read on click in the HTML using the index and for each user in the group, the amount entered
-  // is read and pushed to the pending transactions table and the database in the updateUserBalance() method.
-  Fixedamount() {
-    this.Splitpayment = 0;
-    this.count = 0;
-
-    this.fixedSum = this.payment;
-
-    const iterator = this.expenseTable.values();
-
-    for (const value of iterator) {
-      if (value.expenseSplit == undefined) {
-        this.count++;
-      } else {
-        this.fixedSum -= value.expenseSplit;
-      }
-    }
-
-    if (this.fixedSum != 0) {
-      alert(
-        'The fixed amounts do not equal your expense of ' +
-          this.payment +
-          '. Please re-enter the fixed amounts for each user'
-      );
-      this.fixedIsShown = true;
-      this.newExpense = false;
-      this.showPayments = false;
-    } else if (this.fixedSum == 0 && this.count != 0) {
-      this.openDialogFixed();
-      this.fixedIsShown = true;
-      this.newExpense = false;
-      this.showPayments = false;
-    } else {
-      const iterator = this.expenseTable.values();
-      for (const value of iterator) {
-        this.users.forEach((user: any) => {
-          if (user.name == value.debtorName) {
-            this.Splitpayment = value.expenseSplit!;
-            user.balance += this.Splitpayment;
-            this.transactionService
-              .postTransaction(
-                value.debtorName,
-                this.expenseName,
-                this.expenseDesc,
-                this.Splitpayment,
-                +value.id,
-                this.authUserId,
-                this.creatorName,
-                false
-              )
-              .subscribe();
-            this.updateUserBalance(value.id, user.balance);
-            this.getTransactions();
-          }
-        });
-      }
-      this.expenseTable.splice(0, this.expenseTable.length);
-      this.newExpense = false;
-      this.percentIsShown = false;
-      this.showPayments = false;
-      this.evenIsShown = false;
-      this.percentIsShown = false;
-      this.fixedIsShown = false;
-      this.expenseName = '';
-      this.expenseDesc = '';
-      this.payment = 0;
-    }
-  }
-
-  // handles the event for when changes are made to the percent input boxes
-  onPercentChange(event: Event) {
-    // we need to push the percent to local array on change, then the if statement below can check everything.
-    // then we need to push all the values to the database on the percentage method
-    const eventTarget = event.target as HTMLInputElement;
-
-    this.users.forEach((user: any) => {
-      if (
-        user.id == +eventTarget.id &&
-        +this.expenseTable.findIndex((x) => x.debtorName === user.name) != -1
-      ) {
-        this.expenseInput = +eventTarget.value;
-        this.expenseTable.splice(
-          this.expenseTable.findIndex((x) => x.debtorName === user.name),
-          1
-        );
-        this.expenseTable.push({
-          id: user.id,
-          debtorName: user.name,
-          expenseSplit: this.expenseInput,
-        });
-        const iterator = this.expenseTable.values();
-        this.count = 0;
-        this.percentSum = 100;
-        for (const value of iterator) {
-          if (value.expenseSplit == undefined) {
-            this.count++;
-          } else {
-            this.percentSum -= value.expenseSplit!;
-          }
-        }
-        this.initialValue = this.percentSum / this.count;
-      }
-    });
-
-    // this.total = (100 - this.toNumber) / (this.groupUsers.Users.length - 1)this.total = (100 - this.toNumber) / (this.groupUsers.Users.length - 1)
-  }
-
-  // The percentage method reads each payment for each user. The user ID is read on click in the HTML using the index and for each user in the group, the amount entered
-  // is read and pushed to the pending transactions table and the database in the updateUserBalance() method.
-  Percentage() {
-    this.Splitpayment = 0;
-
-    this.count = 0;
-
-    this.percentSum = 100;
-
-    const iterator = this.expenseTable.values();
-
-    for (const value of iterator) {
-      if (value.expenseSplit == undefined) {
-        this.count++;
-      } else {
-        this.percentSum -= value.expenseSplit;
-      }
-    }
-    if (this.percentSum != 0) {
-      alert(
-        'Percent total does not equal 100%. Please re-enter the percent total for each user'
-      );
-      this.percentIsShown = true;
-      this.newExpense = false;
-      this.showPayments = false;
-    } else if (this.percentSum == 0 && this.count != 0) {
-      this.openDialogPerc();
-      this.percentIsShown = true;
-      this.newExpense = false;
-      this.showPayments = false;
-    } else {
-      const iterator = this.expenseTable.values();
-      for (const value of iterator) {
-        this.users.forEach((user: any) => {
-          if (user.name == value.debtorName) {
-            this.Splitpayment = this.payment * (value.expenseSplit! / 100);
-            user.balance += this.Splitpayment;
-            this.transactionService
-              .postTransaction(
-                value.debtorName,
-                this.expenseName,
-                this.expenseDesc,
-                this.Splitpayment,
-                +value.id,
-                this.authUserId,
-                this.creatorName,
-                false
-              )
-              .subscribe();
-            //this.pendingTransactions.push( {groupUsers: value.username, expenseName: this.expenseName, expenseDesc: this.expenseDesc, payment: this.Splitpayment} );
-            this.updateUserBalance(value.id, user.balance);
-            this.getTransactions();
-          }
-        });
-      }
-      this.expenseTable.splice(0, this.expenseTable.length);
-      this.newExpense = false;
-      this.percentIsShown = false;
-      this.showPayments = false;
-      this.evenIsShown = false;
-      this.percentIsShown = false;
-      this.fixedIsShown = false;
-      this.expenseName = '';
-      this.expenseDesc = '';
-      this.payment = 0;
-    }
-  }
-
-
   async getInitialBalance(){
    
     this.runningBalance = [];
@@ -696,14 +336,6 @@ export class HomeComponent implements OnInit {
  
   }
 
-  // Framework to clear amount owed
-  clearAmountOwed() {
-    this.users.forEach((user: any) => {
-      this.updateUserBalance(user.id, 0);
-      this.getTransactions();
-    });
-  }
-
   // setup user API functions
   getUsers() {
     this.userService.getUsers().subscribe((data) => {
@@ -726,7 +358,7 @@ export class HomeComponent implements OnInit {
 
   updateUserBalance(id: number, balance: number) {
     this.userService.updateUserBalance(id, balance).subscribe();
-    this.getGroupUsers(this.groupId);
+    this.getGroupUsers(this.groupSelectID);
   }
 
   deleteUser(id: number) {

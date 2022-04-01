@@ -104,7 +104,7 @@ export class ExpenseDialogComponent implements OnInit {
     //evenly
     if (this.dropdownVal == 1){
       this.evenlySplit = this.payment / this.groupUsers.users.length;
-      let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
+      let creator = this.groupUsers.users.find((user:any) => user.id == this.authUserId)
       let users = this.groupUsers.users.filter((user:any) => user.id != this.authUserId)
       users.forEach((user:any) =>{
         this.transactionService
@@ -138,7 +138,7 @@ export class ExpenseDialogComponent implements OnInit {
         this.openDialogFixed();
       }
       else {
-        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
+        let creator = this.groupUsers.users.find((user:any) => user.id == this.authUserId)
         this.expenseTable.forEach((input: any) => {
           this.transactionService
           .postTransaction(
@@ -162,14 +162,13 @@ export class ExpenseDialogComponent implements OnInit {
         alert(
           'Percent total does not equal 100%. Please re-enter the percent total for each user'
         );
-        console.log(this.expenseTable)
       }
       else if (this.percentSum == 0 && this.count !=0){
         this.openDialogPerc();
 
       }
       else{
-        let creator = this.groupUsers.users.find((user:any) => user.id = this.authUserId)
+        let creator = this.groupUsers.users.find((user:any) => user.id == this.authUserId)
         this.expenseTable.forEach((input: any) => {
           this.percentSplit = this.payment * (input.expenseSplit / 100)
           this.transactionService
@@ -192,7 +191,6 @@ export class ExpenseDialogComponent implements OnInit {
     //didnt select anything
     else {
         this.dialogRef.disableClose = true;
-        console.log(this.dialogRef.disableClose)
         alert("Please select an option")
     }
     this.getTransactions();

@@ -229,36 +229,6 @@
               class="row container-fluid col-md-6"
               id="evenshow"
             >
-              <label>Select how you want to split your payments: </label>
-              <br />
-              <!--Because all we need is the split amount entered previously, we can simply call the evenly method on this click-->
-              <button
-                class="btn btn-primary"
-                style="margin-bottom: 15px"
-                mat-raised-button
-                (click)="Evenly()"
-              >
-                Evenly
-              </button>
-              <br />
-              <button
-                button
-                class="btn btn-primary"
-                style="margin-bottom: 15px"
-                mat-raised-button
-                (click)="toggleFixedShow()"
-              >
-                Fixed Amount
-              </button>
-              <br />
-              <button
-                button
-                class="btn btn-primary margin-bottom: 15px"
-                mat-raised-button
-                (click)="togglePercentShow()"
-              >
-                Percentage
-              </button>
             </div>
           </form>
           <br />
@@ -337,68 +307,7 @@
               </tr>
             </tbody>
           </table>
-          <!-- <button type="submit"></button> -->
         </div>
-      </div>
-
-      <!-- Currently not functionable with the database - However, this is where we will add members to groups-->
-
-      <!--This div is where the user selects their payment option. When selected - on the "click" the toggle method will be called to show inputs for the various splitting methods-->
-
-      <!--First, the *ngIf will read if the fixed method was call, and if so this will display x amount of inputs for each user in a group. The index
-    allows us to iterate through each group member and save values pertaining to each group member. this is the same for the percentage split.-->
-      <div
-        *ngIf="fixedIsShown"
-        class="row container-fluid col-md-4"
-        id="fixedshow"
-      >
-        <ng-container *ngFor="let user of groupUsers.users"
-          >{{ user.name }}
-          <input
-            id="{{ user.id }}"
-            step="0.01"
-            placeholder="{{ initialValue.toFixed(2) }}"
-            type="number"
-            name="fixedamt"
-            required
-            (change)="onFixedChange($event)"
-          />
-          <br />
-        </ng-container>
-
-        <button
-          class="btn btn-success"
-          mat-raised-button
-          (click)="Fixedamount()"
-        >
-          Split Payment
-        </button>
-      </div>
-      <div
-        *ngIf="percentIsShown"
-        class="row container-fluid col-md-4"
-        id="percentshow"
-      >
-        <ng-container *ngFor="let user of groupUsers.users">
-          {{ user.name}}
-          <input
-            id="{{ user.id }}"
-            type="number"
-            step="0.01"
-            placeholder="{{ initialValue.toFixed(2) }}"
-            required
-            name="distribution"
-            (change)="onPercentChange($event)"
-          />
-        </ng-container>
-
-        <button
-          class="btn btn-success"
-          mat-raised-button
-          (click)="Percentage()"
-        >
-          Split Payment
-        </button>
       </div>
     </form>
 
@@ -407,7 +316,6 @@
     <br />
     <br />
     <br />
-    <!-- <button id="clearGroup" type="button" class="btn-primary" style="margin-right: 25px"  (click)="clearGroup()">Clear Group</button>
-  <button id="clearAmount" type="button" class="btn-primary"  (click)="clearAmountOwed()">Clear Amount Owed</button> -->
+
   </body>
 </div>
