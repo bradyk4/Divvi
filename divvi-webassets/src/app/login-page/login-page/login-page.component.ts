@@ -24,6 +24,12 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onKeyDown(event: any){
+    if(event.key === "Enter"){
+      this.onSubmit();
+    }
+  }
+
   async onSubmit() {
     try{
       await this.userService.authenticateUser(this.username, this.password).subscribe(data => {
