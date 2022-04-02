@@ -51,7 +51,7 @@
         <!--This table displays the group preloaded from the ngOnIt function in the app component. -->
         <table
           class="table table-hover table-striped table-sm"
-          style="float: left"
+          style="float: left;"
           *ngIf="groupUsers"
         >
           <thead class="table-dark">
@@ -246,8 +246,11 @@
 
       <!--This is the pending transactions table - currently stored in the front end only.-->
       <div class="col-md-6 float-right">
-        <h2>Expenses You Owe</h2>
-        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <h2 style="font-family: 'Ubuntu', sans-serif; font-size: medium; background-color: black; color: white; padding-left: 15px; font-weight: bold;">
+          Expenses You Owe
+        </h2>
+
+        <div style="height:20px;">&nbsp;</div>
         <table class="table table-hover table table-striped" style="float: right">
           <thead class="table-dark">
             <tr class="text-center">
