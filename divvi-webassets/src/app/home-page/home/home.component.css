@@ -1,7 +1,7 @@
 header {
   padding: 5px;
   text-align: center;
-  background: #00008B;
+  background: #036dc9;
   color:white;
   font-size: 30px;
   border-style: solid;
@@ -14,4 +14,30 @@ header {
 #clearAmount:hover {
   color:black;
   background:grey;
+}
+.container-fluid{
+  padding-left: 0rem;
+  padding-right: 0rem;
+  overflow: hidden;
+}
+body{
+  padding-left: 45px;
+  padding-right: 45px;
+  font-family: 'Ubuntu', sans-serif;
+  height: 100vh;
+  background-color:aliceblue;
+}
+table{
+  border: none;
+}
+/*Set border-radius on the top-left and bottom-left of the first table data on the table row*/
+td:first-child,
+th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+/* Set border-radius on the top-right and bottom-right of the last table data on the table row*/
+td:last-child,
+th:last-child {
+  border-radius: 0 10px 10px 0;
 }
