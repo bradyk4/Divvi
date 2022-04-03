@@ -13,7 +13,7 @@
     <i class="fa fa-cloud" style="color:grey; font-size:50px;text-shadow:2px 2px 4px #000000;"></i>
     <form class="form1">
       <input class="un" name="username" type="text" align="center" placeholder="Username" [(ngModel)] = "username">
-      <input class="pass" name="username" type="password" align="center" placeholder="Password" [(ngModel)] = "password">
+      <input (keydown.enter)="onKeyDown($event)" class="pass" name="username" type="password" align="center" placeholder="Password" [(ngModel)] = "password">
       <a class="submit" align="center" (click)="onSubmit()">Sign in</a>
       <br>
       <a (click)="onSignup()" class="button" style="margin-left: 25px;">Register</a>
